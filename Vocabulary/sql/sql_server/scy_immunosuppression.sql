@@ -1,0 +1,48 @@
+--Immunosuppression
+
+--AUTHOR: Seng Chan You<applegna@gmail.com>
+--Date:2020-03-10
+/*
+Reference
+Greenbaum, Adena H., Jufu Chen, Carrie Reed, Suzanne Beavers, David Callahan, Deborah Christensen, Lyn Finelli, and Alicia M. Fry. “Hospitalizations for Severe Lower Respiratory Tract Infections.” Pediatrics 134, no. 3 (September 2014): 546–54. https://doi.org/10.1542/peds.2014-0244.
+*/
+SELECT concept.domain_id, concept.concept_id, concept.concept_name, concept.vocabulary_id,
+con_rel.source_vocabulary, con_rel.source_code, con_rel.source_concept_name,concept.standard_concept AS S
+FROM
+(SELECT rel.concept_id_2 AS concept_id, concept.concept_id AS source_concept_id, concept.concept_name AS source_concept_name, vocabulary_id AS source_vocabulary, concept_code AS source_code
+FROM @vocabulary_database_schema.concept LEFT JOIN
+	 @vocabulary_database_schema.concept_relationship AS rel
+	 ON CONCEPT.concept_id=rel.concept_id_1
+WHERE vocabulary_id = 'ICD9CM'
+AND rel.relationship_id='Maps to'
+AND rel.invalid_reason IS NULL
+AND (CONCEPT_CODE LIKE '136.3%'
+	 OR CONCEPT_CODE LIKE '279%'
+	 OR CONCEPT_CODE LIKE '280.0%'
+	 OR CONCEPT_CODE LIKE '288.1%'
+	 OR CONCEPT_CODE LIKE '288.2%'
+	 OR CONCEPT_CODE LIKE '289.4%'
+	 OR CONCEPT_CODE LIKE '289.5%'
+	 OR CONCEPT_CODE LIKE '289.89%'
+	 OR CONCEPT_CODE LIKE '555%'
+	 OR CONCEPT_CODE LIKE '556%'
+	 OR CONCEPT_CODE LIKE '710.0%'
+	 OR CONCEPT_CODE LIKE '710.2%'
+	 OR CONCEPT_CODE LIKE '710.4%'
+	 OR CONCEPT_CODE LIKE '714%'
+	 OR CONCEPT_CODE LIKE '963.1%'
+	 OR CONCEPT_CODE LIKE '996.8%'
+	 OR CONCEPT_CODE LIKE 'V42.0%'
+	 OR CONCEPT_CODE LIKE 'V42.1%'
+	 OR CONCEPT_CODE LIKE 'V42.2%'
+	 OR CONCEPT_CODE LIKE 'V42.4%'
+	 OR CONCEPT_CODE LIKE 'V42.6%'
+	 OR CONCEPT_CODE LIKE 'V42.7%'
+	 OR CONCEPT_CODE LIKE 'V42.8%'
+	 OR CONCEPT_CODE LIKE 'V42.9%'
+	 )
+) AS con_rel
+LEFT JOIN @vocabulary_database_schema.concept
+ON con_rel.concept_id = concept.concept_id
+ORDER BY SOURCE_CODE ASC
+;
