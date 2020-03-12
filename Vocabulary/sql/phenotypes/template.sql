@@ -176,7 +176,7 @@ WHERE concept_name ~* 'influenza'
   AND c.domain_id IN ('Condition', 'Observation')
 
   AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Hierarchy', 'LOINC Component')
-  AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary')
+  AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH')
 
 
 AND NOT EXISTS (
