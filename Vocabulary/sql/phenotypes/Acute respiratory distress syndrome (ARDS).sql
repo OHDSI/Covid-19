@@ -6,7 +6,7 @@ SELECT DISTINCT
                 concept_name,
                 vocabulary_id
 
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 
 WHERE c.concept_id IN (
 --Put concept_ids here
@@ -164,18 +164,17 @@ ORDER BY source_code,
          vocabulary_id
 ;
 
---1424261 Pregnant women with acute respiratory distress syndrome (machine translation) - to map
 -- searching for uncovered concepts in Standard and source_vocabularies
 SELECT *
 FROM @vocabulary_database_schema.concept c
 --Mask to detect uncovered concepts
-WHERE concept_name ~* 'respiratory distress'
+WHERE concept_name ~* 'respiratory distress|ARDS'
 --Masks to exclude
- -- AND concept_name !~* 'respiratory distress'
+  AND concept_name !~* '(back|to|for|up|down|in|out)ward|lizard|gold standards|hazard|wardship|skateboard|engineer|Edwards|Richardson'
 
   AND c.domain_id IN ('Condition', 'Observation')
 
-  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component')
+  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'Qualifier Value', 'Survey', 'Social Context', 'LOINC Method')
   AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH')
   AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL)
   AND c.concept_class_id !~* 'Hierarchy|chapter'
