@@ -221,7 +221,7 @@ Condition|45757528|Influenza A virus present|SNOMED|Supposed to be a lab test
 Condition|4262075|Influenza B virus present|SNOMED|Supposed to be a lab test
 Condition|4319159|Influenza-like illness|SNOMED
 Condition|4153160|Influenza-like symptoms|SNOMED
-Condition|4042202|Post-influenza encephalitis|SNOMED|influenza is not a causative agent
+Condition|4042202|Post-influenza encephalitis|SNOMED|Influenza is not a causative agent
 Observation|44802950|Possible influenza due to Influenza A virus subtype H1N1|SNOMED
 Observation|44813193|Suspected influenza A virus subtype H1N1 infection|SNOMED
 
@@ -289,10 +289,10 @@ Condition|42537960|Influenza with CNS disorder|SNOMED
 Condition|4112824|Influenza with gastrointestinal tract involvement|SNOMED
 Condition|4299935|Myocarditis due to influenza virus|SNOMED
 Condition|46269706|Otitis media due to influenza|SNOMED
+Condition|763011|Pneumonia due to Influenza A virus|SNOMED
 
 
-
-<details><summary><strong>Click to expand Mappings</strong></summary>
+<details><summary><strong>Click to expand - Mapping list</strong></summary>
 <p>
 
 |domain_id|concept_id|concept_name|voc_id|source_voc_id|source_code
@@ -305,12 +305,36 @@ Condition|4252885|Influenza with encephalopathy|SNOMED|Read|H27y000
 Condition|4112824|Influenza with gastrointestinal tract involvement|SNOMED|CIEL|137171
 Condition|4112824|Influenza with gastrointestinal tract involvement|SNOMED|Read|H27y100
 Condition|4299935|Myocarditis due to influenza virus|SNOMED|CIEL|133560
+Condition|36676238|Pneumonia caused by Influenza A virus|SNOMED|ICD9CM|488.01; 488.81
+Condition|46270121|Pneumonia due to H1N1 influenza|SNOMED|ICD9CM|488.11
 
 
 </p>
 </details>
 
+<details><summary><strong>Click to expand - Detailed Mapping list</strong></summary>
+<p>
+
+|source_code_description|source_code|source_voc_id|concept_id|concept_name|concept_code|concept_class_id|domain_id|voc_id
+|---|---|---|---|---|---|---|---|---|
+Myocarditis due to Influenza Virus|133560|CIEL|4299935|Myocarditis due to influenza virus|78046005|Clinical Finding|Condition|SNOMED
+Influenza with Gastrointestinal Tract Involvement|137171|CIEL|4112824|Influenza with gastrointestinal tract involvement|195929004|Clinical Finding|Condition|SNOMED
+Influenza with Encephalopathy|137172|CIEL|4252885|Influenza with encephalopathy|74644004|Clinical Finding|Condition|SNOMED
+Influenza due to identified avian influenza virus with pneumonia|488.01|ICD9CM|36676238|Pneumonia caused by Influenza A virus|772839003|Clinical Finding|Condition|SNOMED
+Influenza due to identified 2009 H1N1 influenza virus with pneumonia|488.11|ICD9CM|46270121|Pneumonia due to H1N1 influenza|142931000119100|Clinical Finding|Condition|SNOMED
+Influenza due to identified novel influenza A virus with pneumonia|488.81|ICD9CM|36676238|Pneumonia caused by Influenza A virus|772839003|Clinical Finding|Condition|SNOMED
+Encephalitis due to influenza-specific virus not identified|F030800|Read|4146943|Encephalitis due to influenza|309789002|Clinical Finding|Condition|SNOMED
+Acute myocarditis - influenzal|G520300|Read|4108226|Acute myocarditis - influenzal|194946005|Clinical Finding|Condition|SNOMED
+Influenza with encephalopathy|H27y000|Read|4252885|Influenza with encephalopathy|74644004|Clinical Finding|Condition|SNOMED
+Influenza with gastrointestinal tract involvement|H27y100|Read|4112824|Influenza with gastrointestinal tract involvement|195929004|Clinical Finding|Condition|SNOMED
+Influenza due to unidentified influenza virus with encephalopathy|J11.81|ICD10CM|4252885|Influenza with encephalopathy|74644004|Clinical Finding|Condition|SNOMED
+
+</p>
+</details>
+
+
 ***
+
 
 ### Pneumonia
 

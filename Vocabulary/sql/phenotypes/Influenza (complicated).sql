@@ -1,3 +1,4 @@
+--to update @vocabulary_database_schema to @vocabulary_database_schema
 -- Retrieve the list of Standard concepts of interest
 with list as (
 SELECT DISTINCT
@@ -9,12 +10,14 @@ SELECT DISTINCT
 FROM @vocabulary_database_schema.concept c
 
 WHERE c.concept_id IN (
-4146943	,--Condition	Encephalitis due to influenza	SNOMED
-46274061,--	Condition	Encephalopathy due to Influenza A virus	SNOMED
-42537960,--	Condition	Influenza with CNS disorder	SNOMED
-4112824	,--Condition	Influenza with gastrointestinal tract involvement	SNOMED
-4299935	,--Condition	Myocarditis due to influenza virus	SNOMED
-46269706 --	Condition	Otitis media due to influenza	SNOMED
+--Put concept_ids here
+4146943,--		Condition	Encephalitis due to influenza	SNOMED
+46274061,--		Condition	Encephalopathy due to Influenza A virus	SNOMED
+42537960,--		Condition	Influenza with CNS disorder	SNOMED
+4112824,--		Condition	Influenza with gastrointestinal tract involvement	SNOMED
+4299935,--		Condition	Myocarditis due to influenza virus	SNOMED
+46269706,--		Condition	Otitis media due to influenza	SNOMED
+763011--		Condition	Pneumonia due to Influenza A virus	SNOMED
     )
 )
 
@@ -24,7 +27,7 @@ FROM list
 ORDER BY domain_id, vocabulary_id, concept_name, concept_id
 
 --List of concepts
-/*SELECT domain_id, concept_id, concept_name, vocabulary_id, null
+/*SELECT concept_id, null, domain_id, concept_name, vocabulary_id
 FROM list
 ORDER BY domain_id, vocabulary_id, concept_name, concept_id*/
 ;
@@ -32,6 +35,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_id*/
 
 
 -- Retrieve concepts from source vocabularies mapped to desired standard concept or any of its child
+-- Mapping list
 with mappings as (
 
 SELECT DISTINCT c1.domain_id,
@@ -53,12 +57,14 @@ JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 
 WHERE ca1.ancestor_concept_id IN (
-4146943	,--Condition	Encephalitis due to influenza	SNOMED
-46274061,--	Condition	Encephalopathy due to Influenza A virus	SNOMED
-42537960,--	Condition	Influenza with CNS disorder	SNOMED
-4112824	,--Condition	Influenza with gastrointestinal tract involvement	SNOMED
-4299935	,--Condition	Myocarditis due to influenza virus	SNOMED
-46269706 --	Condition	Otitis media due to influenza	SNOMED
+--Standard concept_ids of interest
+4146943,--		Condition	Encephalitis due to influenza	SNOMED
+46274061,--		Condition	Encephalopathy due to Influenza A virus	SNOMED
+42537960,--		Condition	Influenza with CNS disorder	SNOMED
+4112824,--		Condition	Influenza with gastrointestinal tract involvement	SNOMED
+4299935,--		Condition	Myocarditis due to influenza virus	SNOMED
+46269706,--		Condition	Otitis media due to influenza	SNOMED
+763011--		Condition	Pneumonia due to Influenza A virus	SNOMED
     )
 AND ca1.descendant_concept_id != c2.concept_id
 
@@ -88,6 +94,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_id, source_vocabulary_i
 
 
 --The list for mapping review
+--Detailed Mapping list
 with mappings as (
 
 SELECT DISTINCT c2.concept_name as source_code_description,
@@ -114,24 +121,53 @@ JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 
 WHERE ca1.ancestor_concept_id IN (
-4146943	,--Condition	Encephalitis due to influenza	SNOMED
-46274061,--	Condition	Encephalopathy due to Influenza A virus	SNOMED
-42537960,--	Condition	Influenza with CNS disorder	SNOMED
-4112824	,--Condition	Influenza with gastrointestinal tract involvement	SNOMED
-4299935	,--Condition	Myocarditis due to influenza virus	SNOMED
-46269706 --	Condition	Otitis media due to influenza	SNOMED
+--Standard concept_ids of interest
+4146943,--		Condition	Encephalitis due to influenza	SNOMED
+46274061,--		Condition	Encephalopathy due to Influenza A virus	SNOMED
+42537960,--		Condition	Influenza with CNS disorder	SNOMED
+4112824,--		Condition	Influenza with gastrointestinal tract involvement	SNOMED
+4299935,--		Condition	Myocarditis due to influenza virus	SNOMED
+46269706,--		Condition	Otitis media due to influenza	SNOMED
+763011--		Condition	Pneumonia due to Influenza A virus	SNOMED
+
     )
 AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
 AND NOT (c2.vocabulary_id IN ('SNOMED', 'MeSH'))
-AND lower(c1.concept_name) != lower (c2.concept_name)
+--AND lower(c1.concept_name) != lower (c2.concept_name)
 
 )
 
 --list
-SELECT *
+/*SELECT *
+FROM mappings
+ORDER BY source_code,
+         source_code_description,
+         source_vocabulary_id,
+         concept_id,
+         concept_code,
+         concept_name,
+         concept_class_id,
+         standard_concept,
+         invalid_reason,
+         domain_id,
+         vocabulary_id*/
+
+
+--markdown-friendly list
+SELECT source_code_description || '|' ||
+       source_code || '|' ||
+       source_vocabulary_id || '|' ||
+       concept_id || '|' ||
+       concept_name || '|' ||
+       concept_code || '|' ||
+       concept_class_id || '|' ||
+       --COALESCE (standard_concept, '') || '|' ||
+       --COALESCE (invalid_reason, '') || '|' ||
+       domain_id || '|' ||
+       vocabulary_id
 FROM mappings
 ORDER BY source_code,
          source_code_description,
