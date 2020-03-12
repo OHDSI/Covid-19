@@ -1,5 +1,4 @@
 --TODO: Search to be added
---to update devv5 to @vocabulary_database_schema
 -- Retrieve the list of Standard concepts of interest
 with list as (
 SELECT DISTINCT
@@ -177,9 +176,11 @@ WHERE concept_name ~* 'influenza'
 
   AND c.domain_id IN ('Condition', 'Observation')
 
-  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Hierarchy', 'LOINC Component')
-  AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary')
-
+  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component')
+  AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH')
+  AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL)
+  AND c.concept_class_id !~* 'Hierarchy|chapter'
+  AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD'))
 
 AND NOT EXISTS (
 SELECT 1

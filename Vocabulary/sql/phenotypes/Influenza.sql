@@ -1,4 +1,3 @@
---to update @vocabulary_database_schema to @vocabulary_database_schema
 -- Retrieve the list of Standard concepts of interest
 with list as (
 SELECT DISTINCT
@@ -165,11 +164,15 @@ ORDER BY source_code,
 SELECT *
 FROM @vocabulary_database_schema.concept c
 WHERE concept_name ~* 'influenza'
-  AND concept_name !~* 'Haemophilus|Hemophilus|Parainfluenza|vaccine|not detected|not isolated|vaccination|advise|Exposure|immunisation|contact|immunization|antibody level|detection assay|antigen level|Advice|consultation|Educated|serology'
+  AND concept_name !~* 'Haemophilus|Influenza season|Hemophilus|Parainfluenza|vaccine|not detected|not isolated|vaccination|advise|Exposure|immunisation|contact|immunization|antibody level|detection assay|antigen level|Advice|consultation|Educated|serology'
 
   AND c.domain_id IN ('Condition', 'Observation')
-  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Hierarchy', 'LOINC Component')
-  AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary')
+
+  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component')
+  AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH')
+  AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL)
+  AND c.concept_class_id !~* 'Hierarchy|chapter'
+  AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD'))
 
 
 AND NOT EXISTS (

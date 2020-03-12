@@ -1,4 +1,3 @@
---to update devv5 to @vocabulary_database_schema
 -- Retrieve the list of Standard concepts of interest
 with list as (
 SELECT DISTINCT
@@ -169,14 +168,18 @@ ORDER BY source_code,
 SELECT *
 FROM devv5.concept c
 --Mask to detect uncovered concepts
-WHERE concept_name ~* 'influenza'
+WHERE c.concept_name ~* 'influenza'
 --Masks to exclude
-  AND concept_name !~* 'Haemophilus'
+  AND c.concept_name !~* 'Haemophilus'
 
   AND c.domain_id IN ('Condition', 'Observation')
 
-  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Hierarchy', 'LOINC Component')
+
+  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component')
   AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH')
+  AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL)
+  AND c.concept_class_id !~* 'Hierarchy|chapter'
+  AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD'))
 
 
 AND NOT EXISTS (
