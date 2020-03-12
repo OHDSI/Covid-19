@@ -1,3 +1,4 @@
+--to update devv5 to @vocabulary_database_schema
 -- Retrieve the list of Standard concepts of interest
 with list as (
 SELECT DISTINCT

@@ -163,9 +163,10 @@ ORDER BY source_code,
 -- searching for uncovered concepts in Standard and source_vocabularies
 SELECT *
 FROM @vocabulary_database_schema.concept c
-WHERE concept_name ~* 'influenza' AND concept_name !~* 'Haemophilus|Parainfluenza|vaccine|not detected|not isolated'
+WHERE concept_name ~* 'influenza'
+  AND concept_name !~* 'Haemophilus|Parainfluenza|vaccine|not detected|not isolated|vaccination|advise|Exposure|immunisation|contact|immunization|antibody level|detection assay|antigen level|Advice|consultation|Educated|serology'
 
-  AND c.domain_id IN ('Condition', 'Observation', 'Measurement')
+  AND c.domain_id IN ('Condition', 'Observation')
   AND c.concept_class_id NOT IN ('Substance', 'Organism')
   AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary')
 
@@ -186,17 +187,26 @@ JOIN @vocabulary_database_schema.concept c2
 
 WHERE ca1.ancestor_concept_id IN (
 4266367,--Condition	Influenza	SNOMED
+
+
+45770619,--		Condition	At risk of influenza related complication	SNOMED
+764960	,--	Condition	Influenza A virus inconclusive	SNOMED
+45757528,--		Condition	Influenza A virus present	SNOMED
+4262075	,--	Condition	Influenza B virus present	SNOMED
+4319159	,--	Condition	Influenza-like illness	SNOMED
+4153160	,--	Condition	Influenza-like symptoms	SNOMED
+4042202	,--	Condition	Post-influenza encephalitis	SNOMED
+44802950,--		Observation	Possible influenza due to Influenza A virus subtype H1N1	SNOMED
+44813193,--		Observation	Suspected influenza A virus subtype H1N1 infection	SNOMED
+
+
 4146943	,--Condition	Encephalitis due to influenza	SNOMED
 46274061,--	Condition	Encephalopathy due to Influenza A virus	SNOMED
 42537960,--	Condition	Influenza with CNS disorder	SNOMED
 4112824	,--Condition	Influenza with gastrointestinal tract involvement	SNOMED
 4299935	,--Condition	Myocarditis due to influenza virus	SNOMED
 46269706, --	Condition	Otitis media due to influenza	SNOMED
-763011,--		Condition	Pneumonia due to Influenza A virus	SNOMED
-
-
-45757528,--		Condition	Influenza A virus present	SNOMED
-4262075--		Condition	Influenza B virus present	SNOMED
+763011--		Condition	Pneumonia due to Influenza A virus	SNOMED
     )
 --AND ca1.descendant_concept_id != c2.concept_id
 
@@ -222,11 +232,15 @@ SELECT DISTINCT
 FROM @vocabulary_database_schema.concept c
 
 WHERE c.concept_id IN (
-
+45770619,--		Condition	At risk of influenza related complication	SNOMED
 764960	,--	Condition	Influenza A virus inconclusive	SNOMED
 45757528,--		Condition	Influenza A virus present	SNOMED
-4262075	--	Condition	Influenza B virus present	SNOMED
-
+4262075	,--	Condition	Influenza B virus present	SNOMED
+4319159	,--	Condition	Influenza-like illness	SNOMED
+4153160	,--	Condition	Influenza-like symptoms	SNOMED
+4042202	,--	Condition	Post-influenza encephalitis	SNOMED
+44802950,--		Observation	Possible influenza due to Influenza A virus subtype H1N1	SNOMED
+44813193--		Observation	Suspected influenza A virus subtype H1N1 infection	SNOMED
     )
 )
 
@@ -266,9 +280,15 @@ JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 
 WHERE ca1.ancestor_concept_id IN (
+45770619,--		Condition	At risk of influenza related complication	SNOMED
 764960	,--	Condition	Influenza A virus inconclusive	SNOMED
 45757528,--		Condition	Influenza A virus present	SNOMED
-4262075	--	Condition	Influenza B virus present	SNOMED
+4262075	,--	Condition	Influenza B virus present	SNOMED
+4319159	,--	Condition	Influenza-like illness	SNOMED
+4153160	,--	Condition	Influenza-like symptoms	SNOMED
+4042202	,--	Condition	Post-influenza encephalitis	SNOMED
+44802950,--		Observation	Possible influenza due to Influenza A virus subtype H1N1	SNOMED
+44813193--		Observation	Suspected influenza A virus subtype H1N1 infection	SNOMED
     )
 AND ca1.descendant_concept_id != c2.concept_id
 
@@ -325,9 +345,15 @@ JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 
 WHERE ca1.ancestor_concept_id IN (
+45770619,--		Condition	At risk of influenza related complication	SNOMED
 764960	,--	Condition	Influenza A virus inconclusive	SNOMED
 45757528,--		Condition	Influenza A virus present	SNOMED
-4262075	--	Condition	Influenza B virus present	SNOMED
+4262075	,--	Condition	Influenza B virus present	SNOMED
+4319159	,--	Condition	Influenza-like illness	SNOMED
+4153160	,--	Condition	Influenza-like symptoms	SNOMED
+4042202	,--	Condition	Post-influenza encephalitis	SNOMED
+44802950,--		Observation	Possible influenza due to Influenza A virus subtype H1N1	SNOMED
+44813193--		Observation	Suspected influenza A virus subtype H1N1 infection	SNOMED
     )
 AND ca1.descendant_concept_id != c2.concept_id
 

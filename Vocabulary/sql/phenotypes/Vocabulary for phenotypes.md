@@ -215,9 +215,17 @@ Influenza due to unidentified influenza virus with other manifestations|J11.89|I
 
 |domain_id|concept_id|concept_name|voc_id|comment
 |---|---|---|---|---|
-Condition|764960|Influenza A virus inconclusive|SNOMED|Inconclusive diagnosis
+Condition|45770619|At risk of influenza related complication|SNOMED
+Condition|764960|Influenza A virus inconclusive|SNOMED
 Condition|45757528|Influenza A virus present|SNOMED|Supposed to be a lab test
 Condition|4262075|Influenza B virus present|SNOMED|Supposed to be a lab test
+Condition|4319159|Influenza-like illness|SNOMED
+Condition|4153160|Influenza-like symptoms|SNOMED
+Condition|4042202|Post-influenza encephalitis|SNOMED|influenza is not a causative agent
+Observation|44802950|Possible influenza due to Influenza A virus subtype H1N1|SNOMED
+Observation|44813193|Suspected influenza A virus subtype H1N1 infection|SNOMED
+
+
 
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
@@ -225,12 +233,20 @@ Condition|4262075|Influenza B virus present|SNOMED|Supposed to be a lab test
 
 |domain_id|concept_id|concept_name|voc_id|source_voc_id|source_code
 |---|---|---|---|---|---|
+Condition|45770619|At risk of influenza related complication|SNOMED|Read|14Ol.00
 Condition|46272887|Influenza A virus subtype H1N1 detected|SNOMED|Read|4J3L.00
 Condition|4208931|Influenza A virus subtype H1 present|SNOMED|Read|4JU0.00
 Condition|4235537|Influenza A virus subtype H2 present|SNOMED|Read|4JU1.00
 Condition|4207452|Influenza A virus subtype H3 present|SNOMED|Read|4JU2.00
 Condition|4262073|Influenza A virus subtype H5 present|SNOMED|Read|4JU3.00
 Condition|4262075|Influenza B virus present|SNOMED|Read|4JU5.00
+Condition|4319159|Influenza-like illness|SNOMED|Read|H27z.11; H27z.12
+Condition|4153160|Influenza-like symptoms|SNOMED|CIEL|137162
+Condition|4153160|Influenza-like symptoms|SNOMED|Read|16L..00
+Observation|44802950|Possible influenza due to Influenza A virus subtype H1N1|SNOMED|Read|1W0..00
+Observation|44813193|Suspected influenza A virus subtype H1N1 infection|SNOMED|Read|1J72.00; 1J72.11
+
+
 
 </p>
 </details>
@@ -240,12 +256,22 @@ Condition|4262075|Influenza B virus present|SNOMED|Read|4JU5.00
 
 |source_code_description|source_code|source_voc_id|concept_id|concept_name|concept_code|concept_class_id|domain_id|voc_id
 |---|---|---|---|---|---|---|---|---|
+Influenza-Like Symptoms|137162|CIEL|4153160|Influenza-like symptoms|315642008|Clinical Finding|Condition|SNOMED
+At risk of influenza related complication|14Ol.00|Read|45770619|At risk of influenza related complication|932221000000103|Clinical Finding|Condition|SNOMED
+Influenza-like symptoms|16L..00|Read|4153160|Influenza-like symptoms|315642008|Clinical Finding|Condition|SNOMED
+Suspected influenza A virus subtype H1N1 infection|1J72.00|Read|44813193|Suspected influenza A virus subtype H1N1 infection|505251000000100|Context-dependent|Observation|SNOMED
+Suspected swine influenza|1J72.11|Read|44813193|Suspected influenza A virus subtype H1N1 infection|505251000000100|Context-dependent|Observation|SNOMED
+Possible influenza A virus H1N1 subtype|1W0..00|Read|44802950|Possible influenza due to Influenza A virus subtype H1N1|506751000000104|Context-dependent|Observation|SNOMED
 Influenza A virus H1N1 subtype detected|4J3L.00|Read|46272887|Influenza A virus subtype H1N1 detected|711330007|Clinical Finding|Condition|SNOMED
 Influenza H1 virus detected|4JU0.00|Read|4208931|Influenza A virus subtype H1 present|441043003|Clinical Finding|Condition|SNOMED
 Influenza H2 virus detected|4JU1.00|Read|4235537|Influenza A virus subtype H2 present|440927002|Clinical Finding|Condition|SNOMED
 Influenza H3 virus detected|4JU2.00|Read|4207452|Influenza A virus subtype H3 present|441049004|Clinical Finding|Condition|SNOMED
 Influenza H5 virus detected|4JU3.00|Read|4262073|Influenza A virus subtype H5 present|441343005|Clinical Finding|Condition|SNOMED
 Influenza B virus detected|4JU5.00|Read|4262075|Influenza B virus present|441345003|Clinical Finding|Condition|SNOMED
+Flu like illness|H27z.11|Read|4319159|Influenza-like illness|95891005|Clinical Finding|Condition|SNOMED
+Influenza like illness|H27z.12|Read|4319159|Influenza-like illness|95891005|Clinical Finding|Condition|SNOMED
+
+
 
 </p>
 </details>
