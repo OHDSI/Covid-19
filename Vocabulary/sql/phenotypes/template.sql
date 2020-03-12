@@ -1,3 +1,4 @@
+--to update devv5 to @vocabulary_database_schema
 -- Retrieve the list of Standard concepts of interest
 with list as (
 SELECT DISTINCT
@@ -174,7 +175,7 @@ WHERE concept_name ~* 'influenza'
 
   AND c.domain_id IN ('Condition', 'Observation')
 
-  AND c.concept_class_id NOT IN ('Substance', 'Organism')
+  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Hierarchy', 'LOINC Component')
   AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary')
 
 
