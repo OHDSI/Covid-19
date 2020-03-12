@@ -8,6 +8,12 @@
 |---|---|---|---|---|---|
 |   |   |   |   |   |   |
 
+### Pneumonia
+
+|Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+
 ### COVID-19
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
@@ -54,6 +60,12 @@
 |---|---|---|---|---|---|
 |Procedure|   |   |   |EDI|M5859;M0859|
 
+### Non-invasive ventilation
+
+|Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+
 ### Ventilator care
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
@@ -66,7 +78,7 @@
 |---|---|---|---|---|---|
 |Procedure|NA|   |   |EDI|O1903;O1905;O1890|
 
-### Continuous hemodialysis
+### Continuous Renal Replacement therapy
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
 |---|---|---|---|---|---|
@@ -75,10 +87,21 @@
 |Procedure|NA|   |   |EDI|O7051;O7052|
 |Procedure|NA|   |   |EDI|O7053;O7054|
 
+### Peritoneal dialysis
+
+|Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
 
 ## Comorbidity
 
-### Cardiac disease
+### Cardiovascular disease
+
+|Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+
+### Chronic cardiac disease, including congenital heart disease
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
 |---|---|---|---|---|---|
@@ -96,19 +119,19 @@
 |---|---|---|---|---|---|
 |   |   |   |   |   |   |
 
-### Other pulmonary disease
+### Chronic pulmonary disease (excl. Asthma)
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
 |---|---|---|---|---|---|
 |   |   |   |   |   |   |
 
-### Renal disease
+### Chronic kidney disease
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
 |---|---|---|---|---|---|
 |   |   |   |   |   |   |
 
-### Hemoglobinopathies
+### Chronic hematologic disease
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
 |---|---|---|---|---|---|
@@ -132,7 +155,13 @@
 |---|---|---|---|---|---|
 |   |   |   |   |   |   |
 
-### Diabetes
+### Diabetes without complications
+
+|Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+
+### Diabetes with complications
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
 |---|---|---|---|---|---|
@@ -156,13 +185,31 @@
 |---|---|---|---|---|---|
 |   |   |   |   |   |   |
 
-### Neurologic and neuromuscular disorder
+### Chronic neurological disorder
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
 |---|---|---|---|---|---|
 |   |   |   |   |   |   |
 
 ### Pregnancy
+
+|Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+
+### Rheumatologic disorder
+
+|Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+
+### Dementia
+
+|Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+
+### Malnutrition
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
 |---|---|---|---|---|---|
@@ -238,7 +285,13 @@
 |---|---|---|---|---|---|
 |   |   |   |   |   |   |
 
-### Travel history (Travel to Wuhan, Hubei, China)
+### Travel history (Travel to Wuhan, Hubei, China and other endemic regions)
+
+|Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
+|---|---|---|---|---|---|
+|   |   |   |   |   |   |
+
+### Smoking
 
 |Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
 |---|---|---|---|---|---|
