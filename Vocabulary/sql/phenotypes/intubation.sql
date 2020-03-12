@@ -1,3 +1,5 @@
+--TODO: Search to be added
+--to update devv5 to @vocabulary_database_schema
 -- Retrieve the list of Standard concepts of interest
 with list as (
 SELECT DISTINCT
@@ -10,8 +12,7 @@ FROM devv5.concept c
 
 WHERE c.concept_id IN (
 --Put concept_ids here
-255848,--Condition	Pneumonia	SNOMED
-4050869--Condition	Atypical pneumonia  SNOMED
+40487536 --	Procedure	Intubation of respiratory tract	SNOMED
 
     )
 )
@@ -21,8 +22,8 @@ SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || vocabular
 FROM list
 ORDER BY domain_id, vocabulary_id, concept_name, concept_id
 
---List of concepts
-/*SELECT concept_id, null, domain_id, concept_name, vocabulary_id
+/*--List of concepts
+SELECT concept_id, null, domain_id, concept_name, vocabulary_id
 FROM list
 ORDER BY domain_id, vocabulary_id, concept_name, concept_id*/
 ;
@@ -53,9 +54,8 @@ JOIN devv5.concept c2
 
 WHERE ca1.ancestor_concept_id IN (
 --Standard concept_ids of interest
-255848,--Condition	Pneumonia	SNOMED
-4050869--Condition	Atypical pneumonia  SNOMED
-                                 )
+40487536 --	Procedure	Intubation of respiratory tract	SNOMED
+    )
 AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
@@ -112,8 +112,8 @@ JOIN devv5.concept c2
 
 WHERE ca1.ancestor_concept_id IN (
 --Standard concept_ids of interest
-255848,--Condition	Pneumonia	SNOMED
-4050869--Condition	Atypical pneumonia  SNOMED
+40487536 --	Procedure	Intubation of respiratory tract	SNOMED
+
     )
 AND ca1.descendant_concept_id != c2.concept_id
 
@@ -171,13 +171,13 @@ ORDER BY source_code,
 SELECT *
 FROM devv5.concept c
 --Mask to detect uncovered concepts
-WHERE concept_name ~* 'pneumonitis'
+WHERE concept_name ~* 'influenza'
 --Masks to exclude
-  AND concept_name !~* 'without pneumonia|Tuberculous pneumonia,|bronchitis|prescribed|Sepsis due to'
+  AND concept_name !~* 'Haemophilus'
 
   AND c.domain_id IN ('Condition', 'Observation')
 
-  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component')
+  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Hierarchy', 'LOINC Component')
   AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary')
 
 
@@ -197,11 +197,8 @@ JOIN devv5.concept c2
 
 WHERE ca1.ancestor_concept_id IN (
 --Standard concept_ids of interest
-255848,--Condition	Pneumonia	SNOMED
-4001167,--Condition		Acute ulcerative gastroenteritis complicating pneumonia	SNOMED
-252552,--Condition	Ornithosis with pneumonia	SNOMED
-4050869,--Condition	Atypical pneumonia  SNOMED
-45770911--Condition	Acute pneumonia due to coccidioidomycosis   SNOMED
+
+
 
     )
 --AND ca1.descendant_concept_id != c2.concept_id
@@ -215,7 +212,6 @@ AND (c.concept_id = c1.concept_id OR c.concept_id = c2.concept_id)
 )
 
 ;
-
 
 --Review of searching results
 -- Retrieve the list of Standard concepts of interest
@@ -231,6 +227,15 @@ FROM devv5.concept c
 WHERE c.concept_id IN (
 
 --concept_ids from exclusion list
+4337047, --Procedure	Insertion of tracheostomy tube	SNOMED
+4331311, --Procedure	Changing tracheostomy tube	SNOMED
+2108642, --Procedure	Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection	CPT4
+2108641, --Procedure	Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection	CPT4
+4337046, --Procedure	Minitrach insertion	SNOMED
+2106470, --Procedure	Tracheotomy tube change prior to establishment of fistula tract	CPT4
+4149878, --Procedure	Transglottic catheterization of trachea	SNOMED
+2106642, --Procedure	Transtracheal (percutaneous) introduction of needle wire dilator/stent or indwelling tube for oxygen therapy	CPT4
+4337048 --Procedure	Insertion of tracheal T-tube	SNOMED
 
     )
 )
@@ -273,9 +278,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
 
 --Standard concept_ids of interest
-4001167,--Condition		Acute ulcerative gastroenteritis complicating pneumonia	SNOMED
-252552,--Condition	Ornithosis with pneumonia	SNOMED
-45770911--Condition	Acute pneumonia due to coccidioidomycosis   SNOMED
+
 
     )
 AND ca1.descendant_concept_id != c2.concept_id
@@ -335,11 +338,16 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
 
 --Standard concept_ids of interest
-4001167,--Condition		Acute ulcerative gastroenteritis complicating pneumonia	SNOMED
-252552,--Condition	Ornithosis with pneumonia	SNOMED
-45770911--Condition	Acute pneumonia due to coccidioidomycosis   SNOMED
 
-
+4337047, --Procedure	Insertion of tracheostomy tube	SNOMED
+4331311, --Procedure	Changing tracheostomy tube	SNOMED
+2108642, --Procedure	Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection	CPT4
+2108641, --Procedure	Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection	CPT4
+4337046, --Procedure	Minitrach insertion	SNOMED
+2106470, --Procedure	Tracheotomy tube change prior to establishment of fistula tract	CPT4
+4149878, --Procedure	Transglottic catheterization of trachea	SNOMED
+2106642, --Procedure	Transtracheal (percutaneous) introduction of needle wire dilator/stent or indwelling tube for oxygen therapy	CPT4
+4337048 --Procedure	Insertion of tracheal T-tube	SNOMED
 
     )
 AND ca1.descendant_concept_id != c2.concept_id
