@@ -3,6 +3,11 @@ DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'phenotype_name'
 ;
 
+--reset Standard concepts Included list
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'phenotype_name'
+    AND criteria = 'inclusion'
+;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
@@ -155,6 +160,11 @@ ORDER BY source_code,
          vocabulary_id
 ;
 
+--reset uncovered concept list
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'phenotype_name'
+    AND criteria = 'not_mapped'
+;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
@@ -195,6 +205,12 @@ WHERE c.concept_name ~* 'influenza'
             )
             AND (c.concept_id = c1.concept_id OR c.concept_id = c2.concept_id)
 )
+;
+
+--reset Standard concepts Excluded list
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'phenotype_name'
+    AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
