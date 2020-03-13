@@ -1,4 +1,4 @@
-### [Phenotype name](link to sql file with phenotype detection):
+### [Phenotype name](link to sql file with phenotype):
 
 ## Included to concept set:
 |domain_id|concept_id|concept_name|concept_code|voc_id
