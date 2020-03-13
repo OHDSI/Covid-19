@@ -25,7 +25,6 @@ Observation|4039924|Nasal ventilation therapy|SNOMED|Read|Z6M4.00
 Procedure|4139542|Bag valve mask ventilation|SNOMED|OPCS4|E85.4
 Procedure|4139542|Bag valve mask ventilation|SNOMED|Read|7458300
 Procedure|4072514|Lung inflation by intermittent compression of reservoir bag|SNOMED|Read|Z6H1.00; Z6H1.11
-Procedure|4332501|Management of noninvasive mechanical ventilation|SNOMED|SUS|0301050015; 0301050066
 Procedure|4039925|Manual hyperinflation|SNOMED|Read|Z6H2.00
 Procedure|4177224|Noninvasive ventilation|SNOMED|ICD9Proc|93.90
 Procedure|4177224|Noninvasive ventilation|SNOMED|ICD9ProcCN|93.90; 93.9000; 93.9001
@@ -42,8 +41,6 @@ Procedure|4006318|Respiratory assist, manual|SNOMED|Read|Z6H..00; Z6H..11; Z6H..
 
 |source_code_description|source_code|source_voc_id|concept_id|concept_name|concept_code|concept_class_id|domain_id|voc_id
 |---|---|---|---|---|---|---|---|---|
-ACCOMPANIMENT AND DOMESTIC ASSESSMENT OF PATIENT SUBMITTED TO NON-INVASIVE MECHANICAL VENTILATION - PATIENT / MONTH|0301050015|SUS|4332501|Management of noninvasive mechanical ventilation|430191008|Procedure|Procedure|SNOMED
-INSTALLATION / MAINTENANCE OF NON-INVASIVE MECHANICAL VENTILATION DOMICILE|0301050066|SUS|4332501|Management of noninvasive mechanical ventilation|430191008|Procedure|Procedure|SNOMED
 Non-invasive ventilation|7458100|Read|4177224|Noninvasive ventilation|428311008|Procedure|Procedure|SNOMED
 Bag valve mask ventilation|7458300|Read|4139542|Bag valve mask ventilation|425447009|Procedure|Procedure|SNOMED
 Non-invasive mechanical ventilation|93.90|ICD9Proc|4177224|Noninvasive ventilation|428311008|Procedure|Procedure|SNOMED
