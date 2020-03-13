@@ -51,28 +51,14 @@ Extracorporeal membrane oxygenation|X58.1|OPCS4|4052536|Extracorporeal membrane 
 ## Not included / to be excluded from concept set:
 |domain_id|concept_id|concept_name|concept_code|voc_id|comment
 |---|---|---|---|---|---|
+Procedure|46257441|Arterial exposure with creation of graft conduit (eg, chimney graft) to facilitate arterial perfusion for ECMO/ECLS (List separately in addition to code for primary procedure)|33987|CPT4
+Procedure|2108293|Insertion of cannula(s) for prolonged extracorporeal circulation for cardiopulmonary insufficiency (ECMO) (separate procedure)|36822|CPT4
+Procedure|46257400|Insertion of left heart vent by thoracic incision (eg, sternotomy, thoracotomy) for ECMO/ECLS|33988|CPT4
+Procedure|46257469|Removal of left heart vent by thoracic incision (eg, sternotomy, thoracotomy) for ECMO/ECLS|33989|CPT4
+Procedure|4086916|Blood sampling from ECMO circuit|243781005|SNOMED
 
 
-<details><summary><strong>Click to expand - Mapping list</strong></summary>
-<p>
-
-|domain_id|concept_id|concept_name|voc_id|source_voc_id|source_code
-|---|---|---|---|---|---|
-
-
-</p>
-</details>
-
-<details><summary><strong>Click to expand - Detailed Mapping list</strong></summary>
-<p>
-
-|source_code_description|source_code|source_voc_id|concept_id|concept_name|concept_code|concept_class_id|domain_id|voc_id
-|---|---|---|---|---|---|---|---|---|
-
-
-</p>
-</details>
-
+Mapping list is empty
 
 
 ***
