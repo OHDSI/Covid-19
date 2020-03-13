@@ -79,15 +79,16 @@ Unspecified intubation of trachea|X56.9|OPCS4|4013354|Insertion of endotracheal 
 ## Not included / to be excluded from concept set:
 |domain_id|concept_id|concept_name|concept_code|voc_id
 |---|---|---|---|---|
-2108641,	--	41140	Procedure	Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection	CPT4
-2108642,	--	41145	Procedure	Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection	CPT4
-2106470,	--	31502	Procedure	Tracheotomy tube change prior to establishment of fistula tract	CPT4
-2106642,	--	31730	Procedure	Transtracheal (percutaneous) introduction of needle wire dilator/stent or indwelling tube for oxygen therapy	CPT4
-4331311,	--	2267008	Procedure	Changing tracheostomy tube	SNOMED
-4337048,	--	232686001	Procedure	Insertion of tracheal T-tube	SNOMED
-4337047,	--	232685002	Procedure	Insertion of tracheostomy tube	SNOMED
-4337046,	--	232684003	Procedure	Minitrach insertion	SNOMED
-4149878 	--	30963003	Procedure	Transglottic catheterization of trachea	SNOMED
+Procedure|2108641|Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection|41140|CPT4
+Procedure|2108642|Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection|41145|CPT4
+Procedure|2106470|Tracheotomy tube change prior to establishment of fistula tract|31502|CPT4
+Procedure|2106642|Transtracheal (percutaneous) introduction of needle wire dilator/stent or indwelling tube for oxygen therapy|31730|CPT4
+Procedure|4331311|Changing tracheostomy tube|2267008|SNOMED
+Procedure|4337048|Insertion of tracheal T-tube|232686001|SNOMED
+Procedure|4337047|Insertion of tracheostomy tube|232685002|SNOMED
+Procedure|4337046|Minitrach insertion|232684003|SNOMED
+Procedure|4149878|Transglottic catheterization of trachea|30963003|SNOMED
+
 
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
