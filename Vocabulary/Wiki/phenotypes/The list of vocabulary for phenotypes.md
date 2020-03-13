@@ -12,7 +12,8 @@
 ### Treatment
 
 #### [Intubation](https://github.com/OHDSI/Covid-19/wiki/Intubation)
-#### [Non-invasive ventilation](https://github.com/OHDSI/Covid-19/wiki/Intubation)
+#### [Non-invasive ventilation](https://github.com/OHDSI/Covid-19/wiki/Non-invasive-ventilation)
+#### [Extracorporeal membrane oxygenation (ECMO)](https://github.com/OHDSI/Covid-19/wiki/Extracorporeal-membrane-oxygenation-(ECMO))
 
 ***
 ***
@@ -28,7 +29,11 @@
 
 ### Covid-19 testing
 
+### Intubation
 
+|Domain|Concept_ID|Concept_Name|Vocabulary_ID|Source_vocabulary|Source_code_value
+|---|---|---|---|---|---|
+|Procedure|   |   |   |EDI|M5859;M0859|
 
 
 ### Oxygen therapy

@@ -171,19 +171,23 @@ INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'phenotype_name', 'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
---Mask to detect uncovered concepts
-WHERE c.concept_name ~* 'influenza'
---Masks to exclude
+
+WHERE (c.concept_code ilike '' AND c.vocabulary_id IN ('EDI', 'KCD7'))
+    OR
+    --Mask to detect uncovered concepts
+    (c.concept_name ~* 'influenza'
+    --Masks to exclude
     AND c.concept_name !~* 'Haemophilus'
 
     AND c.domain_id IN ('Condition', 'Observation' /*,'Measurement'*/)
 
-    AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component')
+    AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System')
 
     AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon')
     AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL)
-    AND c.concept_class_id !~* 'Hierarchy|chapter'
+    AND NOT (c.concept_class_id ~* 'Hierarchy|chapter' AND c.vocabulary_id NOT IN ('EDI', 'KCD7'))
     AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD'))
+
 
     AND NOT EXISTS (
         SELECT 1
@@ -204,6 +208,7 @@ WHERE c.concept_name ~* 'influenza'
                 AND criteria IS NOT NULL
             )
             AND (c.concept_id = c1.concept_id OR c.concept_id = c2.concept_id)
+)
 )
 ;
 
