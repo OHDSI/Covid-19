@@ -7,11 +7,12 @@
 #### [Influenza and Influenza (complicated)](https://github.com/OHDSI/Covid-19/wiki/Influenza-and-Influenza-(complicated))
 #### [Acute respiratory distress syndrome (ARDS)](https://github.com/OHDSI/Covid-19/wiki/Acute-respiratory-distress-syndrome-(ARDS))
 #### [Pneumonia](https://github.com/OHDSI/Covid-19/wiki/Pneumonia)
+#### [Novel vocabulary for COVID-19](https://github.com/OHDSI/Covid-19/wiki/Novel-vocabulary-for-COVID-19)
 
 ### Treatment
 
 #### [Intubation](https://github.com/OHDSI/Covid-19/wiki/Intubation)
-
+#### [Non-invasive ventilation](https://github.com/OHDSI/Covid-19/wiki/Intubation)
 
 ***
 ***

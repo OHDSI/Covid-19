@@ -1,4 +1,4 @@
-### [Intubation](https://github.com/OHDSI/Covid-19/blob/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Intubation.sql):
+## [Intubation](https://github.com/OHDSI/Covid-19/blob/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Intubation.sql):
 
 ## Included to concept set:
 |domain_id|concept_id|concept_name|concept_code|voc_id

@@ -1,4 +1,4 @@
-### [Pneumonia](https://github.com/OHDSI/Covid-19/tree/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Pneumonia.sql):
+## [Pneumonia](https://github.com/OHDSI/Covid-19/tree/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Pneumonia.sql):
 
 ## Included to concept set:
 |domain_id|concept_id|concept_name|concept_code|voc_id

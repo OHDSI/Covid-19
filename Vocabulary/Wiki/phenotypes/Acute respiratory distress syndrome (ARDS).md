@@ -1,4 +1,4 @@
-### [Acute respiratory distress syndrome (ARDS)](https://github.com/OHDSI/Covid-19/blob/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Acute%20respiratory%20distress%20syndrome%20(ARDS).sql):
+## [Acute respiratory distress syndrome (ARDS)](https://github.com/OHDSI/Covid-19/blob/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Acute%20respiratory%20distress%20syndrome%20(ARDS).sql):
 
 ## Included to concept set:
 |domain_id|concept_id|concept_name|concept_code|voc_id
