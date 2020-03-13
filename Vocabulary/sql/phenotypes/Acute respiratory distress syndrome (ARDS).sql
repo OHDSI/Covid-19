@@ -203,7 +203,7 @@ SELECT 'Acute respiratory distress syndrome (ARDS)', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4158346,	--	271825005	Condition	Respiratory distress	SNOMED
+4191650,	--	373895009	Condition	Acute respiratory distress	SNOMED
 258866 	--	46775006	Condition	Respiratory distress syndrome in the newborn	SNOMED
     )
 ;
