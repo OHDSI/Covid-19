@@ -1,13 +1,13 @@
 --reset phenotype concept list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Pneumonia'
 ;
 
 
 --List of Standard concepts Included
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Pneumonia', 'inclusion', c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
 4050869,	--	233606009	Condition	Atypical pneumonia	SNOMED
@@ -17,7 +17,7 @@ WHERE c.concept_id IN (
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Pneumonia'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -25,7 +25,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Pneumonia'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
@@ -42,16 +42,16 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Pneumonia'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
@@ -93,16 +93,16 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Pneumonia'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
@@ -158,10 +158,10 @@ ORDER BY source_code,
 
 
 --searching for uncovered concepts in Standard and Source_vocabularies
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Pneumonia', 'not_mapped',
        c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 --Mask to detect uncovered concepts
 WHERE concept_name ~* 'pneumonia'
 --Masks to exclude
@@ -178,17 +178,17 @@ WHERE concept_name ~* 'pneumonia'
 
     AND NOT EXISTS (
         SELECT 1
-        FROM devv5.concept_ancestor ca1
-        JOIN devv5.concept c1
+        FROM @vocabulary_database_schema.concept_ancestor ca1
+        JOIN @vocabulary_database_schema.concept c1
             ON ca1.descendant_concept_id = c1.concept_id
-        JOIN devv5.concept_relationship cr1
+        JOIN @vocabulary_database_schema.concept_relationship cr1
             ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-        JOIN devv5.concept c2
+        JOIN @vocabulary_database_schema.concept c2
             ON cr1.concept_id_1 = c2.concept_id
 
         WHERE ca1.ancestor_concept_id IN (
             SELECT concept_id
-            FROM dev_covid19.concept_phenotypes
+            FROM @target_database_schema.concept_phenotypes
             WHERE phenotype = 'Pneumonia'
                 AND criteria IN ('inclusion', 'exclusion')
                 AND concept_id IS NOT NULL
@@ -199,9 +199,9 @@ WHERE concept_name ~* 'pneumonia'
 ;
 
 --List of Standard concepts Excluded
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Pneumonia', 'exclusion', c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
 45770911,	--	184431000119108	Condition	Acute pneumonia due to coccidioidomycosis	SNOMED
@@ -214,7 +214,7 @@ WHERE c.concept_id IN (
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Pneumonia'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -222,7 +222,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Pneumonia'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
@@ -239,16 +239,16 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Pneumonia'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
@@ -289,16 +289,16 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Pneumonia'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
