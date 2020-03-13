@@ -180,7 +180,7 @@ WHERE c.concept_name ~* 'influenza'
 
     AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component')
 
-    AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'OXMIS', 'DRG', 'SUS')
+    AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS')
     AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL)
     AND c.concept_class_id !~* 'Hierarchy|chapter'
     AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD'))

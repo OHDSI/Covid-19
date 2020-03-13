@@ -12,3 +12,9 @@ JOIN @target_database_schema.concept_phenotypes cp2
 
 WHERE cp1.criteria = 'exclusion'
 ;
+
+--Unexpected vocabularies
+SELECT *
+FROM @target_database_schema.concept_phenotypes cp
+WHERE cp.vocabulary_id IN ('SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS')
+;
