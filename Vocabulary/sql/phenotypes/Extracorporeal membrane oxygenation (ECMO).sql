@@ -15,6 +15,13 @@ SELECT 'Extracorporeal membrane oxygenation (ECMO)', 'inclusion', c.*
 FROM devv5.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+46257585,	--	1022227	Procedure	Extracorporeal membrane oxygenation (ECMO)/extracorporeal life support (ECLS) provided by physician	CPT4
+2788034,	--	5A15223	Procedure	Extracorporeal Membrane Oxygenation, Continuous	ICD10PCS
+1531632,	--	5A1522F	Procedure	Extracorporeal Oxygenation, Membrane, Central	ICD10PCS
+1531631,	--	5A1522G	Procedure	Extracorporeal Oxygenation, Membrane, Peripheral Veno-arterial	ICD10PCS
+1531630,	--	5A1522H	Procedure	Extracorporeal Oxygenation, Membrane, Peripheral Veno-venous	ICD10PCS
+4338595,	--	232969009	Procedure	Cardiac support using extracorporeal membrane oxygenation circuitry	SNOMED
+4052536	--	233573008	Procedure	Extracorporeal membrane oxygenation	SNOMED
 
     )
 ;
@@ -64,7 +71,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -115,7 +122,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 
@@ -172,13 +179,13 @@ SELECT 'Extracorporeal membrane oxygenation (ECMO)', 'not_mapped',
        c.*
 FROM devv5.concept c
 --Mask to detect uncovered concepts
-WHERE c.concept_name ~* 'influenza'
+WHERE c.concept_name ~* 'Extracorporeal membrane oxygenation|ECMO|Veno(-)?arter|veno(-)?ven'
 --Masks to exclude
-    AND c.concept_name !~* 'Haemophilus'
+    AND c.concept_name !~* 'Hemodialysis|Hemofiltraion|haemofiltration|haemodiafiltration'
 
-    AND c.domain_id IN ('Condition', 'Observation' /*,'Measurement'*/)
+    AND c.domain_id IN ('Procedure', 'Observation' /*,'Measurement'*/)
 
-    AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component')
+    AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'Qualifier Value', 'Morph Abnormality')
 
     AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'OXMIS', 'DRG')
     AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL)
@@ -219,6 +226,11 @@ SELECT 'Extracorporeal membrane oxygenation (ECMO)', 'exclusion', c.*
 FROM devv5.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+46257441,	--	33987	Procedure	Arterial exposure with creation of graft conduit (eg, chimney graft) to facilitate arterial perfusion for ECMO/ECLS (List separately in addition to code for primary procedure)	CPT4
+2108293,	--	36822	Procedure	Insertion of cannula(s) for prolonged extracorporeal circulation for cardiopulmonary insufficiency (ECMO) (separate procedure)	CPT4
+46257400,	--	33988	Procedure	Insertion of left heart vent by thoracic incision (eg, sternotomy, thoracotomy) for ECMO/ECLS	CPT4
+46257469,	--	33989	Procedure	Removal of left heart vent by thoracic incision (eg, sternotomy, thoracotomy) for ECMO/ECLS	CPT4
+4086916	--	243781005	Procedure	Blood sampling from ECMO circuit	SNOMED
 
     )
 ;
@@ -268,7 +280,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -318,7 +330,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 
