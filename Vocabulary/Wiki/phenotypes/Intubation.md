@@ -1,10 +1,10 @@
-### [Intubation](https://github.com/OHDSI/Covid-19/blob/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Intubation.sql)
+### [Intubation](https://github.com/OHDSI/Covid-19/blob/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Intubation.sql):
 
-|domain_id|concept_id|concept_name|voc_id|source_voc_id|source_code
-|---|---|---|---|---|---|
-|Procedure|   |   |   |EDI|M5859;M0859|
-Procedure|40487536|Intubation of respiratory tract|SNOMED
-Procedure|765576|Orotracheal intubation using bougie device|SNOMED
+## Included to concept set:
+|domain_id|concept_id|concept_name|concept_code|voc_id
+|---|---|---|---|---|
+Procedure|40487536|Intubation of respiratory tract|447996002|SNOMED
+Procedure|765576|Orotracheal intubation using bougie device|450601000124103|SNOMED
 
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
@@ -18,11 +18,9 @@ Procedure|4331311|Changing tracheostomy tube|SNOMED|ICD9ProcCN|97.23; 97.2300; 9
 Procedure|4331311|Changing tracheostomy tube|SNOMED|OPCS4|E42.6
 Procedure|4331311|Changing tracheostomy tube|SNOMED|Read|7443500; 7443511
 Procedure|4082243|Emergency laryngeal intubation|SNOMED|Read|8712.00
-Procedure|4058031|Endotracheal intubation, emergency procedure|SNOMED|CIEL|161935
 Procedure|4013354|Insertion of endotracheal tube|SNOMED|ICD9Proc|96.04
 Procedure|4013354|Insertion of endotracheal tube|SNOMED|ICD9ProcCN|96.04; 96.0400
 Procedure|4013354|Insertion of endotracheal tube|SNOMED|OPCS4|X56; X56.2; X56.9
-Procedure|4013354|Insertion of endotracheal tube|SNOMED|OXMIS|L9050I
 Procedure|4013354|Insertion of endotracheal tube|SNOMED|Read|7L1R.00; 7L1R100; 7L1Ry00; 7L1Rz00; 871..00; 8711.00; 871Z.00
 Procedure|4337047|Insertion of tracheostomy tube|SNOMED|Read|7443211
 Procedure|4056812|Laryngeal intubation for inhalation|SNOMED|Read|8763.00
@@ -33,7 +31,6 @@ Procedure|4303945|Tracheal intubation through a laryngeal mask airway|SNOMED|OPC
 Procedure|4303945|Tracheal intubation through a laryngeal mask airway|SNOMED|Read|7L1R200
 
 
-
 </p>
 </details>
 
@@ -42,7 +39,6 @@ Procedure|4303945|Tracheal intubation through a laryngeal mask airway|SNOMED|Rea
 
 |source_code_description|source_code|source_voc_id|concept_id|concept_name|concept_code|concept_class_id|domain_id|voc_id
 |---|---|---|---|---|---|---|---|---|
-Unplanned intubation for respiratory/cardiac failure|161935|CIEL|4058031|Endotracheal intubation, emergency procedure|16883004|Procedure|Procedure|SNOMED
 Placement of tracheostomy tube|7443211|Read|4337047|Insertion of tracheostomy tube|232685002|Procedure|Procedure|SNOMED
 Replacement of tracheostomy tube|7443500|Read|4331311|Changing tracheostomy tube|2267008|Procedure|Procedure|SNOMED
 Change of tracheostomy tube|7443511|Read|4331311|Changing tracheostomy tube|2267008|Procedure|Procedure|SNOMED
@@ -70,7 +66,6 @@ Replacement of tracheostomy tube|97.23|ICD9ProcCN|4331311|Changing tracheostomy 
 Replacement of tracheostomy tube|97.2300|ICD9ProcCN|4331311|Changing tracheostomy tube|2267008|Procedure|Procedure|SNOMED
 Tracheal tube replacement (machine translation)|97.2301|ICD9ProcCN|4331311|Changing tracheostomy tube|2267008|Procedure|Procedure|SNOMED
 Replacement of tracheostomy tube|E42.6|OPCS4|4331311|Changing tracheostomy tube|2267008|Procedure|Procedure|SNOMED
-INTUBATION (ENDOTRACHEAL)|L9050I|OXMIS|4013354|Insertion of endotracheal tube|112798008|Procedure|Procedure|SNOMED
 Intubation of trachea|X56|OPCS4|4013354|Insertion of endotracheal tube|112798008|Procedure|Procedure|SNOMED
 Nasotracheal intubation|X56.1|OPCS4|4337616|Nasotracheal intubation|232679009|Procedure|Procedure|SNOMED
 Endotracheal intubation|X56.2|OPCS4|4013354|Insertion of endotracheal tube|112798008|Procedure|Procedure|SNOMED
@@ -82,18 +77,18 @@ Unspecified intubation of trachea|X56.9|OPCS4|4013354|Insertion of endotracheal 
 
 
 ## Not included / to be excluded from concept set:
-
-|domain_id|concept_id|concept_name|voc_id|comment
+|domain_id|concept_id|concept_name|concept_code|voc_id
 |---|---|---|---|---|
-Procedure|2108641|Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection|CPT4
-Procedure|2108642|Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection|CPT4
-Procedure|2106470|Tracheotomy tube change prior to establishment of fistula tract|CPT4
-Procedure|2106642|Transtracheal (percutaneous) introduction of needle wire dilator/stent or indwelling tube for oxygen therapy|CPT4
-Procedure|4331311|Changing tracheostomy tube|SNOMED
-Procedure|4337048|Insertion of tracheal T-tube|SNOMED
-Procedure|4337047|Insertion of tracheostomy tube|SNOMED
-Procedure|4337046|Minitrach insertion|SNOMED
-Procedure|4149878|Transglottic catheterization of trachea|SNOMED
+2108641,	--	41140	Procedure	Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection	CPT4
+2108642,	--	41145	Procedure	Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection	CPT4
+2106470,	--	31502	Procedure	Tracheotomy tube change prior to establishment of fistula tract	CPT4
+2106642,	--	31730	Procedure	Transtracheal (percutaneous) introduction of needle wire dilator/stent or indwelling tube for oxygen therapy	CPT4
+4331311,	--	2267008	Procedure	Changing tracheostomy tube	SNOMED
+4337048,	--	232686001	Procedure	Insertion of tracheal T-tube	SNOMED
+4337047,	--	232685002	Procedure	Insertion of tracheostomy tube	SNOMED
+4337046,	--	232684003	Procedure	Minitrach insertion	SNOMED
+4149878 	--	30963003	Procedure	Transglottic catheterization of trachea	SNOMED
+
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
 <p>
@@ -106,8 +101,6 @@ Procedure|4331311|Changing tracheostomy tube|SNOMED|OPCS4|E42.6
 Procedure|4331311|Changing tracheostomy tube|SNOMED|Read|7443500; 7443511
 Procedure|4337047|Insertion of tracheostomy tube|SNOMED|Read|7443211
 Procedure|4337046|Minitrach insertion|SNOMED|Read|7443A00
-
-
 
 
 </p>
@@ -131,3 +124,7 @@ Replacement of tracheostomy tube|E42.6|OPCS4|4331311|Changing tracheostomy tube|
 
 </p>
 </details>
+
+
+
+***
