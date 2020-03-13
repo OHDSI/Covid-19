@@ -1,6 +1,8 @@
 ### [Phenotype name](link to sql file with phenotype detection):
-|domain_id|concept_id|concept_name|voc_id
-|---|---|---|---|
+
+## Included to concept set:
+|domain_id|concept_id|concept_name|concept_code|voc_id
+|---|---|---|---|---|
 
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
@@ -24,8 +26,7 @@
 
 
 ## Not included / to be excluded from concept set:
-
-|domain_id|concept_id|concept_name|voc_id|comment
+|domain_id|concept_id|concept_name|concept_code|voc_id
 |---|---|---|---|---|
 
 
