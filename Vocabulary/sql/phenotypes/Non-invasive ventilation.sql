@@ -1,15 +1,27 @@
 --reset phenotype concept list
 DELETE FROM concept_phenotypes
-WHERE phenotype = 'phenotype_name'
+WHERE phenotype = 'Non-invasive ventilation'
 ;
 
 
 --The list of Standard concepts Included
 INSERT INTO concept_phenotypes
-SELECT 'phenotype_name', 'inclusion', c.*
+SELECT 'Non-invasive ventilation', 'inclusion', c.*
 FROM devv5.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+4039924,	--	229312009	Observation	Nasal ventilation therapy	SNOMED
+4244053,	--	38282001	Procedure	Bennett respirator therapy	SNOMED
+36676550,	--	773454006	Procedure	Bird respiratory therapy	SNOMED
+4085542,	--	281508008	Procedure	Cuirasse ventilation	SNOMED
+4080896,	--	276737004	Procedure	Domiciliary ventilation	SNOMED
+4254209,	--	408852001	Procedure	Intermittent positive pressure ventilation via bag and mask	SNOMED
+4332501,	--	430191008	Procedure	Management of noninvasive mechanical ventilation	SNOMED
+37206832,	--	787180006	Procedure	Mechanical insufflation exsufflation	SNOMED
+4177224,	--	428311008	Procedure	Noninvasive ventilation	SNOMED
+4006318,	--	11140008	Procedure	Respiratory assist, manual	SNOMED
+4202819 	--	52729008	Procedure	Treatment by iron lung	SNOMED
+
 
     )
 ;
@@ -17,19 +29,22 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM concept_phenotypes
-WHERE phenotype = 'phenotype_name'
+WHERE phenotype = 'Non-invasive ventilation'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
 
+
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM concept_phenotypes
-WHERE phenotype = 'phenotype_name'
+WHERE phenotype = 'Non-invasive ventilation'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
+
+--TODO:Done till this moment
 
 --Retrieve concepts from source vocabularies mapped to Standard concepts Included or any of its child
 --Mapping list
@@ -51,7 +66,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM concept_phenotypes
-    WHERE phenotype = 'phenotype_name'
+    WHERE phenotype = 'Non-invasive ventilation'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -102,7 +117,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM concept_phenotypes
-    WHERE phenotype = 'phenotype_name'
+    WHERE phenotype = 'Non-invasive ventilation'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -155,10 +170,10 @@ ORDER BY source_code,
          vocabulary_id
 ;
 
-
+--MASKS FROM OLD FILE: Noninvasive ventilation|respiratory support|noninvasive breathing|breath(ing)? assist
 -- searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO concept_phenotypes
-SELECT 'phenotype_name', 'not_mapped',
+SELECT 'Non-invasive ventilation', 'not_mapped',
        c.*
 FROM devv5.concept c
 --Mask to detect uncovered concepts
@@ -188,7 +203,7 @@ WHERE c.concept_name ~* 'influenza'
         WHERE ca1.ancestor_concept_id IN (
             SELECT concept_id
             FROM concept_phenotypes
-            WHERE phenotype = 'phenotype_name'
+            WHERE phenotype = 'Non-invasive ventilation'
                 AND criteria IN ('inclusion', 'exclusion')
                 AND concept_id IS NOT NULL
                 AND criteria IS NOT NULL
@@ -199,7 +214,7 @@ WHERE c.concept_name ~* 'influenza'
 
 --The list of Standard concepts Excluded
 INSERT INTO concept_phenotypes
-SELECT 'phenotype_name', 'exclusion', c.*
+SELECT 'Non-invasive ventilation', 'exclusion', c.*
 FROM devv5.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
@@ -208,19 +223,19 @@ WHERE c.concept_id IN (
 ;
 
 --List of Standard concepts Excluded for comment generation
-SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
+SELECT concept_id, null, domain_id, concept_name, concept_code, vocabulary_id
 FROM concept_phenotypes
-WHERE phenotype = 'phenotype_name'
+WHERE phenotype = 'Non-invasive ventilation'
     AND criteria = 'exclusion'
+GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
 
 --Markdown-friendly list of Standard concepts Excluded
-SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
+SELECT DISTINCT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM concept_phenotypes
-WHERE phenotype = 'phenotype_name'
+WHERE phenotype = 'Non-invasive ventilation'
     AND criteria = 'exclusion'
-GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
 
@@ -244,7 +259,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM concept_phenotypes
-    WHERE phenotype = 'phenotype_name'
+    WHERE phenotype = 'Non-invasive ventilation'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -294,7 +309,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM concept_phenotypes
-    WHERE phenotype = 'phenotype_name'
+    WHERE phenotype = 'Non-invasive ventilation'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
