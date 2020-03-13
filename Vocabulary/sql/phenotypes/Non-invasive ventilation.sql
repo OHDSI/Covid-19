@@ -71,7 +71,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -122,7 +122,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 
@@ -265,7 +265,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -315,7 +315,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 

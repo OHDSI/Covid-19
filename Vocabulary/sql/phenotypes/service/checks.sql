@@ -27,3 +27,10 @@ SELECT *
 FROM @target_database_schema.concept_phenotypes cp
 WHERE cp.vocabulary_id IN ('SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS')
 ;
+
+--Delete Unexpected vocabularies from concept_phenotypes
+DELETE
+FROM @target_database_schema.concept_phenotypes cp
+WHERE cp.vocabulary_id IN ('SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS')
+    AND cp.criteria = 'not_mapped'
+;
