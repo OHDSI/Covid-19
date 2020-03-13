@@ -1,55 +1,43 @@
-### [Influenza](https://github.com/OHDSI/Covid-19/blob/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Influenza.sql):
-|domain_id|concept_id|concept_name|voc_id
-|---|---|---|---|
-Condition|4266367|Influenza|SNOMED
+## [Influenza](https://github.com/OHDSI/Covid-19/blob/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Influenza.sql):
+
+## Included to concept set:
+|domain_id|concept_id|concept_name|concept_code|voc_id
+|---|---|---|---|---|
+Condition|4266367|Influenza|6142004|SNOMED
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
 <p>
 
 |domain_id|concept_id|concept_name|voc_id|source_voc_id|source_code
 |---|---|---|---|---|---|
-Condition|4266367|Influenza|SNOMED|CIEL|116958; 141826
 Condition|4266367|Influenza|SNOMED|ICD10|J09; J11; J11.1
 Condition|4266367|Influenza|SNOMED|ICD10CM|J09; J10; J11; J11.1
 Condition|4266367|Influenza|SNOMED|ICD10CN|J09; J09.x00; J09.x01; J09.x02; J11; J11.1; J11.100; J11.101; J11.102
 Condition|4266367|Influenza|SNOMED|ICD9CM|487; 487.8; 488
 Condition|4266367|Influenza|SNOMED|KCD7|J09; J11; J11.1
-Condition|4266367|Influenza|SNOMED|OXMIS|470; 470 F
 Condition|4266367|Influenza|SNOMED|Read|H27..00; H271.00; H271z00; H27y.00; H27yz00; H27z.00; Hyu0400; Hyu0500; Hyu0600; Hyu0700
 Condition|36714388|Influenza caused by seasonal influenza virus|SNOMED|ICD10|J10; J10.1; J10.8
 Condition|36714388|Influenza caused by seasonal influenza virus|SNOMED|ICD10CM|J10.1
 Condition|36714388|Influenza caused by seasonal influenza virus|SNOMED|ICD10CN|J10; J10.1; J10.100; J10.101; J10.8; J10.800; J10.801; J10.802
 Condition|36714388|Influenza caused by seasonal influenza virus|SNOMED|KCD7|J10; J10.1; J10.8
-Condition|40483537|Influenza due to Influenza A virus|SNOMED|CIEL|137176
 Condition|40483537|Influenza due to Influenza A virus|SNOMED|ICD10CM|J09.X; J09.X9
 Condition|40483537|Influenza due to Influenza A virus|SNOMED|ICD9CM|488.0; 488.02; 488.09; 488.8; 488.89
-Condition|40484544|Influenza due to Influenza A virus subtype H1N1|SNOMED|CIEL|156817
 Condition|40484544|Influenza due to Influenza A virus subtype H1N1|SNOMED|ICD9CM|488.1; 488.19
 Condition|40484544|Influenza due to Influenza A virus subtype H1N1|SNOMED|Read|H2A..00; H2A..11
-Condition|4080680|Influenza due to Influenza B virus|SNOMED|CIEL|137174
-Condition|4304374|Influenza due to Influenza C virus|SNOMED|CIEL|137173
 Condition|37394477|Influenza due to pandemic influenza virus|SNOMED|Read|H2E..00
 Condition|37394478|Influenza due to seasonal influenza virus|SNOMED|Read|H2F..00; H2Fy.00; H2Fz.00
 Condition|37394476|Influenza due to zoonotic influenza virus|SNOMED|Read|H2D..00
-Condition|4183609|Influenzal acute upper respiratory infection|SNOMED|CIEL|137165
 Condition|4183609|Influenzal acute upper respiratory infection|SNOMED|ICD9CM|487.1; 488.82
-Condition|4186568|Influenzal bronchopneumonia|SNOMED|CIEL|137164
 Condition|4186568|Influenzal bronchopneumonia|SNOMED|Read|H270000
-Condition|4252885|Influenza with encephalopathy|SNOMED|CIEL|137172
 Condition|4252885|Influenza with encephalopathy|SNOMED|ICD10CM|J11.81
 Condition|4252885|Influenza with encephalopathy|SNOMED|Read|H27y000
-Condition|4112664|Influenza with laryngitis|SNOMED|CIEL|137170
-Condition|4112664|Influenza with laryngitis|SNOMED|OXMIS|472 L
 Condition|4112664|Influenza with laryngitis|SNOMED|Read|H271000
-Condition|320752|Influenza with non-respiratory manifestation|SNOMED|CIEL|137169
 Condition|320752|Influenza with non-respiratory manifestation|SNOMED|ICD10|J11.8
 Condition|320752|Influenza with non-respiratory manifestation|SNOMED|ICD10CM|J09.X3; J10.2; J10.8; J10.81; J10.82; J10.83; J10.89; J11.2; J11.8; J11.82; J11.83; J11.89
 Condition|320752|Influenza with non-respiratory manifestation|SNOMED|ICD10CN|J11.8; J11.800
 Condition|320752|Influenza with non-respiratory manifestation|SNOMED|KCD7|J11.8
-Condition|4110512|Influenza with pharyngitis|SNOMED|CIEL|137168
 Condition|4110512|Influenza with pharyngitis|SNOMED|Read|H271100
 Condition|37394479|Influenza with pneumonia due to seasonal influenza virus|SNOMED|Read|H2F0.00
-Condition|256723|Pneumonia and influenza|SNOMED|CIEL|130020; 137167
 Condition|256723|Pneumonia and influenza|SNOMED|ICD10|J10.0; J11.0
 Condition|256723|Pneumonia and influenza|SNOMED|ICD10CM|J09.X1; J10.0; J10.00; J10.01; J10.08; J11.0; J11.00; J11.08
 Condition|256723|Pneumonia and influenza|SNOMED|ICD10CN|J10.0; J10.000; J10.001; J11.0; J11.000
@@ -69,23 +57,6 @@ Condition|46273463|Upper respiratory tract infection due to Influenza|SNOMED|ICD
 
 |source_code_description|source_code|source_voc_id|concept_id|concept_name|concept_code|concept_class_id|domain_id|voc_id
 |---|---|---|---|---|---|---|---|---|
-Influenza|116958|CIEL|4266367|Influenza|6142004|Clinical Finding|Condition|SNOMED
-Pneumonia and Influenza|130020|CIEL|256723|Pneumonia and influenza|195878008|Clinical Finding|Condition|SNOMED
-Influenzal Bronchopneumonia|137164|CIEL|4186568|Influenzal bronchopneumonia|41269000|Clinical Finding|Condition|SNOMED
-Influenzal Acute Upper Respiratory Infection|137165|CIEL|4183609|Influenzal acute upper respiratory infection|43692000|Clinical Finding|Condition|SNOMED
-Influenza with Pneumonia|137167|CIEL|256723|Pneumonia and influenza|195878008|Clinical Finding|Condition|SNOMED
-Influenza with Pharyngitis|137168|CIEL|4110512|Influenza with pharyngitis|195924009|Clinical Finding|Condition|SNOMED
-Influenza with Non-Respiratory Manifestation|137169|CIEL|320752|Influenza with non-respiratory manifestation|61700007|Clinical Finding|Condition|SNOMED
-Influenza with Laryngitis|137170|CIEL|4112664|Influenza with laryngitis|195923003|Clinical Finding|Condition|SNOMED
-Influenza with Encephalopathy|137172|CIEL|4252885|Influenza with encephalopathy|74644004|Clinical Finding|Condition|SNOMED
-Influenza due to Influenza Virus, Type C|137173|CIEL|4304374|Influenza due to Influenza C virus|81524006|Clinical Finding|Condition|SNOMED
-Influenza due to Influenza Virus, Type B|137174|CIEL|4080680|Influenza due to Influenza B virus|24662006|Clinical Finding|Condition|SNOMED
-Influenza due to Influenza Virus, Type A, Human|137176|CIEL|40483537|Influenza due to Influenza A virus|442438000|Clinical Finding|Condition|SNOMED
-Grip|141826|CIEL|4266367|Influenza|6142004|Clinical Finding|Condition|SNOMED
-influenza due to identified novel H1N1 influenza virus|156817|CIEL|40484544|Influenza due to Influenza A virus subtype H1N1|442696006|Clinical Finding|Condition|SNOMED
-INFLUENZA|470|OXMIS|4266367|Influenza|6142004|Clinical Finding|Condition|SNOMED
-FLU|470 F|OXMIS|4266367|Influenza|6142004|Clinical Finding|Condition|SNOMED
-LARYNGITIS WITH INFLUENZA|472 L|OXMIS|4112664|Influenza with laryngitis|195923003|Clinical Finding|Condition|SNOMED
 Influenza|487|ICD9CM|4266367|Influenza|6142004|Clinical Finding|Condition|SNOMED
 Influenza with pneumonia|487.0|ICD9CM|256723|Pneumonia and influenza|195878008|Clinical Finding|Condition|SNOMED
 Influenza with other respiratory manifestations|487.1|ICD9CM|4183609|Influenzal acute upper respiratory infection|43692000|Clinical Finding|Condition|SNOMED
@@ -208,20 +179,17 @@ Influenza due to unidentified influenza virus with other manifestations|J11.89|I
 
 
 ## Not included / to be excluded from concept set:
-
-|domain_id|concept_id|concept_name|voc_id|comment
-|---|---|---|---|---|
-Condition|45770619|At risk of influenza related complication|SNOMED
-Condition|764960|Influenza A virus inconclusive|SNOMED
-Condition|45757528|Influenza A virus present|SNOMED|Supposed to be a lab test
-Condition|4262075|Influenza B virus present|SNOMED|Supposed to be a lab test
-Condition|4319159|Influenza-like illness|SNOMED
-Condition|4153160|Influenza-like symptoms|SNOMED
-Condition|4042202|Post-influenza encephalitis|SNOMED|Influenza is not a causative agent
-Observation|44802950|Possible influenza due to Influenza A virus subtype H1N1|SNOMED
-Observation|44813193|Suspected influenza A virus subtype H1N1 infection|SNOMED
-
-
+|domain_id|concept_id|concept_name|concept_code|voc_id|comment
+|---|---|---|---|---|---|
+Condition|45770619|At risk of influenza related complication|932221000000103|SNOMED
+Condition|764960|Influenza A virus inconclusive|921000124107|SNOMED|Inconclusive diagnosis
+Condition|45757528|Influenza A virus present|181000124108|SNOMED|Lab test
+Condition|4262075|Influenza B virus present|441345003|SNOMED|Lab test
+Condition|4319159|Influenza-like illness|95891005|SNOMED
+Condition|4153160|Influenza-like symptoms|315642008|SNOMED
+Condition|4042202|Post-influenza encephalitis|230188005|SNOMED|Influenza is not a causative agent here
+Observation|44802950|Possible influenza due to Influenza A virus subtype H1N1|506751000000104|SNOMED
+Observation|44813193|Suspected influenza A virus subtype H1N1 infection|505251000000100|SNOMED
 
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
@@ -237,11 +205,9 @@ Condition|4207452|Influenza A virus subtype H3 present|SNOMED|Read|4JU2.00
 Condition|4262073|Influenza A virus subtype H5 present|SNOMED|Read|4JU3.00
 Condition|4262075|Influenza B virus present|SNOMED|Read|4JU5.00
 Condition|4319159|Influenza-like illness|SNOMED|Read|H27z.11; H27z.12
-Condition|4153160|Influenza-like symptoms|SNOMED|CIEL|137162
 Condition|4153160|Influenza-like symptoms|SNOMED|Read|16L..00
 Observation|44802950|Possible influenza due to Influenza A virus subtype H1N1|SNOMED|Read|1W0..00
 Observation|44813193|Suspected influenza A virus subtype H1N1 infection|SNOMED|Read|1J72.00; 1J72.11
-
 
 
 </p>
@@ -252,7 +218,6 @@ Observation|44813193|Suspected influenza A virus subtype H1N1 infection|SNOMED|R
 
 |source_code_description|source_code|source_voc_id|concept_id|concept_name|concept_code|concept_class_id|domain_id|voc_id
 |---|---|---|---|---|---|---|---|---|
-Influenza-Like Symptoms|137162|CIEL|4153160|Influenza-like symptoms|315642008|Clinical Finding|Condition|SNOMED
 At risk of influenza related complication|14Ol.00|Read|45770619|At risk of influenza related complication|932221000000103|Clinical Finding|Condition|SNOMED
 Influenza-like symptoms|16L..00|Read|4153160|Influenza-like symptoms|315642008|Clinical Finding|Condition|SNOMED
 Suspected influenza A virus subtype H1N1 infection|1J72.00|Read|44813193|Suspected influenza A virus subtype H1N1 infection|505251000000100|Context-dependent|Observation|SNOMED
@@ -267,25 +232,27 @@ Influenza B virus detected|4JU5.00|Read|4262075|Influenza B virus present|441345
 Flu like illness|H27z.11|Read|4319159|Influenza-like illness|95891005|Clinical Finding|Condition|SNOMED
 Influenza like illness|H27z.12|Read|4319159|Influenza-like illness|95891005|Clinical Finding|Condition|SNOMED
 
-
-
 </p>
 </details>
 
-
-
 ***
 
+
+
+
 ### [Influenza (complicated)](https://github.com/OHDSI/Covid-19/blob/vocabularies_for_phenotypes/Vocabulary/sql/phenotypes/Influenza%20(complicated).sql):
-|domain_id|concept_id|concept_name|voc_id
-|---|---|---|---|
-Condition|4146943|Encephalitis due to influenza|SNOMED
-Condition|46274061|Encephalopathy due to Influenza A virus|SNOMED
-Condition|42537960|Influenza with CNS disorder|SNOMED
-Condition|4112824|Influenza with gastrointestinal tract involvement|SNOMED
-Condition|4299935|Myocarditis due to influenza virus|SNOMED
-Condition|46269706|Otitis media due to influenza|SNOMED
-Condition|763011|Pneumonia due to Influenza A virus|SNOMED
+
+
+## Included to concept set:
+|domain_id|concept_id|concept_name|concept_code|voc_id
+|---|---|---|---|---|
+Condition|4146943|Encephalitis due to influenza|309789002|SNOMED
+Condition|46274061|Encephalopathy due to Influenza A virus|10677711000119101|SNOMED
+Condition|42537960|Influenza with CNS disorder|738276008|SNOMED
+Condition|4112824|Influenza with gastrointestinal tract involvement|195929004|SNOMED
+Condition|4299935|Myocarditis due to influenza virus|78046005|SNOMED
+Condition|46269706|Otitis media due to influenza|10624951000119108|SNOMED
+Condition|763011|Pneumonia due to Influenza A virus|434921000124108|SNOMED
 
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
@@ -295,12 +262,9 @@ Condition|763011|Pneumonia due to Influenza A virus|SNOMED
 |---|---|---|---|---|---|
 Condition|4108226|Acute myocarditis - influenzal|SNOMED|Read|G520300
 Condition|4146943|Encephalitis due to influenza|SNOMED|Read|F030800
-Condition|4252885|Influenza with encephalopathy|SNOMED|CIEL|137172
 Condition|4252885|Influenza with encephalopathy|SNOMED|ICD10CM|J11.81
 Condition|4252885|Influenza with encephalopathy|SNOMED|Read|H27y000
-Condition|4112824|Influenza with gastrointestinal tract involvement|SNOMED|CIEL|137171
 Condition|4112824|Influenza with gastrointestinal tract involvement|SNOMED|Read|H27y100
-Condition|4299935|Myocarditis due to influenza virus|SNOMED|CIEL|133560
 Condition|36676238|Pneumonia caused by Influenza A virus|SNOMED|ICD9CM|488.01; 488.81
 Condition|46270121|Pneumonia due to H1N1 influenza|SNOMED|ICD9CM|488.11
 
@@ -313,9 +277,6 @@ Condition|46270121|Pneumonia due to H1N1 influenza|SNOMED|ICD9CM|488.11
 
 |source_code_description|source_code|source_voc_id|concept_id|concept_name|concept_code|concept_class_id|domain_id|voc_id
 |---|---|---|---|---|---|---|---|---|
-Myocarditis due to Influenza Virus|133560|CIEL|4299935|Myocarditis due to influenza virus|78046005|Clinical Finding|Condition|SNOMED
-Influenza with Gastrointestinal Tract Involvement|137171|CIEL|4112824|Influenza with gastrointestinal tract involvement|195929004|Clinical Finding|Condition|SNOMED
-Influenza with Encephalopathy|137172|CIEL|4252885|Influenza with encephalopathy|74644004|Clinical Finding|Condition|SNOMED
 Influenza due to identified avian influenza virus with pneumonia|488.01|ICD9CM|36676238|Pneumonia caused by Influenza A virus|772839003|Clinical Finding|Condition|SNOMED
 Influenza due to identified 2009 H1N1 influenza virus with pneumonia|488.11|ICD9CM|46270121|Pneumonia due to H1N1 influenza|142931000119100|Clinical Finding|Condition|SNOMED
 Influenza due to identified novel influenza A virus with pneumonia|488.81|ICD9CM|36676238|Pneumonia caused by Influenza A virus|772839003|Clinical Finding|Condition|SNOMED
@@ -327,3 +288,33 @@ Influenza due to unidentified influenza virus with encephalopathy|J11.81|ICD10CM
 
 </p>
 </details>
+
+
+## Not included / to be excluded from concept set:
+|domain_id|concept_id|concept_name|concept_code|voc_id|comment
+|---|---|---|---|---|---|
+
+
+<details><summary><strong>Click to expand - Mapping list</strong></summary>
+<p>
+
+|domain_id|concept_id|concept_name|voc_id|source_voc_id|source_code
+|---|---|---|---|---|---|
+
+
+</p>
+</details>
+
+<details><summary><strong>Click to expand - Detailed Mapping list</strong></summary>
+<p>
+
+|source_code_description|source_code|source_voc_id|concept_id|concept_name|concept_code|concept_class_id|domain_id|voc_id
+|---|---|---|---|---|---|---|---|---|
+
+
+</p>
+</details>
+
+
+
+***
