@@ -7,12 +7,12 @@ SELECT DISTINCT
                 concept_name,
                 vocabulary_id
 
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 
 WHERE c.concept_id IN (
 --Put concept_ids here
-40487536 --	Procedure	Intubation of respiratory tract	SNOMED
-
+40487536, --	Procedure	Intubation of respiratory tract	SNOMED
+765576 -- Procedure     Orotracheal intubation using bougie device  SNOMED
     )
 )
 
@@ -40,20 +40,21 @@ SELECT DISTINCT c1.domain_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
 
-FROM devv5.concept_ancestor ca1
+FROM @vocabulary_database_schema.concept_ancestor ca1
 
-JOIN devv5.concept c1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
 
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
 
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 
 WHERE ca1.ancestor_concept_id IN (
 --Standard concept_ids of interest
-40487536 --	Procedure	Intubation of respiratory tract	SNOMED
+40487536, --	Procedure	Intubation of respiratory tract	SNOMED
+765576 -- Procedure     Orotracheal intubation using bougie device  SNOMED
     )
 AND ca1.descendant_concept_id != c2.concept_id
 
@@ -98,20 +99,21 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM devv5.concept_ancestor ca1
+FROM @vocabulary_database_schema.concept_ancestor ca1
 
-JOIN devv5.concept c1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
 
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
 
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 
 WHERE ca1.ancestor_concept_id IN (
 --Standard concept_ids of interest
-40487536 --	Procedure	Intubation of respiratory tract	SNOMED
+40487536, --	Procedure	Intubation of respiratory tract	SNOMED
+765576 -- Procedure     Orotracheal intubation using bougie device  SNOMED
 
     )
 AND ca1.descendant_concept_id != c2.concept_id
@@ -168,15 +170,15 @@ ORDER BY source_code,
 
 -- searching for uncovered concepts in Standard and source_vocabularies
 SELECT *
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 --Mask to detect uncovered concepts
-WHERE concept_name ~* 'influenza'
+WHERE concept_name ~* 'Intubation'
 --Masks to exclude
-  AND concept_name !~* 'Haemophilus'
+  AND concept_name !~* 'colon|ileum|duodenal|duct|ureteric|stent|lacrimal|bowel|esophag|duoden|gastrointestinal|rectum|stomach|ileum|jejunum|intestin|Conjunctiva|Gastric|eustachian'
 
-  AND c.domain_id IN ('Condition', 'Observation')
+  AND c.domain_id IN ('Procedure')
 
-  AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component')
+  --AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component')
   AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH')
   AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL)
   AND c.concept_class_id !~* 'Hierarchy|chapter'
@@ -185,21 +187,22 @@ WHERE concept_name ~* 'influenza'
 AND NOT EXISTS (
 SELECT 1
 
-FROM devv5.concept_ancestor ca1
+FROM @vocabulary_database_schema.concept_ancestor ca1
 
-JOIN devv5.concept c1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
 
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
 
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 
 WHERE ca1.ancestor_concept_id IN (
 --Standard concept_ids of interest
 
-
+40487536, --	Procedure	Intubation of respiratory tract	SNOMED
+765576 -- Procedure     Orotracheal intubation using bougie device  SNOMED
 
     )
 --AND ca1.descendant_concept_id != c2.concept_id
@@ -223,7 +226,7 @@ SELECT DISTINCT
                 concept_name,
                 vocabulary_id
 
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 
 WHERE c.concept_id IN (
 
@@ -265,21 +268,29 @@ SELECT DISTINCT c1.domain_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
 
-FROM devv5.concept_ancestor ca1
+FROM @vocabulary_database_schema.concept_ancestor ca1
 
-JOIN devv5.concept c1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
 
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
 
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 
 WHERE ca1.ancestor_concept_id IN (
 
 --Standard concept_ids of interest
-
+4337047, --Procedure	Insertion of tracheostomy tube	SNOMED
+4331311, --Procedure	Changing tracheostomy tube	SNOMED
+2108642, --Procedure	Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection	CPT4
+2108641, --Procedure	Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection	CPT4
+4337046, --Procedure	Minitrach insertion	SNOMED
+2106470, --Procedure	Tracheotomy tube change prior to establishment of fistula tract	CPT4
+4149878, --Procedure	Transglottic catheterization of trachea	SNOMED
+2106642, --Procedure	Transtracheal (percutaneous) introduction of needle wire dilator/stent or indwelling tube for oxygen therapy	CPT4
+4337048 --Procedure	Insertion of tracheal T-tube	SNOMED
 
     )
 AND ca1.descendant_concept_id != c2.concept_id
@@ -325,15 +336,15 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM devv5.concept_ancestor ca1
+FROM @vocabulary_database_schema.concept_ancestor ca1
 
-JOIN devv5.concept c1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
 
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
 
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 
 WHERE ca1.ancestor_concept_id IN (
