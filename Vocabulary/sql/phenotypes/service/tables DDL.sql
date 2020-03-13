@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS concept_phenotypes
+DROP TABLE IF EXISTS @target_database_schema.concept_phenotypes
 ;
 
-CREATE TABLE concept_phenotypes
+CREATE TABLE @target_database_schema.concept_phenotypes
 (
 	phenotype varchar(255),
 	criteria varchar(20),
