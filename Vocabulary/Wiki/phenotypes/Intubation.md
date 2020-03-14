@@ -79,6 +79,7 @@ Unspecified intubation of trachea|X56.9|OPCS4|4013354|Insertion of endotracheal 
 ## Not included / to be excluded from concept set:
 |domain_id|concept_id|concept_name|concept_code|voc_id
 |---|---|---|---|---|
+Observation|4168966|Endotracheal tube present|419991009|SNOMED
 Procedure|2108641|Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection|41140|CPT4
 Procedure|2108642|Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection|41145|CPT4
 Procedure|2106470|Tracheotomy tube change prior to establishment of fistula tract|31502|CPT4

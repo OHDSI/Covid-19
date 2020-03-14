@@ -1,17 +1,30 @@
 --reset phenotype concept list
 DELETE FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'HIV&AIDS'
 ;
 
+--reset Standard concepts Included list
+DELETE FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'HIV&AIDS'
+    AND criteria = 'inclusion'
+;
 
 --List of Standard concepts Included
 INSERT INTO dev_covid19.concept_phenotypes
-SELECT 'Intubation', 'inclusion', c.*
+SELECT 'HIV&AIDS', 'inclusion', c.*
 FROM devv5.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-40487536,	--	447996002	Procedure	Intubation of respiratory tract	SNOMED
-765576 	--	450601000124103	Procedure	Orotracheal intubation using bougie device	SNOMED
+4221489,	--	420721002	Condition	AIDS-associated disorder	SNOMED
+4013106,	--	165816005	Condition	HIV positive	SNOMED
+4083350,	--	281388009	Condition	HIV-related sclerosing cholangitis	SNOMED
+44783356,	--	699433000	Condition	Human immunodeficiency virus carrier	SNOMED
+439727,	--	86406008	Condition	Human immunodeficiency virus infection	SNOMED
+4186235,	--	414604009	Condition	Leukoplakia of tongue associated with HIV disease	SNOMED
+40484012,	--	442537007	Condition	Non-Hodgkin lymphoma associated with Human immunodeficiency virus infection	SNOMED
+4298853,	--	402901009	Condition	Oral hairy leukoplakia associated with HIV disease	SNOMED
+44783623,	--	697904001	Condition	Pulmonary arterial hypertension associated with HIV infection	SNOMED
+4226787 	--	421695000	Observation	Abnormal weight loss associated with AIDS	SNOMED
 
     )
 ;
@@ -19,7 +32,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'HIV&AIDS'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -27,7 +40,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'HIV&AIDS'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -53,7 +66,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM dev_covid19.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'HIV&AIDS'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -104,7 +117,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM dev_covid19.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'HIV&AIDS'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -157,33 +170,34 @@ ORDER BY source_code,
          vocabulary_id
 ;
 
+--reset uncovered concept list
 DELETE FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'HIV&AIDS'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO dev_covid19.concept_phenotypes
-SELECT 'Intubation',
+SELECT 'HIV&AIDS',
        'not_mapped',
        c.*
 FROM devv5.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
-        (c.concept_code ~* '^M5859|^M0859' AND c.vocabulary_id IN ('EDI'/*, 'KCD7'*/)  ) OR
+        --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Intubation'
+        (c.concept_name ~* 'HIV|AIDS|Human immunodeficiency|Acquired immune deficiency|acquired immunodeficiency'
 
         --Masks to exclude
-        AND c.concept_name !~* 'colon|ileum|duodenal|duct|ureteric|stent|lacrimal|bowel|esophag|duoden|gastrointestinal|rectum|stomach|ileum|jejunum|intestin|Conjunctiva|Gastric|eustachian'
+        AND c.concept_name !~* 'prophylaxis|HIV-SSC|not associated with|mobility aid|viral load| test| level'
 
-        AND c.domain_id IN (/*'Condition', 'Observation',*/'Procedure' /*,'Measurement'*/) --adjust Domains of interest
+        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Question', 'Survey', 'LOINC Method'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
-        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon') --exclude useless vocabularies
+        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
         AND NOT (c.concept_class_id ~* 'Hierarchy|chapter' AND c.vocabulary_id NOT IN ('EDI', 'KCD7')) --exclude hierarchical concept_classes
         AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD')) --exclude pre-release ICD10CM codes
@@ -202,7 +216,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM dev_covid19.concept_phenotypes
-                WHERE phenotype = 'Intubation'
+                WHERE phenotype = 'HIV&AIDS'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -223,7 +237,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM dev_covid19.concept_phenotypes
-                WHERE phenotype = 'Intubation'
+                WHERE phenotype = 'HIV&AIDS'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -233,32 +247,27 @@ WHERE (
         )
 ;
 
-
+--reset Standard concepts Excluded list
+DELETE FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'HIV&AIDS'
+    AND criteria = 'exclusion'
+;
 
 --List of Standard concepts Excluded
 INSERT INTO dev_covid19.concept_phenotypes
-SELECT 'Intubation', 'exclusion', c.*
+SELECT 'HIV&AIDS', 'exclusion', c.*
 FROM devv5.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4168966,	--	419991009	Observation	Endotracheal tube present	SNOMED
-2108641,	--	41140	Procedure	Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection	CPT4
-2108642,	--	41145	Procedure	Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection	CPT4
-2106470,	--	31502	Procedure	Tracheotomy tube change prior to establishment of fistula tract	CPT4
-2106642,	--	31730	Procedure	Transtracheal (percutaneous) introduction of needle wire dilator/stent or indwelling tube for oxygen therapy	CPT4
-4331311,	--	2267008	Procedure	Changing tracheostomy tube	SNOMED
-4337048,	--	232686001	Procedure	Insertion of tracheal T-tube	SNOMED
-4337047,	--	232685002	Procedure	Insertion of tracheostomy tube	SNOMED
-4337046,	--	232684003	Procedure	Minitrach insertion	SNOMED
-4149878 	--	30963003	Procedure	Transglottic catheterization of trachea	SNOMED
-
+4295638,	--	385353004	Condition	HIV CDC category finding	SNOMED
+4295639 	--	385354005	Condition	HIV WHO class finding	SNOMED
     )
 ;
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'HIV&AIDS'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -266,7 +275,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'HIV&AIDS'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -292,7 +301,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM dev_covid19.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'HIV&AIDS'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -342,7 +351,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM dev_covid19.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'HIV&AIDS'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )

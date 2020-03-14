@@ -1,17 +1,31 @@
 --reset phenotype concept list
 DELETE FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Ventilator care'
 ;
 
+--reset Standard concepts Included list
+DELETE FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'Ventilator care'
+    AND criteria = 'inclusion'
+;
 
 --List of Standard concepts Included
 INSERT INTO dev_covid19.concept_phenotypes
-SELECT 'Intubation', 'inclusion', c.*
+SELECT 'Ventilator care', 'inclusion', c.*
 FROM devv5.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-40487536,	--	447996002	Procedure	Intubation of respiratory tract	SNOMED
-765576 	--	450601000124103	Procedure	Orotracheal intubation using bougie device	SNOMED
+4232550,	--	439887005	Observation	Home visit for mechanical ventilation care	SNOMED
+4237618,	--	409025002	Observation	Ventilator care	SNOMED
+44509482,	--	E85.8	Procedure	Other specified ventilation support	OPCS4
+4230167,	--	40617009	Procedure	Artificial respiration	SNOMED
+4080957,	--	182686001	Procedure	Endotracheal respiratory assistance	SNOMED
+4235361,	--	438603002	Procedure	Hyperventilation therapy for traumatic brain injury	SNOMED
+4332501,	--	430191008	Procedure	Management of noninvasive mechanical ventilation	SNOMED
+37206832,	--	787180006	Procedure	Mechanical insufflation exsufflation	SNOMED
+4251737,	--	410210009	Procedure	Ventilator care management	SNOMED
+44791135,	--	231821000000109	Procedure	Ventilatory support	SNOMED
+4072633 	--	243174005	Procedure	Weaning from mechanically assisted ventilation	SNOMED
 
     )
 ;
@@ -19,7 +33,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Ventilator care'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -27,7 +41,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Ventilator care'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -53,7 +67,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM dev_covid19.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'Ventilator care'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -104,7 +118,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM dev_covid19.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'Ventilator care'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -157,31 +171,32 @@ ORDER BY source_code,
          vocabulary_id
 ;
 
+--reset uncovered concept list
 DELETE FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Ventilator care'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO dev_covid19.concept_phenotypes
-SELECT 'Intubation',
+SELECT 'Ventilator care',
        'not_mapped',
        c.*
 FROM devv5.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
-        (c.concept_code ~* '^M5859|^M0859' AND c.vocabulary_id IN ('EDI'/*, 'KCD7'*/)  ) OR
+        (c.concept_code ~* '^M5858' AND c.vocabulary_id IN ('EDI')  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Intubation'
+        (c.concept_name ~* 'Artificial ventilation|Mechanical ventilation|artificial breathing|ventilator care|ventilator management'
 
         --Masks to exclude
-        AND c.concept_name !~* 'colon|ileum|duodenal|duct|ureteric|stent|lacrimal|bowel|esophag|duoden|gastrointestinal|rectum|stomach|ileum|jejunum|intestin|Conjunctiva|Gastric|eustachian'
+--        AND c.concept_name !~* 'Haemophilus'
 
-        AND c.domain_id IN (/*'Condition', 'Observation',*/'Procedure' /*,'Measurement'*/) --adjust Domains of interest
+        AND c.domain_id IN ('Condition', 'Observation','Procedure' /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -202,7 +217,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM dev_covid19.concept_phenotypes
-                WHERE phenotype = 'Intubation'
+                WHERE phenotype = 'Ventilator care'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -223,7 +238,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM dev_covid19.concept_phenotypes
-                WHERE phenotype = 'Intubation'
+                WHERE phenotype = 'Ventilator care'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -233,24 +248,26 @@ WHERE (
         )
 ;
 
-
+--reset Standard concepts Excluded list
+DELETE FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'Ventilator care'
+    AND criteria = 'exclusion'
+;
 
 --List of Standard concepts Excluded
 INSERT INTO dev_covid19.concept_phenotypes
-SELECT 'Intubation', 'exclusion', c.*
+SELECT 'Ventilator care', 'exclusion', c.*
 FROM devv5.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4168966,	--	419991009	Observation	Endotracheal tube present	SNOMED
-2108641,	--	41140	Procedure	Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection	CPT4
-2108642,	--	41145	Procedure	Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection	CPT4
-2106470,	--	31502	Procedure	Tracheotomy tube change prior to establishment of fistula tract	CPT4
-2106642,	--	31730	Procedure	Transtracheal (percutaneous) introduction of needle wire dilator/stent or indwelling tube for oxygen therapy	CPT4
-4331311,	--	2267008	Procedure	Changing tracheostomy tube	SNOMED
-4337048,	--	232686001	Procedure	Insertion of tracheal T-tube	SNOMED
-4337047,	--	232685002	Procedure	Insertion of tracheostomy tube	SNOMED
-4337046,	--	232684003	Procedure	Minitrach insertion	SNOMED
-4149878 	--	30963003	Procedure	Transglottic catheterization of trachea	SNOMED
+2745440,	--	0BH13EZ	Procedure	Insertion of Endotracheal Airway into Trachea, Percutaneous Approach	ICD10PCS
+2745444,	--	0BH17EZ	Procedure	Insertion of Endotracheal Airway into Trachea, Via Natural or Artificial Opening	ICD10PCS
+2745447,	--	0BH18EZ	Procedure	Insertion of Endotracheal Airway into Trachea, Via Natural or Artificial Opening Endoscopic	ICD10PCS
+4348300,	--	243180002	Procedure	Expired air ventilation	SNOMED
+4107247,	--	30050007	Procedure	Inhalation anesthesia, machine system, semi-closed, no rebreathing of primary agent	SNOMED
+4006318,	--	11140008	Procedure	Respiratory assist, manual	SNOMED
+4254108,	--	74596007	Procedure	Resuscitation with artificial respiration	SNOMED
+4072633 	--	243174005	Procedure	Weaning from mechanically assisted ventilation	SNOMED
 
     )
 ;
@@ -258,7 +275,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Ventilator care'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -266,7 +283,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM dev_covid19.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Ventilator care'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -292,7 +309,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM dev_covid19.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'Ventilator care'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -342,7 +359,7 @@ JOIN devv5.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM dev_covid19.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'Ventilator care'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
