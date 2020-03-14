@@ -60,7 +60,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -111,7 +111,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 
@@ -156,6 +156,11 @@ ORDER BY source_code,
          vocabulary_id
 ;
 
+--reset uncovered concept list
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Pneumonia'
+    AND criteria = 'not_mapped'
+;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
@@ -165,13 +170,13 @@ FROM @vocabulary_database_schema.concept c
 --Mask to detect uncovered concepts
 WHERE concept_name ~* 'pneumonia'
 --Masks to exclude
-  AND concept_name !~* 'without pneumonia|Tuberculous pneumonia,|bronchitis|prescribed|Sepsis due to|vaccination|level|test|as the cause of'
+  AND concept_name !~* 'without pneumonia|Tuberculous pneumonia,|bronchitis|prescribed|Sepsis due to|vaccination|level|test|as the cause of|Klebsiella pneumoniae|Streptococcus pneumoniae|Mycoplasma pneumonia'
 
     AND c.domain_id IN ('Condition', 'Observation' /*,'Measurement'*/)
 
     AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'Survey')
 
-    AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS')
+    AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon')
     AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL)
     AND c.concept_class_id !~* 'Hierarchy|chapter'
     AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD'))
@@ -257,7 +262,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -307,7 +312,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 

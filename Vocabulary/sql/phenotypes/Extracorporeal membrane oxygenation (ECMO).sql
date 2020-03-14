@@ -175,44 +175,80 @@ WHERE phenotype = 'Extracorporeal membrane oxygenation (ECMO)'
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Extracorporeal membrane oxygenation (ECMO)', 'not_mapped',
+SELECT 'Extracorporeal membrane oxygenation (ECMO)',
+       'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
---Mask to detect uncovered concepts
-WHERE c.concept_name ~* 'Extracorporeal membrane oxygenation|ECMO|Veno(-)?arter|veno(-)?ven'
---Masks to exclude
-    AND c.concept_name !~* 'Hemodialysis|Hemofiltraion|haemofiltration|haemodiafiltration'
 
-    AND c.domain_id IN ('Procedure', 'Observation' /*,'Measurement'*/)
+WHERE (
+        --To select the specific codes in specific vocabularies
+        (c.concept_code ~* '^O1903|^O1905|^O1890' AND c.vocabulary_id IN ('EDI'/*, 'KCD7'*/)  ) OR
 
-    AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'Qualifier Value', 'Morph Abnormality')
+        --Mask to detect uncovered concepts
+        (c.concept_name ~* 'Extracorporeal membrane oxygenation|ECMO|Veno(-)?arter|veno(-)?ven'
 
-    AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon')
-    AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL)
-    AND c.concept_class_id !~* 'Hierarchy|chapter'
-    AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD'))
+        --Masks to exclude
+        AND c.concept_name !~* 'Hemodialysis|Hemofiltraion|haemofiltration|haemodiafiltration'
 
-    AND NOT EXISTS (
-        SELECT 1
-        FROM @vocabulary_database_schema.concept_ancestor ca1
-        JOIN @vocabulary_database_schema.concept c1
-            ON ca1.descendant_concept_id = c1.concept_id
-        JOIN @vocabulary_database_schema.concept_relationship cr1
-            ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-        JOIN @vocabulary_database_schema.concept c2
-            ON cr1.concept_id_1 = c2.concept_id
+        AND c.domain_id IN (/*'Condition',*/ 'Observation','Procedure' /*,'Measurement'*/) --adjust Domains of interest
 
-        WHERE ca1.ancestor_concept_id IN (
-            SELECT concept_id
-            FROM @target_database_schema.concept_phenotypes
-            WHERE phenotype = 'Extracorporeal membrane oxygenation (ECMO)'
-                AND criteria IN ('inclusion', 'exclusion')
-                AND concept_id IS NOT NULL
-                AND criteria IS NOT NULL
-            )
-            AND (c.concept_id = c1.concept_id OR c.concept_id = c2.concept_id)
-)
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Morph Abnormality') --exclude useless concept_classes
+
+        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon') --exclude useless vocabularies
+        AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
+        AND NOT (c.concept_class_id ~* 'Hierarchy|chapter' AND c.vocabulary_id NOT IN ('EDI', 'KCD7')) --exclude hierarchical concept_classes
+        AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD')) --exclude pre-release ICD10CM codes
+        )
+    )
+    AND NOT EXISTS ( --exclude what is already mapped to Included/Excluded parents (except 'EDI', 'KCD7')
+            SELECT 1
+            FROM @vocabulary_database_schema.concept_ancestor ca1
+            JOIN @vocabulary_database_schema.concept c1
+                ON ca1.descendant_concept_id = c1.concept_id
+            JOIN @vocabulary_database_schema.concept_relationship cr1
+                ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
+            JOIN @vocabulary_database_schema.concept c2
+                ON cr1.concept_id_1 = c2.concept_id
+
+            WHERE ca1.ancestor_concept_id IN (
+                SELECT concept_id
+                FROM @target_database_schema.concept_phenotypes
+                WHERE phenotype = 'Extracorporeal membrane oxygenation (ECMO)'
+                    AND criteria IN ('inclusion', 'exclusion')
+                    AND concept_id IS NOT NULL
+                    AND criteria IS NOT NULL
+                )
+                AND c2.vocabulary_id NOT IN ('EDI', 'KCD7')
+                AND (c.concept_id = c1.concept_id OR c.concept_id = c2.concept_id)
+        )
+    AND NOT EXISTS ( --exclude what is already mapped to Included parents ('EDI', 'KCD7')
+            SELECT 1
+            FROM @vocabulary_database_schema.concept_ancestor ca1
+            JOIN @vocabulary_database_schema.concept c1
+                ON ca1.descendant_concept_id = c1.concept_id
+            JOIN @vocabulary_database_schema.concept_relationship cr1
+                ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
+            JOIN @vocabulary_database_schema.concept c2
+                ON cr1.concept_id_1 = c2.concept_id
+
+            WHERE ca1.ancestor_concept_id IN (
+                SELECT concept_id
+                FROM @target_database_schema.concept_phenotypes
+                WHERE phenotype = 'Extracorporeal membrane oxygenation (ECMO)'
+                    AND criteria IN ('inclusion')
+                    AND concept_id IS NOT NULL
+                    AND criteria IS NOT NULL
+                )
+                AND c2.vocabulary_id IN ('EDI', 'KCD7')
+                AND (c.concept_id = c1.concept_id OR c.concept_id = c2.concept_id)
+        )
 ;
+
+
+
+
+
+
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
