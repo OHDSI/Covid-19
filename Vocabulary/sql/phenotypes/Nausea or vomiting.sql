@@ -1,33 +1,30 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'nausea or vomiting'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'nausea or vomiting'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Muscle aches (myalgia)', 'inclusion', c.*
+SELECT 'nausea or vomiting', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
+42539349,	--	762279002	Condition	Functional nausea	SNOMED
+44806510,	--	812681000000102	Condition	Minimal nausea	SNOMED
+27674	--	16932000	Condition	Nausea and vomiting	SNOMED
 --Put concept_ids here
-45757641,	--	28221000119103	Condition	Abdominal muscle pain	SNOMED
-4318397,	--	95421005	Condition	Intercostal myalgia	SNOMED
-4184119,	--	298292009	Condition	Pain on movement of skeletal muscle	SNOMED
-4319324,	--	95415006	Condition	Polymyalgia	SNOMED
-4318813,	--	22166009	Condition	Skeletal muscle tender	SNOMED
-4344370	--	240107001	Condition	Viral myalgia	SNOMED
     )
 ;
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'nausea or vomiting'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -35,7 +32,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'nausea or vomiting'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -61,7 +58,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'nausea or vomiting'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -112,7 +109,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'nausea or vomiting'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -167,26 +164,26 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'nausea or vomiting'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Muscle aches (myalgia)',
+SELECT 'nausea or vomiting',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
-       -- (c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
+        --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Muscle ache|myalgia|Muscle pain|pain in Muscle|ache in Muscle'
+        (c.concept_name ~* 'nausea|vomiting'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Fibromyalgia|rheum|myositis|Eosinophilia'
+         AND c.concept_name !~* 'surgery|pregnancy|psycho|newborn|chemo|operative|teeth'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -211,7 +208,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Muscle aches (myalgia)'
+                WHERE phenotype = 'nausea or vomiting'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -232,7 +229,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Muscle aches (myalgia)'
+                WHERE phenotype = 'nausea or vomiting'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -244,33 +241,24 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'nausea or vomiting'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Muscle aches (myalgia)', 'exclusion', c.*
+SELECT 'nausea or vomiting', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-195464,	--	83264000	Condition	Epidemic pleurodynia	SNOMED
-4126064,	--	288232008	Condition	Myalgia/myositis - ankle/foot	SNOMED
-4125938,	--	288228002	Condition	Myalgia/myositis - forearm	SNOMED
-4121934,	--	288229005	Condition	Myalgia/myositis - hand	SNOMED
-4125939,	--	288231001	Condition	Myalgia/myositis - lower leg	SNOMED
-4125937,	--	288225004	Condition	Myalgia/myositis - multiple	SNOMED
-4121935,	--	288230000	Condition	Myalgia/myositis -pelvis/thigh	SNOMED
-4121597,	--	288226003	Condition	Myalgia/myositis - shoulder	SNOMED
-4121598,	--	288227007	Condition	Myalgia/myositis - upper arm	SNOMED
-37016663	--	712752004	Condition	Myalgia of pelvic floor	SNOMED
+
     )
 ;
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'nausea or vomiting'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -278,7 +266,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'nausea or vomiting'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -304,7 +292,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'nausea or vomiting'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -354,7 +342,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'nausea or vomiting'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
