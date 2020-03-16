@@ -1,33 +1,29 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Subjective fever'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Subjective fever'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Muscle aches (myalgia)', 'inclusion', c.*
-FROM @vocabulary_database_schema.concept c
+SELECT 'Subjective fever', 'inclusion', c.*
+FROM devv5.concept c
 WHERE c.concept_id IN (
+4191039,    --	373904004	Condition	Feels hot/feverish	SNOMED
+4153285     --	271399003	Condition	Temperature symptoms	SNOMED
 --Put concept_ids here
-45757641,	--	28221000119103	Condition	Abdominal muscle pain	SNOMED
-4318397,	--	95421005	Condition	Intercostal myalgia	SNOMED
-4184119,	--	298292009	Condition	Pain on movement of skeletal muscle	SNOMED
-4319324,	--	95415006	Condition	Polymyalgia	SNOMED
-4318813,	--	22166009	Condition	Skeletal muscle tender	SNOMED
-4344370	--	240107001	Condition	Viral myalgia	SNOMED
     )
 ;
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Subjective fever'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -35,7 +31,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Subjective fever'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -51,17 +47,17 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM @vocabulary_database_schema.concept_ancestor ca1
-JOIN @vocabulary_database_schema.concept c1
+FROM devv5.concept_ancestor ca1
+JOIN devv5.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN @vocabulary_database_schema.concept_relationship cr1
+JOIN devv5.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN @vocabulary_database_schema.concept c2
+JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'Subjective fever'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -102,17 +98,17 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM @vocabulary_database_schema.concept_ancestor ca1
-JOIN @vocabulary_database_schema.concept c1
+FROM devv5.concept_ancestor ca1
+JOIN devv5.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN @vocabulary_database_schema.concept_relationship cr1
+JOIN devv5.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN @vocabulary_database_schema.concept c2
+JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'Subjective fever'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -167,26 +163,26 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Subjective fever'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Muscle aches (myalgia)',
+SELECT 'Subjective fever',
        'not_mapped',
        c.*
-FROM @vocabulary_database_schema.concept c
+FROM devv5.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
-       -- (c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
+        --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Muscle ache|myalgia|Muscle pain|pain in Muscle|ache in Muscle'
+        (c.concept_name ~* 'subjective fever|feverish|feels fever|high body temperature|subjective pyrexia'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Fibromyalgia|rheum|myositis|Eosinophilia'
+         AND c.concept_name !~* 'traffic'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -200,18 +196,18 @@ WHERE (
     )
     AND NOT EXISTS ( --exclude what is already mapped to Included/Excluded parents (except 'EDI', 'KCD7')
             SELECT 1
-            FROM @vocabulary_database_schema.concept_ancestor ca1
-            JOIN @vocabulary_database_schema.concept c1
+            FROM devv5.concept_ancestor ca1
+            JOIN devv5.concept c1
                 ON ca1.descendant_concept_id = c1.concept_id
-            JOIN @vocabulary_database_schema.concept_relationship cr1
+            JOIN devv5.concept_relationship cr1
                 ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-            JOIN @vocabulary_database_schema.concept c2
+            JOIN devv5.concept c2
                 ON cr1.concept_id_1 = c2.concept_id
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Muscle aches (myalgia)'
+                WHERE phenotype = 'Subjective fever'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -221,18 +217,18 @@ WHERE (
         )
     AND NOT EXISTS ( --exclude what is already mapped to Included parents ('EDI', 'KCD7')
             SELECT 1
-            FROM @vocabulary_database_schema.concept_ancestor ca1
-            JOIN @vocabulary_database_schema.concept c1
+            FROM devv5.concept_ancestor ca1
+            JOIN devv5.concept c1
                 ON ca1.descendant_concept_id = c1.concept_id
-            JOIN @vocabulary_database_schema.concept_relationship cr1
+            JOIN devv5.concept_relationship cr1
                 ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-            JOIN @vocabulary_database_schema.concept c2
+            JOIN devv5.concept c2
                 ON cr1.concept_id_1 = c2.concept_id
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Muscle aches (myalgia)'
+                WHERE phenotype = 'Subjective fever'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -244,33 +240,25 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Subjective fever'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Muscle aches (myalgia)', 'exclusion', c.*
-FROM @vocabulary_database_schema.concept c
+SELECT 'Subjective fever', 'exclusion', c.*
+FROM devv5.concept c
 WHERE c.concept_id IN (
+4048097	--	135882008	Condition	Feverish cold	SNOMED
 --Put concept_ids here
-195464,	--	83264000	Condition	Epidemic pleurodynia	SNOMED
-4126064,	--	288232008	Condition	Myalgia/myositis - ankle/foot	SNOMED
-4125938,	--	288228002	Condition	Myalgia/myositis - forearm	SNOMED
-4121934,	--	288229005	Condition	Myalgia/myositis - hand	SNOMED
-4125939,	--	288231001	Condition	Myalgia/myositis - lower leg	SNOMED
-4125937,	--	288225004	Condition	Myalgia/myositis - multiple	SNOMED
-4121935,	--	288230000	Condition	Myalgia/myositis -pelvis/thigh	SNOMED
-4121597,	--	288226003	Condition	Myalgia/myositis - shoulder	SNOMED
-4121598,	--	288227007	Condition	Myalgia/myositis - upper arm	SNOMED
-37016663	--	712752004	Condition	Myalgia of pelvic floor	SNOMED
+
     )
 ;
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Subjective fever'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -278,7 +266,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Subjective fever'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -294,17 +282,17 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM @vocabulary_database_schema.concept_ancestor ca1
-JOIN @vocabulary_database_schema.concept c1
+FROM devv5.concept_ancestor ca1
+JOIN devv5.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN @vocabulary_database_schema.concept_relationship cr1
+JOIN devv5.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN @vocabulary_database_schema.concept c2
+JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'Subjective fever'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -344,17 +332,17 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM @vocabulary_database_schema.concept_ancestor ca1
-JOIN @vocabulary_database_schema.concept c1
+FROM devv5.concept_ancestor ca1
+JOIN devv5.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN @vocabulary_database_schema.concept_relationship cr1
+JOIN devv5.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN @vocabulary_database_schema.concept c2
+JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'Subjective fever'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )

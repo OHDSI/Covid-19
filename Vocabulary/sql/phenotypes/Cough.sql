@@ -1,33 +1,29 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Cough'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Cough'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Muscle aches (myalgia)', 'inclusion', c.*
+SELECT 'Cough', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
+254761	--	49727002	Condition	Cough	SNOMED
+
 --Put concept_ids here
-45757641,	--	28221000119103	Condition	Abdominal muscle pain	SNOMED
-4318397,	--	95421005	Condition	Intercostal myalgia	SNOMED
-4184119,	--	298292009	Condition	Pain on movement of skeletal muscle	SNOMED
-4319324,	--	95415006	Condition	Polymyalgia	SNOMED
-4318813,	--	22166009	Condition	Skeletal muscle tender	SNOMED
-4344370	--	240107001	Condition	Viral myalgia	SNOMED
     )
 ;
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Cough'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -35,7 +31,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Cough'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -61,7 +57,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'Cough'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -112,7 +108,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'Cough'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -167,26 +163,26 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Cough'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Muscle aches (myalgia)',
+SELECT 'Cough',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
-       -- (c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
+        --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Muscle ache|myalgia|Muscle pain|pain in Muscle|ache in Muscle'
+        (c.concept_name ~* 'Cough'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Fibromyalgia|rheum|myositis|Eosinophilia'
+         AND c.concept_name !~* 'whooping|PhenX|Hiccough'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -211,7 +207,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Muscle aches (myalgia)'
+                WHERE phenotype = 'Cough'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -232,7 +228,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Muscle aches (myalgia)'
+                WHERE phenotype = 'Cough'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -244,33 +240,36 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Cough'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Muscle aches (myalgia)', 'exclusion', c.*
+SELECT 'Cough', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
+4116989,	--	300959008	Condition	Allergic cough	SNOMED
+4086814,	--	248589007	Condition	Clearing throat - hawking	SNOMED
+4188217,	--	46789001	Condition	Cough after eating	SNOMED
+4048218,	--	123819004	Condition	Cough reflex absent	SNOMED
+4126096,	--	289965001	Condition	Croupy cough	SNOMED
+4275649,	--	366124008	Condition	Finding related to ability to cough	SNOMED
+4269800,	--	62548007	Condition	Nocturnal cough	SNOMED
+44789249,	--	200151000000106	Condition	Reflux cough	SNOMED
+4263877,	--	46802002	Condition	Smokers' cough	SNOMED
+4086815,	--	248594007	Condition	Tracheal esophageal fistula cough	SNOMED
+3199166	--	12730001000004103	Observation	Cough due to ACE inhibitor	Nebraska Lexicon
+
 --Put concept_ids here
-195464,	--	83264000	Condition	Epidemic pleurodynia	SNOMED
-4126064,	--	288232008	Condition	Myalgia/myositis - ankle/foot	SNOMED
-4125938,	--	288228002	Condition	Myalgia/myositis - forearm	SNOMED
-4121934,	--	288229005	Condition	Myalgia/myositis - hand	SNOMED
-4125939,	--	288231001	Condition	Myalgia/myositis - lower leg	SNOMED
-4125937,	--	288225004	Condition	Myalgia/myositis - multiple	SNOMED
-4121935,	--	288230000	Condition	Myalgia/myositis -pelvis/thigh	SNOMED
-4121597,	--	288226003	Condition	Myalgia/myositis - shoulder	SNOMED
-4121598,	--	288227007	Condition	Myalgia/myositis - upper arm	SNOMED
-37016663	--	712752004	Condition	Myalgia of pelvic floor	SNOMED
+
     )
 ;
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Cough'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -278,7 +277,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Muscle aches (myalgia)'
+WHERE phenotype = 'Cough'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -304,7 +303,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'Cough'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -354,7 +353,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Muscle aches (myalgia)'
+    WHERE phenotype = 'Cough'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
