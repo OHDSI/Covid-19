@@ -254,7 +254,6 @@ SELECT 'Tachypnea', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4061901,	--	162913005	Condition	O/E - rate of respiration	SNOMED
 4061902,	--	162914004	Condition	O/E-rate of respiration normal	SNOMED
 4060716,	--	162915003	Condition	O/E - rate of respiration slow	SNOMED
 4325522,	--	430390000	Condition	Sleep-related neurogenic tachypnea	SNOMED

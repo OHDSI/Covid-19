@@ -293,7 +293,6 @@ WHERE c.concept_id IN (
 4040106,	--	164301009	Condition	O/E - temperature low	SNOMED
 4039794,	--	164300005	Condition	O/E - temperature normal	SNOMED
 4151775,	--	315632006	Condition	O/E - tympanic temperature	SNOMED
-4302666,	--	386725007	Observation	Body temperature	SNOMED
 4189949,	--	415929009	Observation	Groin temperature	SNOMED
 45769775,	--	708499008	Observation	Temperature of neonate at birth	SNOMED
 4267945 	--	364246006	Observation	Temperature of vagina	SNOMED

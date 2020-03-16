@@ -259,7 +259,6 @@ FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
 4036799,	--	162660004	Condition	Asthma resolved	SNOMED
-4077802,	--	275908000	Observation	Asthma monitoring	SNOMED
 4085315	--	185728001	Observation	Attends asthma monitoring	SNOMED
 
     )
