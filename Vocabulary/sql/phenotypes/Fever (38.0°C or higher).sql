@@ -1,29 +1,50 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Fever (38.0°C or higher)'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Fever (38.0°C or higher)'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'inclusion', c.*
+SELECT 'Fever (38.0°C or higher)', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-317009,	--	195967001	Condition	Asthma	SNOMED
-4308356,	--	390798007	Condition	Asthma finding	SNOMED
-4170900,	--	41997000	Condition	Asthmatic pulmonary alveolitis	SNOMED
-4279553,	--	367542003	Condition	Eosinophilic asthma	SNOMED
-4123254,	--	233690008	Condition	Factitious asthma	SNOMED
-2101899,	--	1039F	Observation	Intermittent asthma (Asthma)	CPT4
-2101898,	--	1038F	Observation	Persistent asthma (mild, moderate or severe) (Asthma)	CPT4
-4293734,	--	401193004	Observation	Asthma confirmed	SNOMED
-4235703 	--	406162001	Observation	Asthma management	SNOMED
+3025085,	--	8328-7	Measurement	Axillary temperature	LOINC
+21490870,	--	76278-1	Measurement	Bladder temperature via Foley	LOINC
+21490688,	--	61008-9	Measurement	Body surface temperature	LOINC
+3020891,	--	8310-5	Measurement	Body temperature	LOINC
+3004750,	--	8323-8	Measurement	Body temperature 10 hour	LOINC
+3008557,	--	8313-9	Measurement	Body temperature 10 hour maximum	LOINC
+3007846,	--	8324-6	Measurement	Body temperature 12 hour	LOINC
+3016117,	--	8314-7	Measurement	Body temperature 12 hour maximum	LOINC
+3017614,	--	8321-2	Measurement	Body temperature 1 hour	LOINC
+3011783,	--	8311-3	Measurement	Body temperature 1 hour maximum	LOINC
+3006749,	--	8325-3	Measurement	Body temperature 24 hour	LOINC
+3016715,	--	8315-4	Measurement	Body temperature 24 hour maximum	LOINC
+3018145,	--	8322-0	Measurement	Body temperature 8 hour	LOINC
+3015039,	--	8312-1	Measurement	Body temperature 8 hour maximum	LOINC
+3009553,	--	11289-6	Measurement	Body temperature at First encounter	LOINC
+3025926,	--	8329-5	Measurement	Body temperature - Core	LOINC
+3025704,	--	8334-5	Measurement	Body temperature - Urinary bladder	LOINC
+21490907,	--	76011-6	Measurement	Ear temperature	LOINC
+21490588,	--	60836-4	Measurement	Esophageal temperature	LOINC
+21490906,	--	76010-8	Measurement	Nasal temperature	LOINC
+21490590,	--	60838-0	Measurement	Nasopharyngeal temperature	LOINC
+3006322,	--	8331-1	Measurement	Oral temperature	LOINC
+3022060,	--	8332-9	Measurement	Rectal temperature	LOINC
+3025163,	--	8333-7	Measurement	Tympanic membrane temperature	LOINC
+4329518,	--	431807005	Observation	Body temperature taken with digital thermometer	SNOMED
+4174894,	--	276885007	Observation	Core body temperature	SNOMED
+4212763,	--	415922000	Observation	Forehead temperature	SNOMED
+44809208,	--	852591000000107	Observation	Maximum body temperature	SNOMED
+4265708 	--	364537001	Observation	Temperature of skin	SNOMED
+
 
     )
 ;
@@ -31,7 +52,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Fever (38.0°C or higher)'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -39,7 +60,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Fever (38.0°C or higher)'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -65,7 +86,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Fever (38.0°C or higher)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -116,7 +137,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Fever (38.0°C or higher)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -171,13 +192,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Fever (38.0°C or higher)'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma',
+SELECT 'Fever (38.0°C or higher)',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -187,14 +208,14 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Asthma'
+        (c.concept_name ~* 'Body temperature|Skin temperature|temperature above|central body'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Poisoning|adverse|suspected|monitoring|history|test|asses|monitor|Underdosing|limit|FH|Seen'
+--        AND c.concept_name !~* 'Haemophilus'
 
-        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
+        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ ,'Measurement') --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Survey', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -215,7 +236,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                WHERE phenotype = 'Fever (38.0°C or higher)'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -236,7 +257,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                WHERE phenotype = 'Fever (38.0°C or higher)'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -248,18 +269,33 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Fever (38.0°C or higher)'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'exclusion', c.*
+SELECT 'Fever (38.0°C or higher)', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4036799,	--	162660004	Condition	Asthma resolved	SNOMED
-4085315	--	185728001	Observation	Attends asthma monitoring	SNOMED
+4141062,	--	426000000	Condition	Fever greater than 100.4 Fahrenheit	SNOMED
+4040476,	--	164292006	Condition	O/E - axillary temperature	SNOMED
+4039792,	--	164295008	Condition	O/E - core temperature	SNOMED
+4040104,	--	164293001	Condition	O/E - groin temperature	SNOMED
+4164378,	--	274308003	Condition	O/E - hyperpyrexia	SNOMED
+4039796,	--	164304001	Condition	O/E - hyperpyrexia - greater than 40.5 degrees Celsius	SNOMED
+4077057,	--	275874003	Condition	O/E - oral temperature	SNOMED
+4039791,	--	164294007	Condition	O/E - rectal temperature	SNOMED
+4038778,	--	163633002	Condition	O/E -skin temperature abnormal	SNOMED
+4206273,	--	309646008	Condition	O/E - temperature	SNOMED
+4039795,	--	164303007	Condition	O/E - temperature elevated	SNOMED
+4040106,	--	164301009	Condition	O/E - temperature low	SNOMED
+4039794,	--	164300005	Condition	O/E - temperature normal	SNOMED
+4151775,	--	315632006	Condition	O/E - tympanic temperature	SNOMED
+4189949,	--	415929009	Observation	Groin temperature	SNOMED
+45769775,	--	708499008	Observation	Temperature of neonate at birth	SNOMED
+4267945 	--	364246006	Observation	Temperature of vagina	SNOMED
 
     )
 ;
@@ -267,7 +303,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Fever (38.0°C or higher)'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -275,7 +311,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Fever (38.0°C or higher)'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -301,7 +337,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Fever (38.0°C or higher)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -351,7 +387,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Fever (38.0°C or higher)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )

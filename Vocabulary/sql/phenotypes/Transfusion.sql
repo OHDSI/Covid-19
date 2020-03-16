@@ -1,29 +1,21 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Transfusion'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Transfusion'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'inclusion', c.*
+SELECT 'Transfusion', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-317009,	--	195967001	Condition	Asthma	SNOMED
-4308356,	--	390798007	Condition	Asthma finding	SNOMED
-4170900,	--	41997000	Condition	Asthmatic pulmonary alveolitis	SNOMED
-4279553,	--	367542003	Condition	Eosinophilic asthma	SNOMED
-4123254,	--	233690008	Condition	Factitious asthma	SNOMED
-2101899,	--	1039F	Observation	Intermittent asthma (Asthma)	CPT4
-2101898,	--	1038F	Observation	Persistent asthma (mild, moderate or severe) (Asthma)	CPT4
-4293734,	--	401193004	Observation	Asthma confirmed	SNOMED
-4235703 	--	406162001	Observation	Asthma management	SNOMED
+4024656	--	116859006	Procedure	Transfusion of blood product	SNOMED
 
     )
 ;
@@ -31,7 +23,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Transfusion'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -39,7 +31,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Transfusion'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -65,7 +57,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Transfusion'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -116,7 +108,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Transfusion'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -171,13 +163,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Transfusion'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma',
+SELECT 'Transfusion',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -187,14 +179,14 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Asthma'
+        (c.concept_name ~* 'Transfusion|Blood products'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Poisoning|adverse|suspected|monitoring|history|test|asses|monitor|Underdosing|limit|FH|Seen'
+        AND c.concept_name !~* 'Fetomaternal|Fear of'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Survey', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -215,7 +207,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                WHERE phenotype = 'Transfusion'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -236,7 +228,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                WHERE phenotype = 'Transfusion'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -248,18 +240,30 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Transfusion'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'exclusion', c.*
+SELECT 'Transfusion', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4036799,	--	162660004	Condition	Asthma resolved	SNOMED
-4085315	--	185728001	Observation	Attends asthma monitoring	SNOMED
+440603,	--	82545002	Condition	Blood transfusion reaction	SNOMED
+37312163,	--	789667003	Condition	Phlebitis following transfusion	SNOMED
+4021755,	--	10593005	Condition	Posttransfusion state	SNOMED
+2108133,	--	36460	Procedure	Transfusion, intrauterine, fetal	CPT4
+2211782,	--	76941	Procedure	Ultrasonic guidance for intrauterine fetal transfusion or cordocentesis, imaging supervision and interpretation	CPT4
+44513683,	--	R04.3	Procedure	Percutaneous blood transfusion of fetus	OPCS4
+4193981,	--	39188002	Procedure	Exchange transfusion	SNOMED
+4073411,	--	177086003	Procedure	Fetoscopic blood transfusion of fetus	SNOMED
+4051318,	--	233562001	Procedure	Intra-osseous infusion	SNOMED
+4117217,	--	287954004	Procedure	Intrauterine exchange transfusion	SNOMED
+4231954,	--	438567008	Procedure	Intrauterine fetal transfusion using ultrasound guidance	SNOMED
+4163524,	--	45460008	Procedure	Intrauterine transfusion	SNOMED
+4050859,	--	233560009	Procedure	Percutaneous intraperitoneal fetal blood transfusion	SNOMED
+4049842	--	233561008	Procedure	Percutaneous intravascular fetal blood transfusion	SNOMED
 
     )
 ;
@@ -267,7 +271,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Transfusion'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -275,7 +279,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Transfusion'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -301,7 +305,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Transfusion'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -351,7 +355,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Transfusion'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )

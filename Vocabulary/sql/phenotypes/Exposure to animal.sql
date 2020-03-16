@@ -1,29 +1,45 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Exposure to animal'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Exposure to animal'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'inclusion', c.*
+SELECT 'Exposure to animal', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-317009,	--	195967001	Condition	Asthma	SNOMED
-4308356,	--	390798007	Condition	Asthma finding	SNOMED
-4170900,	--	41997000	Condition	Asthmatic pulmonary alveolitis	SNOMED
-4279553,	--	367542003	Condition	Eosinophilic asthma	SNOMED
-4123254,	--	233690008	Condition	Factitious asthma	SNOMED
-2101899,	--	1039F	Observation	Intermittent asthma (Asthma)	CPT4
-2101898,	--	1038F	Observation	Persistent asthma (mild, moderate or severe) (Asthma)	CPT4
-4293734,	--	401193004	Observation	Asthma confirmed	SNOMED
-4235703 	--	406162001	Observation	Asthma management	SNOMED
+432513,	--	399907009	Condition	Animal bite wound	SNOMED
+438039,	--	242651001	Condition	Injury caused by animal	SNOMED
+37310171,	--	10947891000119102	Condition	Open wound of fourth digit of left hand due to animal bite	SNOMED
+37310168,	--	10948091000119106	Condition	Open wound of fourth digit of right hand due to animal bite	SNOMED
+37310207,	--	10847341000119108	Condition	Open wound of left foot due to animal bite	SNOMED
+37310161,	--	10949871000119106	Condition	Open wound of left forearm due to animal bite	SNOMED
+37310098,	--	10970531000119102	Condition	Open wound of left lower leg due to animal bite	SNOMED
+37310100,	--	10970171000119108	Condition	Open wound of right foot due to animal bite	SNOMED
+37310160,	--	10949911000119109	Condition	Open wound of right forearm due to animal bite	SNOMED
+37310099,	--	10970491000119102	Condition	Open wound of right lower leg due to animal bite	SNOMED
+37310173,	--	10947771000119106	Condition	Open wound of second digit of left hand due to animal bite	SNOMED
+37310170,	--	10947971000119108	Condition	Open wound of second digit of right hand due to animal bite	SNOMED
+37310172,	--	10947851000119107	Condition	Open wound of third digit of left hand due to animal bite	SNOMED
+37310169,	--	10948051000119101	Condition	Open wound of third digit of right hand due to animal bite	SNOMED
+4194383,	--	78920009	Condition	Poisoning by venomous lizard bite	SNOMED
+4299011,	--	403164008	Condition	Scratch and/or laceration due to animal	SNOMED
+4299012,	--	403166005	Condition	Skin injury due to animal	SNOMED
+4302940,	--	418589001	Observation	Accidental physical contact with animal	SNOMED
+36684077,	--	782162007	Observation	Bite of non-human animal	SNOMED
+4322541,	--	425338002	Observation	Environment contains animals	SNOMED
+4291007,	--	37383006	Observation	Exposure to attack by mammal	SNOMED
+4213723,	--	80580005	Observation	Exposure to attack by marine animal	SNOMED
+4077127,	--	17982002	Observation	Exposure to attack by reptile	SNOMED
+4050870,	--	23361001	Observation	Exposure to sting or bite by insect	SNOMED
+4248090 	--	409512004	Observation	Indirect exposure to biological agent via animal bite	SNOMED
 
     )
 ;
@@ -31,7 +47,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Exposure to animal'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -39,7 +55,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Exposure to animal'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -65,7 +81,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Exposure to animal'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -116,7 +132,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Exposure to animal'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -171,13 +187,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Exposure to animal'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma',
+SELECT 'Exposure to animal',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -187,14 +203,14 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Asthma'
+        (c.concept_name ~* 'Animal'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Poisoning|adverse|suspected|monitoring|history|test|asses|monitor|Underdosing|limit|FH|Seen'
+        AND c.concept_name !~* 'Allerg|Asthma|atopic|motor|tuberculosis|poison|Collision|vehicle|Ridden|afraid of'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Survey', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer', 'Survey', 'Social Context', 'Physical Object'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -215,7 +231,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                WHERE phenotype = 'Exposure to animal'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -236,7 +252,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                WHERE phenotype = 'Exposure to animal'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -248,18 +264,18 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Exposure to animal'
     AND criteria = 'exclusion'
 ;
 
+--NOT NEEDED
+/*
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'exclusion', c.*
+SELECT 'Exposure to animal', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4036799,	--	162660004	Condition	Asthma resolved	SNOMED
-4085315	--	185728001	Observation	Attends asthma monitoring	SNOMED
 
     )
 ;
@@ -267,7 +283,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Exposure to animal'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -275,7 +291,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Exposure to animal'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -301,7 +317,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Exposure to animal'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -351,7 +367,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Exposure to animal'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -403,3 +419,5 @@ ORDER BY source_code,
          domain_id,
          vocabulary_id
 ;
+
+ */

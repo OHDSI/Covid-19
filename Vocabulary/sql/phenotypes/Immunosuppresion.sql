@@ -1,29 +1,30 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Immunosupression'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Immunosupression'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'inclusion', c.*
+SELECT 'Immunosupression', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-317009,	--	195967001	Condition	Asthma	SNOMED
-4308356,	--	390798007	Condition	Asthma finding	SNOMED
-4170900,	--	41997000	Condition	Asthmatic pulmonary alveolitis	SNOMED
-4279553,	--	367542003	Condition	Eosinophilic asthma	SNOMED
-4123254,	--	233690008	Condition	Factitious asthma	SNOMED
-2101899,	--	1039F	Observation	Intermittent asthma (Asthma)	CPT4
-2101898,	--	1038F	Observation	Persistent asthma (mild, moderate or severe) (Asthma)	CPT4
-4293734,	--	401193004	Observation	Asthma confirmed	SNOMED
-4235703 	--	406162001	Observation	Asthma management	SNOMED
+4221489,	--	420721002	Condition	AIDS-associated disorder	SNOMED
+433740,	--	234532001	Condition	Immunodeficiency disorder	SNOMED
+4186235,	--	414604009	Condition	Leukoplakia of tongue associated with HIV disease	SNOMED
+40484012,	--	442537007	Condition	Non-Hodgkin lymphoma associated with Human immunodeficiency virus infection	SNOMED
+4298853,	--	402901009	Condition	Oral hairy leukoplakia associated with HIV disease	SNOMED
+4300213,	--	402900005	Condition	Oral hairy leukoplakia associated with immunodeficiency	SNOMED
+4153516,	--	370388006	Condition	Patient immunocompromised	SNOMED
+4226787,	--	421695000	Observation	Abnormal weight loss associated with AIDS	SNOMED
+4168822,	--	419094004	Observation	Immunodeficiency-associated Burkitt's lymphoma	SNOMED
+4314777 	--	86553008	Procedure	Immunosuppressive therapy	SNOMED
 
     )
 ;
@@ -31,7 +32,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Immunosupression'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -39,7 +40,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Immunosupression'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -65,7 +66,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Immunosupression'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -116,7 +117,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Immunosupression'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -171,13 +172,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Immunosupression'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma',
+SELECT 'Immunosupression',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -187,14 +188,14 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Asthma'
+        (c.concept_name ~* 'Immunosupr|Immunocompromised|immunodeficiency'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Poisoning|adverse|suspected|monitoring|history|test|asses|monitor|Underdosing|limit|FH|Seen'
+        AND c.concept_name !~* 'Human immunodeficiency virus'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Survey', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -215,7 +216,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                WHERE phenotype = 'Immunosupression'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -236,7 +237,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                WHERE phenotype = 'Immunosupression'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -248,18 +249,18 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Immunosupression'
     AND criteria = 'exclusion'
 ;
 
+--NOT NEEDED
+/*
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'exclusion', c.*
+SELECT 'Immunosupression', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4036799,	--	162660004	Condition	Asthma resolved	SNOMED
-4085315	--	185728001	Observation	Attends asthma monitoring	SNOMED
 
     )
 ;
@@ -267,7 +268,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Immunosupression'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -275,7 +276,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Immunosupression'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -301,7 +302,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Immunosupression'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -351,7 +352,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Immunosupression'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -403,3 +404,5 @@ ORDER BY source_code,
          domain_id,
          vocabulary_id
 ;
+
+ */

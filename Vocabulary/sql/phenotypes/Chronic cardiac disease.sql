@@ -1,45 +1,47 @@
 --reset phenotype concept list
-DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+DELETE FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'Chronic cardiac disease'
 ;
 
 --reset Standard concepts Included list
-DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+DELETE FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'Chronic cardiac disease'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
-INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'inclusion', c.*
-FROM @vocabulary_database_schema.concept c
+INSERT INTO dev_covid19.concept_phenotypes
+SELECT 'Chronic cardiac disease', 'inclusion', c.*
+FROM devv5.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-317009,	--	195967001	Condition	Asthma	SNOMED
-4308356,	--	390798007	Condition	Asthma finding	SNOMED
-4170900,	--	41997000	Condition	Asthmatic pulmonary alveolitis	SNOMED
-4279553,	--	367542003	Condition	Eosinophilic asthma	SNOMED
-4123254,	--	233690008	Condition	Factitious asthma	SNOMED
-2101899,	--	1039F	Observation	Intermittent asthma (Asthma)	CPT4
-2101898,	--	1038F	Observation	Persistent asthma (mild, moderate or severe) (Asthma)	CPT4
-4293734,	--	401193004	Observation	Asthma confirmed	SNOMED
-4235703 	--	406162001	Observation	Asthma management	SNOMED
+40483833,	--	445512009	Condition	Calcification of coronary artery	SNOMED
+4134586,	--	128238001	Condition	Chronic heart disease	SNOMED
+315069,	--	46619002	Condition	Congenital heart block	SNOMED
+312723,	--	13213009	Condition	Congenital heart disease	SNOMED
+317576,	--	53741008	Condition	Coronary arteriosclerosis	SNOMED
+4119613,	--	233970002	Condition	Coronary artery stenosis	SNOMED
+36684978,	--	459701000124101	Condition	Coronary small artery disease	SNOMED
+4132742,	--	12770006	Condition	Cyanotic congenital heart disease	SNOMED
+4131130,	--	127063008	Condition	Erythrocytosis due to cyanotic congenital heart disease	SNOMED
+43020657,	--	471880001	Condition	Heart failure due to end stage congenital heart disease	SNOMED
+44783624 	--	697905000	Condition	Pulmonary arterial hypertension associated with congenital heart disease	SNOMED
 
     )
 ;
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'Chronic cardiac disease'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
 
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'Chronic cardiac disease'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -55,17 +57,17 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM @vocabulary_database_schema.concept_ancestor ca1
-JOIN @vocabulary_database_schema.concept c1
+FROM devv5.concept_ancestor ca1
+JOIN devv5.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN @vocabulary_database_schema.concept_relationship cr1
+JOIN devv5.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN @vocabulary_database_schema.concept c2
+JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    FROM dev_covid19.concept_phenotypes
+    WHERE phenotype = 'Chronic cardiac disease'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -106,17 +108,17 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM @vocabulary_database_schema.concept_ancestor ca1
-JOIN @vocabulary_database_schema.concept c1
+FROM devv5.concept_ancestor ca1
+JOIN devv5.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN @vocabulary_database_schema.concept_relationship cr1
+JOIN devv5.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN @vocabulary_database_schema.concept c2
+JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    FROM dev_covid19.concept_phenotypes
+    WHERE phenotype = 'Chronic cardiac disease'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -170,31 +172,31 @@ ORDER BY source_code,
 ;
 
 --reset uncovered concept list
-DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+DELETE FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'Chronic cardiac disease'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
-INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma',
+INSERT INTO dev_covid19.concept_phenotypes
+SELECT 'Chronic cardiac disease',
        'not_mapped',
        c.*
-FROM @vocabulary_database_schema.concept c
+FROM devv5.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Asthma'
+        (c.concept_name ~* 'Chronic cardiac disease|CHF|Chronic heart disease|Chronic heart failure|Congenital heart|Cyanotic|Congenital heart block'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Poisoning|adverse|suspected|monitoring|history|test|asses|monitor|Underdosing|limit|FH|Seen'
+        AND c.concept_name !~* 'Family history|Maternal|Cyanotic attacks|pitchfork'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Survey', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -204,18 +206,18 @@ WHERE (
     )
     AND NOT EXISTS ( --exclude what is already mapped to Included/Excluded parents (except 'EDI', 'KCD7')
             SELECT 1
-            FROM @vocabulary_database_schema.concept_ancestor ca1
-            JOIN @vocabulary_database_schema.concept c1
+            FROM devv5.concept_ancestor ca1
+            JOIN devv5.concept c1
                 ON ca1.descendant_concept_id = c1.concept_id
-            JOIN @vocabulary_database_schema.concept_relationship cr1
+            JOIN devv5.concept_relationship cr1
                 ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-            JOIN @vocabulary_database_schema.concept c2
+            JOIN devv5.concept c2
                 ON cr1.concept_id_1 = c2.concept_id
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
-                FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                FROM dev_covid19.concept_phenotypes
+                WHERE phenotype = 'Chronic cardiac disease'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -225,18 +227,18 @@ WHERE (
         )
     AND NOT EXISTS ( --exclude what is already mapped to Included parents ('EDI', 'KCD7')
             SELECT 1
-            FROM @vocabulary_database_schema.concept_ancestor ca1
-            JOIN @vocabulary_database_schema.concept c1
+            FROM devv5.concept_ancestor ca1
+            JOIN devv5.concept c1
                 ON ca1.descendant_concept_id = c1.concept_id
-            JOIN @vocabulary_database_schema.concept_relationship cr1
+            JOIN devv5.concept_relationship cr1
                 ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-            JOIN @vocabulary_database_schema.concept c2
+            JOIN devv5.concept c2
                 ON cr1.concept_id_1 = c2.concept_id
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
-                FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                FROM dev_covid19.concept_phenotypes
+                WHERE phenotype = 'Chronic cardiac disease'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -247,35 +249,35 @@ WHERE (
 ;
 
 --reset Standard concepts Excluded list
-DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+DELETE FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'Chronic cardiac disease'
     AND criteria = 'exclusion'
 ;
 
+--NOT NEEDED
+/*
 --List of Standard concepts Excluded
-INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'exclusion', c.*
-FROM @vocabulary_database_schema.concept c
+INSERT INTO dev_covid19.concept_phenotypes
+SELECT 'Chronic cardiac disease', 'exclusion', c.*
+FROM devv5.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4036799,	--	162660004	Condition	Asthma resolved	SNOMED
-4085315	--	185728001	Observation	Attends asthma monitoring	SNOMED
 
     )
 ;
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'Chronic cardiac disease'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
 
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+FROM dev_covid19.concept_phenotypes
+WHERE phenotype = 'Chronic cardiac disease'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -291,17 +293,17 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM @vocabulary_database_schema.concept_ancestor ca1
-JOIN @vocabulary_database_schema.concept c1
+FROM devv5.concept_ancestor ca1
+JOIN devv5.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN @vocabulary_database_schema.concept_relationship cr1
+JOIN devv5.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN @vocabulary_database_schema.concept c2
+JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    FROM dev_covid19.concept_phenotypes
+    WHERE phenotype = 'Chronic cardiac disease'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -341,17 +343,17 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM @vocabulary_database_schema.concept_ancestor ca1
-JOIN @vocabulary_database_schema.concept c1
+FROM devv5.concept_ancestor ca1
+JOIN devv5.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN @vocabulary_database_schema.concept_relationship cr1
+JOIN devv5.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN @vocabulary_database_schema.concept c2
+JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    FROM dev_covid19.concept_phenotypes
+    WHERE phenotype = 'Chronic cardiac disease'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -403,3 +405,5 @@ ORDER BY source_code,
          domain_id,
          vocabulary_id
 ;
+
+ */

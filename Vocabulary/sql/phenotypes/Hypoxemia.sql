@@ -1,29 +1,31 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Hypoxemia'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Hypoxemia'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'inclusion', c.*
+SELECT 'Hypoxemia', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-317009,	--	195967001	Condition	Asthma	SNOMED
-4308356,	--	390798007	Condition	Asthma finding	SNOMED
-4170900,	--	41997000	Condition	Asthmatic pulmonary alveolitis	SNOMED
-4279553,	--	367542003	Condition	Eosinophilic asthma	SNOMED
-4123254,	--	233690008	Condition	Factitious asthma	SNOMED
-2101899,	--	1039F	Observation	Intermittent asthma (Asthma)	CPT4
-2101898,	--	1038F	Observation	Persistent asthma (mild, moderate or severe) (Asthma)	CPT4
-4293734,	--	401193004	Observation	Asthma confirmed	SNOMED
-4235703 	--	406162001	Observation	Asthma management	SNOMED
+437390,	--	389087006	Condition	Hypoxemia	SNOMED
+3027801,	--	2703-7	Measurement	Oxygen [Partial pressure] in Arterial blood	LOINC
+3016502,	--	2708-6	Measurement	Oxygen saturation in Arterial blood	LOINC
+40762499,	--	59408-5	Measurement	Oxygen saturation in Arterial blood by Pulse oximetry	LOINC
+42869607,	--	71852-8	Measurement	Oxygen saturation [Pure mass fraction] in Arterial blood	LOINC
+4103460,	--	25579001	Measurement	Oxygen measurement, partial pressure, arterial	SNOMED
+4013965,	--	113080007	Measurement	Oxygen saturation measurement, arterial	SNOMED
+40483579,	--	442476006	Observation	Arterial oxygen saturation	SNOMED
+44813869,	--	852651000000100	Observation	Maximum peripheral oxygen saturation	SNOMED
+44810014,	--	866661000000106	Observation	Peripheral blood oxygen saturation on room air at rest	SNOMED
+4196147 	--	431314004	Observation	Peripheral oxygen saturation	SNOMED
 
     )
 ;
@@ -31,7 +33,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Hypoxemia'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -39,7 +41,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Hypoxemia'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -65,7 +67,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Hypoxemia'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -116,7 +118,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Hypoxemia'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -171,13 +173,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Hypoxemia'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma',
+SELECT 'Hypoxemia',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -187,14 +189,14 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Asthma'
+        (c.concept_name ~* 'Hypoxemia|saturation'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Poisoning|adverse|suspected|monitoring|history|test|asses|monitor|Underdosing|limit|FH|Seen'
+--        AND c.concept_name !~* 'Haemophilus'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Survey', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -215,7 +217,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                WHERE phenotype = 'Hypoxemia'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -236,7 +238,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Asthma'
+                WHERE phenotype = 'Hypoxemia'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -248,18 +250,37 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Hypoxemia'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Asthma', 'exclusion', c.*
+SELECT 'Hypoxemia', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4036799,	--	162660004	Condition	Asthma resolved	SNOMED
-4085315	--	185728001	Observation	Attends asthma monitoring	SNOMED
+4301266,	--	78590007	Condition	Acute mountain sickness	SNOMED
+4181451,	--	42883007	Condition	Anoxia due to high altitude	SNOMED
+4319147,	--	95837007	Condition	Central cyanosis	SNOMED
+4132742,	--	12770006	Condition	Cyanotic congenital heart disease	SNOMED
+4223384,	--	84260001	Condition	Hemoglobinopathy with cyanosis	SNOMED
+4159144,	--	371067004	Condition	Hepatopulmonary syndrome	SNOMED
+37019089,	--	713890008	Condition	Hypoxemia during surgery	SNOMED
+443618,	--	431335002	Condition	Neonatal hypoxemia	SNOMED
+4038391,	--	162742005	Condition	O/E - central cyanosis	SNOMED
+43021850,	--	288581000119102	Condition	Sleep related hypoxemia	SNOMED
+4266055,	--	62369005	Condition	Subacute mountain sickness	SNOMED
+2212350,	--	82810	Measurement	Gases, blood, O2 saturation only, by direct measurement, except pulse oximetry	CPT4
+4133041,	--	279068008	Measurement	Invasive oximetry	SNOMED
+2106218,	--	3037F	Observation	Oxygen saturation greater than 88% or PaO2 greater than 55 mm Hg (COPD)	CPT4
+36685446,	--	1097821000000100	Observation	Arterial oxygen saturation on supplemental oxygen at rest	SNOMED
+44809213,	--	852661000000102	Observation	Minimum peripheral oxygen saturation	SNOMED
+44810016,	--	866701000000100	Observation	Peripheral blood oxygen saturation on supplemental oxygen at rest	SNOMED
+44810017,	--	866721000000109	Observation	Peripheral blood oxygen saturation on supplemental oxygen on exertion	SNOMED
+44809212,	--	852641000000103	Observation	Target peripheral oxygen saturation	SNOMED
+2313984 	--	93924	Procedure	Noninvasive physiologic studies of lower extremity arteries, at rest and following treadmill stress testing, (ie, bidirectional Doppler waveform or volume plethysmography recording and analysis at rest with ankle/brachial indices immediately after and at	CPT4
+
 
     )
 ;
@@ -267,7 +288,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Hypoxemia'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -275,7 +296,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Asthma'
+WHERE phenotype = 'Hypoxemia'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -301,7 +322,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Hypoxemia'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -351,7 +372,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Asthma'
+    WHERE phenotype = 'Hypoxemia'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
