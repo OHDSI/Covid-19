@@ -1,18 +1,18 @@
 --reset phenotype concept list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Invasive ventilation'
 ;
 
 --reset Standard concepts Included list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Invasive ventilation'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Invasive ventilation', 'inclusion', c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
 2008006,	--	96.7	Procedure	Other continuous invasive mechanical ventilation	ICD9Proc
@@ -24,7 +24,7 @@ WHERE c.concept_id IN (
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Invasive ventilation'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -32,7 +32,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Invasive ventilation'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
@@ -49,16 +49,16 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Invasive ventilation'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
@@ -67,7 +67,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -100,16 +100,16 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Invasive ventilation'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
@@ -118,7 +118,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 
@@ -164,24 +164,24 @@ ORDER BY source_code,
 ;
 
 --reset uncovered concept list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Invasive ventilation'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Invasive ventilation',
        'not_mapped',
        c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'invasive ventilation|invasive respiratory|endotracheal vent'
+        (c.concept_name ~* 'invasive vent|invasive resp|endotracheal vent'
 
         --Masks to exclude
         AND c.concept_name !~* 'Non(-)?invasive'
@@ -190,7 +190,7 @@ WHERE (
 
         AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
-        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon') --exclude useless vocabularies
+        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
         AND NOT (c.concept_class_id ~* 'Hierarchy|chapter' AND c.vocabulary_id NOT IN ('EDI', 'KCD7')) --exclude hierarchical concept_classes
         AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD')) --exclude pre-release ICD10CM codes
@@ -198,17 +198,17 @@ WHERE (
     )
     AND NOT EXISTS ( --exclude what is already mapped to Included/Excluded parents (except 'EDI', 'KCD7')
             SELECT 1
-            FROM devv5.concept_ancestor ca1
-            JOIN devv5.concept c1
+            FROM @vocabulary_database_schema.concept_ancestor ca1
+            JOIN @vocabulary_database_schema.concept c1
                 ON ca1.descendant_concept_id = c1.concept_id
-            JOIN devv5.concept_relationship cr1
+            JOIN @vocabulary_database_schema.concept_relationship cr1
                 ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-            JOIN devv5.concept c2
+            JOIN @vocabulary_database_schema.concept c2
                 ON cr1.concept_id_1 = c2.concept_id
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
-                FROM dev_covid19.concept_phenotypes
+                FROM @target_database_schema.concept_phenotypes
                 WHERE phenotype = 'Invasive ventilation'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
@@ -219,17 +219,17 @@ WHERE (
         )
     AND NOT EXISTS ( --exclude what is already mapped to Included parents ('EDI', 'KCD7')
             SELECT 1
-            FROM devv5.concept_ancestor ca1
-            JOIN devv5.concept c1
+            FROM @vocabulary_database_schema.concept_ancestor ca1
+            JOIN @vocabulary_database_schema.concept c1
                 ON ca1.descendant_concept_id = c1.concept_id
-            JOIN devv5.concept_relationship cr1
+            JOIN @vocabulary_database_schema.concept_relationship cr1
                 ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-            JOIN devv5.concept c2
+            JOIN @vocabulary_database_schema.concept c2
                 ON cr1.concept_id_1 = c2.concept_id
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
-                FROM dev_covid19.concept_phenotypes
+                FROM @target_database_schema.concept_phenotypes
                 WHERE phenotype = 'Invasive ventilation'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
@@ -241,19 +241,19 @@ WHERE (
 ;
 
 --reset Standard concepts Excluded list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Invasive ventilation'
     AND criteria = 'exclusion'
 ;
 
---NOTHING TO EXCLUDE
-/*
+
 --List of Standard concepts Excluded
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Invasive ventilation', 'exclusion', c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+37116689	--	733496000	Procedure	Insertion of endotracheal ventilation catheter	SNOMED
 
     )
 ;
@@ -261,7 +261,7 @@ WHERE c.concept_id IN (
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Invasive ventilation'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -269,7 +269,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Invasive ventilation'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
@@ -286,16 +286,16 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Invasive ventilation'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
@@ -304,7 +304,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -336,16 +336,16 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Invasive ventilation'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
@@ -354,7 +354,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 

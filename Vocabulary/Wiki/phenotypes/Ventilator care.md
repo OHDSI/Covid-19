@@ -13,7 +13,7 @@ Procedure|4332501|Management of noninvasive mechanical ventilation|430191008|SNO
 Procedure|37206832|Mechanical insufflation exsufflation|787180006|SNOMED
 Procedure|4251737|Ventilator care management|410210009|SNOMED
 Procedure|44791135|Ventilatory support|231821000000109|SNOMED
-Procedure|4072633|Weaning from mechanically assisted ventilation|243174005|SNOMED
+
 
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
@@ -47,7 +47,7 @@ Procedure|4177224|Noninvasive ventilation|SNOMED|Read|7458100
 Procedure|4006318|Respiratory assist, manual|SNOMED|Read|Z6H..00; Z6H..11; Z6H..12; Z6H..13
 Procedure|44791135|Ventilatory support|SNOMED|OPCS4|Y73.3
 Procedure|44791135|Ventilatory support|SNOMED|Read|7M36300
-Procedure|4072633|Weaning from mechanically assisted ventilation|SNOMED|ICD9CM|V46.13
+
 
 
 </p>
@@ -89,7 +89,6 @@ Ventilator Treatment [not less than 96 hours] (machine translation)|96.7201|ICD9
 Invasive ventilation|E85.1|OPCS4|44790095|Invasive ventilation|226471000000101|Procedure|Procedure|SNOMED
 Non-invasive ventilation NEC|E85.2|OPCS4|4177224|Noninvasive ventilation|428311008|Procedure|Procedure|SNOMED
 Bag valve mask ventilation|E85.4|OPCS4|4139542|Bag valve mask ventilation|425447009|Procedure|Procedure|SNOMED
-Encounter for weaning from respirator [ventilator]|V46.13|ICD9CM|4072633|Weaning from mechanically assisted ventilation|243174005|Procedure|Procedure|SNOMED
 Ventilatory support|Y73.3|OPCS4|44791135|Ventilatory support|231821000000109|Procedure|Procedure|SNOMED
 Manually assisted breathing|Z6H..00|Read|4006318|Respiratory assist, manual|11140008|Procedure|Procedure|SNOMED
 Lung inflation by intermittent compression of reservoir bag|Z6H1.00|Read|4072514|Lung inflation by intermittent compression of reservoir bag|243140006|Procedure|Procedure|SNOMED
@@ -107,6 +106,7 @@ Dual pressure spontaneous ventilation support|Z6M3.00|Read|4055262|Dual pressure
 BIPAB - Bi-level positive airways pressure therapy|Z6M3.13|Read|4055262|Dual pressure spontaneous ventilation support|243142003|Procedure|Observation|SNOMED
 Nasal ventilation therapy|Z6M4.00|Read|4039924|Nasal ventilation therapy|229312009|Procedure|Observation|SNOMED
 
+
 </p>
 </details>
 
@@ -114,14 +114,25 @@ Nasal ventilation therapy|Z6M4.00|Read|4039924|Nasal ventilation therapy|2293120
 ## Not included / to be excluded from concept set:
 |domain_id|concept_id|concept_name|concept_code|voc_id|comment
 |---|---|---|---|---|---|
+Condition|4031379|Artificial ventilation finding|129896002|SNOMED
+Condition|40481547|Dependence on ventilator|444932008|SNOMED
+Condition|4021786|Fear of disconnection from ventilator|225627007|SNOMED
+Observation|4232891|Mechanical ventilation response|404997003|SNOMED
+Observation|4219858|Problem with patient ventilator|397846002|SNOMED
+Observation|4353715|Ventilator finding|250870006|SNOMED
 Procedure|2745440|Insertion of Endotracheal Airway into Trachea, Percutaneous Approach|0BH13EZ|ICD10PCS
 Procedure|2745444|Insertion of Endotracheal Airway into Trachea, Via Natural or Artificial Opening|0BH17EZ|ICD10PCS
 Procedure|2745447|Insertion of Endotracheal Airway into Trachea, Via Natural or Artificial Opening Endoscopic|0BH18EZ|ICD10PCS
 Procedure|4348300|Expired air ventilation|243180002|SNOMED
 Procedure|4107247|Inhalation anesthesia, machine system, semi-closed, no rebreathing of primary agent|30050007|SNOMED
+Procedure|44808555|Provision of mechanical ventilator|859311000000101|SNOMED
 Procedure|4006318|Respiratory assist, manual|11140008|SNOMED
 Procedure|4254108|Resuscitation with artificial respiration|74596007|SNOMED
+Procedure|4259233|Ventilator care assessment|410208007|SNOMED
+Procedure|4254905|Ventilator care education|410209004|SNOMED
 Procedure|4072633|Weaning from mechanically assisted ventilation|243174005|SNOMED
+
+
 
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
@@ -129,6 +140,7 @@ Procedure|4072633|Weaning from mechanically assisted ventilation|243174005|SNOME
 
 |domain_id|concept_id|concept_name|voc_id|source_voc_id|source_code
 |---|---|---|---|---|---|
+Condition|40481547|Dependence on ventilator|SNOMED|ICD9CM|V46.11; V46.12
 Procedure|4139542|Bag valve mask ventilation|SNOMED|OPCS4|E85.4
 Procedure|4139542|Bag valve mask ventilation|SNOMED|Read|7458300
 Procedure|4072514|Lung inflation by intermittent compression of reservoir bag|SNOMED|Read|Z6H1.00; Z6H1.11
@@ -149,6 +161,8 @@ Procedure|4072633|Weaning from mechanically assisted ventilation|SNOMED|ICD9CM|V
 Bag valve mask ventilation|7458300|Read|4139542|Bag valve mask ventilation|425447009|Procedure|Procedure|SNOMED
 Mouth to mouth ventilation|8732.00|Read|4285807|Mouth-to-mouth resuscitation|37113006|Procedure|Procedure|SNOMED
 Bag valve mask ventilation|E85.4|OPCS4|4139542|Bag valve mask ventilation|425447009|Procedure|Procedure|SNOMED
+Dependence on respirator, status|V46.11|ICD9CM|40481547|Dependence on ventilator|444932008|Clinical Finding|Condition|SNOMED
+Encounter for respirator dependence during power failure|V46.12|ICD9CM|40481547|Dependence on ventilator|444932008|Clinical Finding|Condition|SNOMED
 Encounter for weaning from respirator [ventilator]|V46.13|ICD9CM|4072633|Weaning from mechanically assisted ventilation|243174005|Procedure|Procedure|SNOMED
 Manually assisted breathing|Z6H..00|Read|4006318|Respiratory assist, manual|11140008|Procedure|Procedure|SNOMED
 Lung inflation by intermittent compression of reservoir bag|Z6H1.00|Read|4072514|Lung inflation by intermittent compression of reservoir bag|243140006|Procedure|Procedure|SNOMED

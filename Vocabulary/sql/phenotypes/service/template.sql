@@ -64,7 +64,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -115,7 +115,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 
@@ -185,9 +185,9 @@ WHERE (
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
-        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon') --exclude useless vocabularies
+        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
         AND NOT (c.concept_class_id ~* 'Hierarchy|chapter' AND c.vocabulary_id NOT IN ('EDI', 'KCD7')) --exclude hierarchical concept_classes
         AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD')) --exclude pre-release ICD10CM codes
@@ -298,7 +298,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -348,7 +348,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 

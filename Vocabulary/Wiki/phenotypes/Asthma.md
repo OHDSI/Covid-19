@@ -358,6 +358,9 @@ Pulmonary eosinophilia, not elsewhere classified|J82.x00|ICD10CN|4279553|Eosinop
 |domain_id|concept_id|concept_name|concept_code|voc_id|comment
 |---|---|---|---|---|---|
 Condition|4036799|Asthma resolved|162660004|SNOMED
+Observation|4077802|Asthma monitoring|275908000|SNOMED
+Observation|4085315|Attends asthma monitoring|185728001|SNOMED
+
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
 <p>
@@ -365,6 +368,23 @@ Condition|4036799|Asthma resolved|162660004|SNOMED
 |domain_id|concept_id|concept_name|voc_id|source_voc_id|source_code
 |---|---|---|---|---|---|
 Condition|4036799|Asthma resolved|SNOMED|Read|2126200; 212G.00
+Observation|4214588|Asthma annual review|SNOMED|Read|66YJ.00
+Observation|4214589|Asthma follow-up|SNOMED|Read|66YK.00
+Observation|4235703|Asthma management|SNOMED|Read|663U.00
+Observation|4077802|Asthma monitoring|SNOMED|Read|663..11
+Observation|4293733|Asthma monitoring by doctor|SNOMED|Read|66YR.00
+Observation|4293732|Asthma monitoring by nurse|SNOMED|Read|66YQ.00
+Observation|44805526|Asthma review using Royal College of Physicians three questions|SNOMED|Read|66Yp.00
+Observation|4085315|Attends asthma monitoring|SNOMED|Read|9OJ1.00
+Observation|4305736|Change in asthma management plan|SNOMED|Read|66Y5.00
+Observation|4056816|Further asthma - drug prevention|SNOMED|Read|8791.00
+Observation|4269009|Peak expiratory flow rate monitoring|SNOMED|HCPCS|S8110
+Observation|4269009|Peak expiratory flow rate monitoring|SNOMED|Read|66YX.00
+Observation|4294873|Peak expiratory flow rate monitoring using diary|SNOMED|Read|66YY.00; 66YY.11
+Observation|4308378|Step down change in asthma management plan|SNOMED|Read|66YA.00
+Observation|4190879|Step up change in asthma management plan|SNOMED|Read|66Y9.00
+Observation|37395677|Telehealth asthma monitoring|SNOMED|Read|66Yz500
+
 
 </p>
 </details>
@@ -376,6 +396,23 @@ Condition|4036799|Asthma resolved|SNOMED|Read|2126200; 212G.00
 |---|---|---|---|---|---|---|---|---|
 Asthma resolved|2126200|Read|4036799|Asthma resolved|162660004|Clinical Finding|Condition|SNOMED
 Asthma resolved|212G.00|Read|4036799|Asthma resolved|162660004|Clinical Finding|Condition|SNOMED
+Asthma monitoring|663..11|Read|4077802|Asthma monitoring|275908000|Procedure|Observation|SNOMED
+Asthma management plan given|663U.00|Read|4235703|Asthma management|406162001|Procedure|Observation|SNOMED
+Change in asthma management plan|66Y5.00|Read|4305736|Change in asthma management plan|390872009|Procedure|Observation|SNOMED
+Step up change in asthma management plan|66Y9.00|Read|4190879|Step up change in asthma management plan|390877003|Procedure|Observation|SNOMED
+Step down change in asthma management plan|66YA.00|Read|4308378|Step down change in asthma management plan|390878008|Procedure|Observation|SNOMED
+Asthma annual review|66YJ.00|Read|4214588|Asthma annual review|394700004|Procedure|Observation|SNOMED
+Asthma follow-up|66YK.00|Read|4214589|Asthma follow-up|394701000|Procedure|Observation|SNOMED
+Asthma review using Royal College of Physicians three questions|66Yp.00|Read|44805526|Asthma review using Royal College of Physicians three questions|754061000000100|Procedure|Observation|SNOMED
+Asthma monitoring by nurse|66YQ.00|Read|4293732|Asthma monitoring by nurse|401182001|Procedure|Observation|SNOMED
+Asthma monitoring by doctor|66YR.00|Read|4293733|Asthma monitoring by doctor|401183006|Procedure|Observation|SNOMED
+Peak expiratory flow rate monitoring|66YX.00|Read|4269009|Peak expiratory flow rate monitoring|401004000|Procedure|Observation|SNOMED
+Peak expiratory flow rate monitoring using diary|66YY.00|Read|4294873|Peak expiratory flow rate monitoring using diary|401011001|Procedure|Observation|SNOMED
+PEFR monitoring using diary|66YY.11|Read|4294873|Peak expiratory flow rate monitoring using diary|401011001|Procedure|Observation|SNOMED
+Telehealth asthma monitoring|66Yz500|Read|37395677|Telehealth asthma monitoring|715191006|Procedure|Observation|SNOMED
+Further asthma - drug prevent.|8791.00|Read|4056816|Further asthma - drug prevention|182724005|Procedure|Observation|SNOMED
+Attends asthma monitoring|9OJ1.00|Read|4085315|Attends asthma monitoring|185728001|Clinical Finding|Observation|SNOMED
+Peak expiratory flow rate (physician services)|S8110|HCPCS|4269009|Peak expiratory flow rate monitoring|401004000|Procedure|Observation|SNOMED
 
 </p>
 </details>

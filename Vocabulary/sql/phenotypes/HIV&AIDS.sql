@@ -16,7 +16,6 @@ FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
 4221489,	--	420721002	Condition	AIDS-associated disorder	SNOMED
-4013106,	--	165816005	Condition	HIV positive	SNOMED
 4083350,	--	281388009	Condition	HIV-related sclerosing cholangitis	SNOMED
 44783356,	--	699433000	Condition	Human immunodeficiency virus carrier	SNOMED
 439727,	--	86406008	Condition	Human immunodeficiency virus infection	SNOMED
@@ -74,7 +73,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -125,7 +124,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 
@@ -188,16 +187,16 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'HIV|AIDS|Human immunodeficiency|Acquired immune deficiency|acquired immunodeficiency'
+        (c.concept_name ~* 'HIV |HIV$|hiv\-inf|HIV\)|hiv\/|$AIDS| AIDS|Human immunodeficiency|Acquired immune deficiency|acquired immunodeficiency'
 
         --Masks to exclude
-        AND c.concept_name !~* 'prophylaxis|HIV-SSC|not associated with|mobility aid|viral load| test| level'
+        AND c.concept_name !~* 'prophylaxis|HIV-SSC|not associated with|mobility aid|viral load| test| level|history|contact'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
         AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Question', 'Survey', 'LOINC Method'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
-        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'MDC') --exclude useless vocabularies
+        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
         AND NOT (c.concept_class_id ~* 'Hierarchy|chapter' AND c.vocabulary_id NOT IN ('EDI', 'KCD7')) --exclude hierarchical concept_classes
         AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD')) --exclude pre-release ICD10CM codes
@@ -259,8 +258,11 @@ SELECT 'HIV&AIDS', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+4276586,	--	365866002	Condition	Finding of HIV status	SNOMED
 4295638,	--	385353004	Condition	HIV CDC category finding	SNOMED
-4295639 	--	385354005	Condition	HIV WHO class finding	SNOMED
+4013106,	--	165816005	Condition	HIV positive	SNOMED
+4295639	--	385354005	Condition	HIV WHO class finding	SNOMED
+
     )
 ;
 
@@ -309,7 +311,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -359,7 +361,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 

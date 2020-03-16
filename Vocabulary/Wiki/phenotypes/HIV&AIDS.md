@@ -4,7 +4,6 @@
 |domain_id|concept_id|concept_name|concept_code|voc_id
 |---|---|---|---|---|
 Condition|4221489|AIDS-associated disorder|420721002|SNOMED
-Condition|4013106|HIV positive|165816005|SNOMED
 Condition|4083350|HIV-related sclerosing cholangitis|281388009|SNOMED
 Condition|44783356|Human immunodeficiency virus carrier|699433000|SNOMED
 Condition|439727|Human immunodeficiency virus infection|86406008|SNOMED
@@ -13,6 +12,7 @@ Condition|40484012|Non-Hodgkin lymphoma associated with Human immunodeficiency v
 Condition|4298853|Oral hairy leukoplakia associated with HIV disease|402901009|SNOMED
 Condition|44783623|Pulmonary arterial hypertension associated with HIV infection|697904001|SNOMED
 Observation|4226787|Abnormal weight loss associated with AIDS|421695000|SNOMED
+
 
 
 <details><summary><strong>Click to expand - Mapping list</strong></summary>
@@ -43,10 +43,6 @@ Condition|37017244|Disorder of respiratory system co-occurrent with human immuno
 Condition|37017244|Disorder of respiratory system co-occurrent with human immunodeficiency virus infection|SNOMED|ICD10CN|B22.1; B22.100
 Condition|37017244|Disorder of respiratory system co-occurrent with human immunodeficiency virus infection|SNOMED|KCD7|B22.1
 Condition|46284256|HIV (human immunodeficiency virus) disease resulting in haematological and immunological abnormalities|SNOMED|Read|A788U00; AyuCB00
-Condition|4013106|HIV positive|SNOMED|ICD10|R75
-Condition|4013106|HIV positive|SNOMED|ICD10CN|R75; R75.x00
-Condition|4013106|HIV positive|SNOMED|KCD7|R75
-Condition|4013106|HIV positive|SNOMED|Read|43C3.00; 43C3.11; R109.00
 Condition|44783356|Human immunodeficiency virus carrier|SNOMED|ICD10CM|Z21
 Condition|44783356|Human immunodeficiency virus carrier|SNOMED|Read|65QA.00
 Condition|36715476|Human immunodeficiency virus complicating pregnancy childbirth and the puerperium|SNOMED|ICD10|O98.7
@@ -105,6 +101,7 @@ Observation|4226111|Cachexia associated with AIDS|SNOMED|ICD10CN|B22.2; B22.200
 Observation|4226111|Cachexia associated with AIDS|SNOMED|KCD7|B22.2
 Observation|4226111|Cachexia associated with AIDS|SNOMED|Read|A789A00
 
+
 </p>
 </details>
 
@@ -115,8 +112,6 @@ Observation|4226111|Cachexia associated with AIDS|SNOMED|Read|A789A00
 |---|---|---|---|---|---|---|---|---|
 Human immunodeficiency virus [HIV] disease|042|ICD9CM|439727|Human immunodeficiency virus infection|86406008|Clinical Finding|Condition|SNOMED
 Human immunodeficiency virus, type 2 [HIV-2]|079.53|ICD9CM|432554|Human immunodeficiency virus II infection|79019005|Clinical Finding|Condition|SNOMED
-HTLV-3 antibody positive|43C3.00|Read|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
-HIV positive|43C3.11|Read|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
 AIDS carrier|65QA.00|Read|44783356|Human immunodeficiency virus carrier|699433000|Clinical Finding|Condition|SNOMED
 Acquired immune deficiency syndrome|A788.00|Read|4267414|AIDS|62479008|Clinical Finding|Condition|SNOMED
 Acute human immunodeficiency virus infection|A788000|Read|4008081|Acute HIV infection|111880001|Clinical Finding|Condition|SNOMED
@@ -314,11 +309,6 @@ Human immunodeficiency virus [HIV] disease complicating pregnancy, third trimest
 Human immunodeficiency virus [HIV] disease complicating pregnancy, unspecified trimester|O98.719|ICD10CM|36715476|Human immunodeficiency virus complicating pregnancy childbirth and the puerperium|721166000|Clinical Finding|Condition|SNOMED
 Human immunodeficiency virus [HIV] disease complicating childbirth|O98.72|ICD10CM|45757132|Human immunodeficiency virus in mother complicating childbirth|10755671000119100|Clinical Finding|Condition|SNOMED
 Human immunodeficiency virus [HIV] disease complicating the puerperium|O98.73|ICD10CM|36715476|Human immunodeficiency virus complicating pregnancy childbirth and the puerperium|721166000|Clinical Finding|Condition|SNOMED
-[D]Laboratory evidence of human immunodeficiency virus [HIV]|R109.00|Read|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
-Laboratory evidence of human immunodeficiency virus [HIV]|R75|ICD10|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
-Laboratory evidence of human immunodeficiency virus [HIV]|R75|ICD10CN|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
-Laboratory evidence of human immunodeficiency virus[HIV]|R75|KCD7|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
-Laboratory evidence of human immunodeficiency virus [HIV]|R75.x00|ICD10CN|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
 Asymptomatic human immunodeficiency virus [HIV] infection status|V08|ICD9CM|4241530|Asymptomatic human immunodeficiency virus infection|91947003|Clinical Finding|Condition|SNOMED
 Asymptomatic human immunodeficiency virus [HIV] infection status|Z21|ICD10|4241530|Asymptomatic human immunodeficiency virus infection|91947003|Clinical Finding|Condition|SNOMED
 Asymptomatic human immunodeficiency virus [HIV] infection status|Z21|ICD10CM|4241530|Asymptomatic human immunodeficiency virus infection|91947003|Clinical Finding|Condition|SNOMED
@@ -334,14 +324,47 @@ Asymptomatic human immunodeficiency virus [HIV] infection status|Z21.x00|ICD10CN
 ## Not included / to be excluded from concept set:
 |domain_id|concept_id|concept_name|concept_code|voc_id|comment
 |---|---|---|---|---|---|
+Condition|4276586|Finding of HIV status|365866002|SNOMED
 Condition|4295638|HIV CDC category finding|385353004|SNOMED
+Condition|4013106|HIV positive|165816005|SNOMED
 Condition|4295639|HIV WHO class finding|385354005|SNOMED
 
-MAPPING LIST IS EMPTY
+
+<details><summary><strong>Click to expand - Mapping list</strong></summary>
+<p>
+
+|domain_id|concept_id|concept_name|voc_id|source_voc_id|source_code
+|---|---|---|---|---|---|
+Condition|4276586|Finding of HIV status|SNOMED|ICD10CM|R75
+Condition|4276586|Finding of HIV status|SNOMED|ICD9CM|795.71
+Condition|4013105|HIV negative|SNOMED|Read|43C2.00; 43C2.11; ZV01800
+Condition|4013106|HIV positive|SNOMED|ICD10|R75
+Condition|4013106|HIV positive|SNOMED|ICD10CN|R75; R75.x00
+Condition|4013106|HIV positive|SNOMED|KCD7|R75
+Condition|4013106|HIV positive|SNOMED|Read|43C3.00; 43C3.11; R109.00
+
+
 
 </p>
 </details>
 
+<details><summary><strong>Click to expand - Detailed Mapping list</strong></summary>
+<p>
 
+|source_code_description|source_code|source_voc_id|concept_id|concept_name|concept_code|concept_class_id|domain_id|voc_id
+|---|---|---|---|---|---|---|---|---|
+HTLV-3 antibody negative|43C2.00|Read|4013105|HIV negative|165815009|Clinical Finding|Condition|SNOMED
+HIV negative|43C2.11|Read|4013105|HIV negative|165815009|Clinical Finding|Condition|SNOMED
+HTLV-3 antibody positive|43C3.00|Read|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
+HIV positive|43C3.11|Read|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
+Nonspecific serologic evidence of human immunodeficiency virus [HIV]|795.71|ICD9CM|4276586|Finding of HIV status|365866002|Clinical Finding|Condition|SNOMED
+[D]Laboratory evidence of human immunodeficiency virus [HIV]|R109.00|Read|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
+Inconclusive laboratory evidence of human immunodeficiency virus [HIV]|R75|ICD10CM|4276586|Finding of HIV status|365866002|Clinical Finding|Condition|SNOMED
+Laboratory evidence of human immunodeficiency virus [HIV]|R75|ICD10|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
+Laboratory evidence of human immunodeficiency virus [HIV]|R75|ICD10CN|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
+Laboratory evidence of human immunodeficiency virus[HIV]|R75|KCD7|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
+Laboratory evidence of human immunodeficiency virus [HIV]|R75.x00|ICD10CN|4013106|HIV positive|165816005|Clinical Finding|Condition|SNOMED
+[V]Human immunodeficiency virus - negative|ZV01800|Read|4013105|HIV negative|165815009|Clinical Finding|Condition|SNOMED
 
-***
+</p>
+</details>

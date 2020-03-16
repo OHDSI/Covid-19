@@ -1,25 +1,33 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Muscle aches (myalgia)'
 ;
 
+--reset Standard concepts Included list
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Muscle aches (myalgia)'
+    AND criteria = 'inclusion'
+;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Intubation', 'inclusion', c.*
+SELECT 'Muscle aches (myalgia)', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-40487536,	--	447996002	Procedure	Intubation of respiratory tract	SNOMED
-765576 	--	450601000124103	Procedure	Orotracheal intubation using bougie device	SNOMED
-
+45757641,	--	28221000119103	Condition	Abdominal muscle pain	SNOMED
+4318397,	--	95421005	Condition	Intercostal myalgia	SNOMED
+4184119,	--	298292009	Condition	Pain on movement of skeletal muscle	SNOMED
+4319324,	--	95415006	Condition	Polymyalgia	SNOMED
+4318813,	--	22166009	Condition	Skeletal muscle tender	SNOMED
+4344370	--	240107001	Condition	Viral myalgia	SNOMED
     )
 ;
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Muscle aches (myalgia)'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -27,7 +35,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Muscle aches (myalgia)'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -53,7 +61,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'Muscle aches (myalgia)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -104,7 +112,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'Muscle aches (myalgia)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -157,31 +165,32 @@ ORDER BY source_code,
          vocabulary_id
 ;
 
+--reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Muscle aches (myalgia)'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Intubation',
+SELECT 'Muscle aches (myalgia)',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
-        (c.concept_code ~* '^M5859|^M0859' AND c.vocabulary_id IN ('EDI'/*, 'KCD7'*/)  ) OR
+       -- (c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Intubation'
+        (c.concept_name ~* 'Muscle ache|myalgia|Muscle pain|pain in Muscle|ache in Muscle|Eosinophilia'
 
         --Masks to exclude
-        AND c.concept_name !~* 'colon|ileum|duodenal|duct|ureteric|stent|lacrimal|bowel|esophag|duoden|gastrointestinal|rectum|stomach|ileum|jejunum|intestin|Conjunctiva|Gastric|eustachian'
+        AND c.concept_name !~* 'Fibromyalgia|rheum|myositis'
 
-        AND c.domain_id IN (/*'Condition', 'Observation',*/'Procedure' /*,'Measurement'*/) --adjust Domains of interest
+        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -202,7 +211,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Intubation'
+                WHERE phenotype = 'Muscle aches (myalgia)'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -223,7 +232,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Intubation'
+                WHERE phenotype = 'Muscle aches (myalgia)'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -233,32 +242,35 @@ WHERE (
         )
 ;
 
-
+--reset Standard concepts Excluded list
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Muscle aches (myalgia)'
+    AND criteria = 'exclusion'
+;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Intubation', 'exclusion', c.*
+SELECT 'Muscle aches (myalgia)', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4168966,	--	419991009	Observation	Endotracheal tube present	SNOMED
-2108641,	--	41140	Procedure	Glossectomy; complete or total, with or without tracheostomy, without radical neck dissection	CPT4
-2108642,	--	41145	Procedure	Glossectomy; complete or total, with or without tracheostomy, with unilateral radical neck dissection	CPT4
-2106470,	--	31502	Procedure	Tracheotomy tube change prior to establishment of fistula tract	CPT4
-2106642,	--	31730	Procedure	Transtracheal (percutaneous) introduction of needle wire dilator/stent or indwelling tube for oxygen therapy	CPT4
-4331311,	--	2267008	Procedure	Changing tracheostomy tube	SNOMED
-4337048,	--	232686001	Procedure	Insertion of tracheal T-tube	SNOMED
-4337047,	--	232685002	Procedure	Insertion of tracheostomy tube	SNOMED
-4337046,	--	232684003	Procedure	Minitrach insertion	SNOMED
-4149878 	--	30963003	Procedure	Transglottic catheterization of trachea	SNOMED
-
+195464,	--	83264000	Condition	Epidemic pleurodynia	SNOMED
+4126064,	--	288232008	Condition	Myalgia/myositis - ankle/foot	SNOMED
+4125938,	--	288228002	Condition	Myalgia/myositis - forearm	SNOMED
+4121934,	--	288229005	Condition	Myalgia/myositis - hand	SNOMED
+4125939,	--	288231001	Condition	Myalgia/myositis - lower leg	SNOMED
+4125937,	--	288225004	Condition	Myalgia/myositis - multiple	SNOMED
+4121935,	--	288230000	Condition	Myalgia/myositis -pelvis/thigh	SNOMED
+4121597,	--	288226003	Condition	Myalgia/myositis - shoulder	SNOMED
+4121598,	--	288227007	Condition	Myalgia/myositis - upper arm	SNOMED
+37016663	--	712752004	Condition	Myalgia of pelvic floor	SNOMED
     )
 ;
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Muscle aches (myalgia)'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -266,7 +278,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Intubation'
+WHERE phenotype = 'Muscle aches (myalgia)'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -292,7 +304,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'Muscle aches (myalgia)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -342,7 +354,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Intubation'
+    WHERE phenotype = 'Muscle aches (myalgia)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
