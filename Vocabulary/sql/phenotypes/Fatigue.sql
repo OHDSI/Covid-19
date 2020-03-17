@@ -14,7 +14,14 @@ INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Fatigue', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-4223659	--	84229001	Condition	Fatigue	SNOMED
+437113,	--	13791008	Condition	Asthenia	SNOMED
+4223659,	--	84229001	Condition	Fatigue	SNOMED
+439926,	--	271795006	Condition	Malaise and fatigue	SNOMED
+4214612,	--	80449002	Condition	Muscle fatigue	SNOMED
+4012382,	--	162236007	Condition	Weakness present	SNOMED
+40766817,	--	64101-9	Observation	Fatigue --resting	LOINC
+40768638	--	65953-2	Observation	Loss of energy or fatigue [DI-PAD]	LOINC
+
 --Put concept_ids here
     )
 ;
@@ -178,10 +185,10 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Fatigue|Asthenia|Tired|Exhaustion'
+        (c.concept_name ~* 'Fatigue|Asthenia|Tired|Exhaustion|weakness'
 
         --Masks to exclude
-         AND c.concept_name !~* 'myasthenia|promis|facit|retired|neuroqol|pregnancy|fracture|heat'
+         AND c.concept_name !~* 'myasthenia|promis|facit|retired|neuroqol|pregnancy|fracture|heat|stroke'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -248,12 +255,17 @@ INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Fatigue', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
+36686942,	--	15634971000119107	Condition	Bilateral weakness of upper limbs	SNOMED
 37396808,	--	716749005	Condition	Cancer-related fatigue	SNOMED
 432738,	--	52702003	Condition	Chronic fatigue syndrome	SNOMED
+4219363,	--	82022002	Condition	Congenital debility of fetus	SNOMED
 4221911,	--	420900006	Condition	Fatigue associated with AIDS	SNOMED
 37205051,	--	784317004	Condition	Fatigue due to chemotherapy	SNOMED
 37205052,	--	784318009	Condition	Fatigue due to radiation therapy	SNOMED
-40481844	--	442099003	Condition	Psychogenic fatigue	SNOMED
+45772721,	--	704369007	Condition	Fatigue due to treatment	SNOMED
+40481844,	--	442099003	Condition	Psychogenic fatigue	SNOMED
+44782753	--	148871000119109	Condition	Weakness as a late effect of stroke	SNOMED
+
 --Put concept_ids here
     )
 ;
