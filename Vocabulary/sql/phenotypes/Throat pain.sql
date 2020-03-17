@@ -14,7 +14,8 @@ INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Throat pain', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-259153	--	162397003	Condition	Pain in throat	SNOMED
+259153,	--	162397003	Condition	Pain in throat	SNOMED
+4036632	--	162388002	Observation	Has a sore throat	SNOMED
 
 --Put concept_ids here
     )
@@ -179,7 +180,7 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Throat pain|sore throat|pain in throat'
+        (c.concept_name ~* 'Throat pain|sore throat|(pain).*(throat)'
 
         --Masks to exclude
          AND c.concept_name !~* 'streptococcal|no sore'
@@ -250,6 +251,7 @@ SELECT 'Throat pain', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+28060	--	43878008	Condition	Streptococcal sore throat	SNOMED
 
     )
 ;
