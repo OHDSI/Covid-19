@@ -177,7 +177,7 @@ FROM @vocabulary_database_schema.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
-        --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
+        (c.concept_code ~* '^M0040' AND c.vocabulary_id IN ('EDI'/*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
         (c.concept_name ~* 'Oxygen'

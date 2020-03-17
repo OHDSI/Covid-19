@@ -15,11 +15,13 @@ SELECT 'Tachypnea', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+4061901,	--	162913005	Condition	O/E - rate of respiration	SNOMED
 4060445,	--	162916002	Condition	O/E - tachypnea	SNOMED
+4021769,	--	106049001	Condition	Respiratory rate AND/OR rhythm finding	SNOMED
 317376,	--	271823003	Condition	Tachypnea	SNOMED
 1175625,	--	76528-9	Measurement	Breath rate spontaneous	LOINC
 3024171,	--	9279-1	Measurement	Respiratory rate	LOINC
-4313591 	--	86290005	Measurement	Respiratory rate	SNOMED
+4313591	--	86290005	Measurement	Respiratory rate	SNOMED
 
     )
 ;
@@ -183,7 +185,7 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Tachypnea|Respiratory rate|Breathing rate'
+        (c.concept_name ~* 'Tachypnea|(Resp).*(rate)|(Breath).*(rate)|(rate).*(Breath)|(rate).*(Resp)'
 
         --Masks to exclude
         AND c.concept_name !~* 'score'
@@ -256,9 +258,12 @@ WHERE c.concept_id IN (
 --Put concept_ids here
 4061902,	--	162914004	Condition	O/E-rate of respiration normal	SNOMED
 4060716,	--	162915003	Condition	O/E - rate of respiration slow	SNOMED
+4147815,	--	268381001	Condition	Respiratory flow rate abnormal	SNOMED
+4151895,	--	268380000	Condition	Respiratory flow rate normal	SNOMED
 4325522,	--	430390000	Condition	Sleep-related neurogenic tachypnea	SNOMED
-321683  	--	7550008	Condition	Transitory tachypnea of newborn	SNOMED
-
+321683,	--	7550008	Condition	Transitory tachypnea of newborn	SNOMED
+4277350,	--	366154003	Observation	Respiratory flow rate - finding	SNOMED
+4155643	--	284017001	Observation	Respiratory rate monitoring	SNOMED
     )
 ;
 

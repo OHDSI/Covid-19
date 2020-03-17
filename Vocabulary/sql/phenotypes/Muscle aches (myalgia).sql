@@ -183,10 +183,10 @@ WHERE (
        -- (c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Muscle ache|myalgia|Muscle pain|pain in Muscle|ache in Muscle'
+        (c.concept_name ~* 'Muscle ache|myalgia|Muscle pain|pain in Muscle|ache in Muscle|aches in Muscle|pain Muscle|ache Muscle|aches Muscle|(musc).+(pain)|(pain).+(musc)'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Fibromyalgia|rheum|myositis|Eosinophilia'
+        AND c.concept_name !~* 'Fibromyalgia|rheum|myositis|Eosinophilia|Chronic'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 

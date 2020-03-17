@@ -181,10 +181,10 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Common cold|Influenza-like'
+        (c.concept_name ~* '(flu).*(sympt)|(cold).*(symp)|(symp).*(cold)|(symp).*(flu)'
 
         --Masks to exclude
-        AND c.concept_name !~* 'poisoning|vaccination|anti-common'
+        AND c.concept_name !~* 'poisoning|vaccination|anti-common|Fluid|Aspiration|Flushes'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -257,7 +257,9 @@ WHERE c.concept_id IN (
 4183609,	--	43692000	Condition	Influenzal acute upper respiratory infection	SNOMED
 4112664,	--	195923003	Condition	Influenza with laryngitis	SNOMED
 4110512,	--	195924009	Condition	Influenza with pharyngitis	SNOMED
-46273463 	--	10685111000119102	Condition	Upper respiratory tract infection due to Influenza	SNOMED
+46273463,	--	10685111000119102	Condition	Upper respiratory tract infection due to Influenza	SNOMED
+4036774,	--	162479007	Observation	Cold aggravates symptom	SNOMED
+4038211	--	162490002	Observation	Cold relieves symptom	SNOMED
 
     )
 ;
