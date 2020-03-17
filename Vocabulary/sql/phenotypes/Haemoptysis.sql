@@ -171,8 +171,6 @@ WHERE phenotype = 'Haemophtysis'
     AND criteria = 'not_mapped'
 ;
 
---NOT NEEDED
-/*
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Haemophtysis',
@@ -185,7 +183,7 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Haemophtysis|hemophtysis|(blood).*(sputum)|(blood).*(cough)'
+        (c.concept_name ~* 'Haemophtysis|hemophtysis|(blood).*(sputum|cough)|(sputum|cough).*(blood)'
 
         --Masks to exclude
 --          AND c.concept_name !~* 'streptococcal|no sore'
@@ -256,6 +254,8 @@ SELECT 'Haemophtysis', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+4043777,	--	168000008	Condition	Sputum: blood cells present	SNOMED
+4148736	--	270031000	Condition	Sputum: contains blood	SNOMED
 
     )
 ;

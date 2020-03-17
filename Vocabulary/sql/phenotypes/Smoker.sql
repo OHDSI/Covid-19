@@ -187,10 +187,10 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'smok'
+        (c.concept_name ~* 'smok|Tobac'
 
         --Masks to exclude
-         AND c.concept_name !~* 'cessat|stop|risk|ex-|ex |non-|former|asthma|alarm|expos|quit|phenx|history|assault|activit|never|toxic|status|meat|\[|habit|Intentional'
+         AND c.concept_name !~* 'cessat|stop|risk|ex-|ex |non-|former|asthma|alarm|expos|quit|phenx|history|assault|activit|never|toxic|status|meat|\[|habit|Intentional|Streptobacillosis|Sepsis'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 

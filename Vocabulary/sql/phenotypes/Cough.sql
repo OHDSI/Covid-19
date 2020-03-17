@@ -254,14 +254,19 @@ WHERE c.concept_id IN (
 4188217,	--	46789001	Condition	Cough after eating	SNOMED
 4010220,	--	208136003	Condition	Cough fracture of ribs	SNOMED
 4048218,	--	123819004	Condition	Cough reflex absent	SNOMED
+4278453,	--	366123002	Condition	Cough reflex finding	SNOMED
 4126096,	--	289965001	Condition	Croupy cough	SNOMED
 4275649,	--	366124008	Condition	Finding related to ability to cough	SNOMED
 4269800,	--	62548007	Condition	Nocturnal cough	SNOMED
+4099940,	--	191954008	Condition	Psychogenic cough	SNOMED
 44789249,	--	200151000000106	Condition	Reflux cough	SNOMED
 4263877,	--	46802002	Condition	Smokers' cough	SNOMED
 4086815,	--	248594007	Condition	Tracheal esophageal fistula cough	SNOMED
-3199166	--	12730001000004103	Observation	Cough due to ACE inhibitor	Nebraska Lexicon
-
+3199166,	--	12730001000004103	Observation	Cough due to ACE inhibitor	Nebraska Lexicon
+4087179,	--	248592006	Observation	Character of cough	SNOMED
+35626060,	--	769210005	Observation	Cough strength	SNOMED
+4059019,	--	161928008	Observation	Night cough absent	SNOMED
+4059018	--	161927003	Observation	Night cough present	SNOMED
 --Put concept_ids here
 
     )
