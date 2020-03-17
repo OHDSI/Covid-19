@@ -14,7 +14,16 @@ INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Smoker', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-4298794	--	77176002	Observation	Smoker	SNOMED
+2101895,	--	1034F	Observation	Current tobacco smoker (CAD, CAP, COPD, PV) (DM)	CPT4
+2617854,	--	G8455	Observation	Current tobacco smoker	HCPCS
+3004518,	--	8663-7	Observation	Cigarettes smoked current (pack per day) - Reported	LOINC
+40766945,	--	64234-8	Observation	Current smoker	LOINC
+40766362,	--	63638-1	Observation	Smoking status [FTND]	LOINC
+43054909,	--	72166-2	Observation	Tobacco smoking status	LOINC
+21494888,	--	81229-7	Observation	Tobacco smoking status for tobacco smoker	LOINC
+4298794,	--	77176002	Observation	Smoker	SNOMED
+42709996 	--	449868002	Observation	Smokes tobacco daily	SNOMED
+
 --Put concept_ids here
     )
 ;
@@ -181,7 +190,7 @@ WHERE (
         (c.concept_name ~* 'smok'
 
         --Masks to exclude
-         AND c.concept_name !~* 'cessat|stop|risk|ex-|ex |non-|former|asthma|alarm|expos|quit|phenx|history|assault|activit|never|toxic|status|meat|\[|habit'
+         AND c.concept_name !~* 'cessat|stop|risk|ex-|ex |non-|former|asthma|alarm|expos|quit|phenx|history|assault|activit|never|toxic|status|meat|\[|habit|Intentional'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -249,6 +258,13 @@ SELECT 'Smoker', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+4126918,	--	235033006	Condition	Smokers keratosis	SNOMED
+4028286,	--	10729003	Condition	Smoker's respiratory syndrome	SNOMED
+4026923,	--	225934006	Condition	Smokes in bed	SNOMED
+2101896,	--	1035F	Observation	Current smokeless tobacco user (eg, chew, snuff) (PV)	CPT4
+2617855,	--	G8456	Observation	Current smokeless tobacco user	HCPCS
+37395605,	--	428041000124106	Observation	Occasional tobacco smoker	SNOMED
+4184633 	--	43381005	Observation	Passive smoker	SNOMED
 
     )
 ;
