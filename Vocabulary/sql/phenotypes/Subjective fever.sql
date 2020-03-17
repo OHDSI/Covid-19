@@ -1,18 +1,18 @@
 --reset phenotype concept list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
 ;
 
 --reset Standard concepts Included list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Subjective fever', 'inclusion', c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 4191039,    --	373904004	Condition	Feels hot/feverish	SNOMED
 4153285     --	271399003	Condition	Temperature symptoms	SNOMED
@@ -22,7 +22,7 @@ WHERE c.concept_id IN (
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -30,7 +30,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
@@ -47,16 +47,16 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Subjective fever'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
@@ -98,16 +98,16 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Subjective fever'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
@@ -162,24 +162,24 @@ ORDER BY source_code,
 ;
 
 --reset uncovered concept list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Subjective fever',
        'not_mapped',
        c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'subjective fever|feverish|feels fever|high body temperature|subjective pyrexia'
+        (c.concept_name ~* '(subjective|feel).*(fever)|(fever).*(subjective|feel)|feverish|(subjective|feel).*(fever)|(fever).*(subjective|feel)|(high).*(temp)|(temp).*(high)|(subjective|feel).*(pyrexia)|(pyrexia).*(subjective|feel)'
 
         --Masks to exclude
          AND c.concept_name !~* 'traffic'
@@ -196,17 +196,17 @@ WHERE (
     )
     AND NOT EXISTS ( --exclude what is already mapped to Included/Excluded parents (except 'EDI', 'KCD7')
             SELECT 1
-            FROM devv5.concept_ancestor ca1
-            JOIN devv5.concept c1
+            FROM @vocabulary_database_schema.concept_ancestor ca1
+            JOIN @vocabulary_database_schema.concept c1
                 ON ca1.descendant_concept_id = c1.concept_id
-            JOIN devv5.concept_relationship cr1
+            JOIN @vocabulary_database_schema.concept_relationship cr1
                 ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-            JOIN devv5.concept c2
+            JOIN @vocabulary_database_schema.concept c2
                 ON cr1.concept_id_1 = c2.concept_id
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
-                FROM dev_covid19.concept_phenotypes
+                FROM @target_database_schema.concept_phenotypes
                 WHERE phenotype = 'Subjective fever'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
@@ -217,17 +217,17 @@ WHERE (
         )
     AND NOT EXISTS ( --exclude what is already mapped to Included parents ('EDI', 'KCD7')
             SELECT 1
-            FROM devv5.concept_ancestor ca1
-            JOIN devv5.concept c1
+            FROM @vocabulary_database_schema.concept_ancestor ca1
+            JOIN @vocabulary_database_schema.concept c1
                 ON ca1.descendant_concept_id = c1.concept_id
-            JOIN devv5.concept_relationship cr1
+            JOIN @vocabulary_database_schema.concept_relationship cr1
                 ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-            JOIN devv5.concept c2
+            JOIN @vocabulary_database_schema.concept c2
                 ON cr1.concept_id_1 = c2.concept_id
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
-                FROM dev_covid19.concept_phenotypes
+                FROM @target_database_schema.concept_phenotypes
                 WHERE phenotype = 'Subjective fever'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
@@ -239,15 +239,15 @@ WHERE (
 ;
 
 --reset Standard concepts Excluded list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Subjective fever', 'exclusion', c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 4048097	--	135882008	Condition	Feverish cold	SNOMED
 --Put concept_ids here
@@ -257,7 +257,7 @@ WHERE c.concept_id IN (
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -265,7 +265,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
@@ -282,16 +282,16 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Subjective fever'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
@@ -332,16 +332,16 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Subjective fever'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL

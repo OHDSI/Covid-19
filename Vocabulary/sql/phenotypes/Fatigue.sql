@@ -185,7 +185,7 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Fatigue|Asthenia|Tired|Exhaustion|weakness'
+        (c.concept_name ~* 'Fatigue|Asthenia|Tired|Exhaustion|weakness|Astenia'
 
         --Masks to exclude
          AND c.concept_name !~* 'myasthenia|promis|facit|retired|neuroqol|pregnancy|fracture|heat|stroke'

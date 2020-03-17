@@ -180,7 +180,7 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'peritoneal dialysis'
+        (c.concept_name ~* '(peritoneal).*(dialysis)|(dialysis).*(peritoneal)'
 
         --Masks to exclude
          AND c.concept_name !~* 'infect'

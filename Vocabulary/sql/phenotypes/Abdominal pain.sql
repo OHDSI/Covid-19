@@ -198,7 +198,7 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Abdominal pain|stomach ache'
+        (c.concept_name ~* '(Abdom|stomach).*(pain|ache)|(pain|ache).*(Abdom|stomach)'
 
         --Masks to exclude
          AND c.concept_name !~* 'pregnancy|puerperal|no abd|abortion|\['

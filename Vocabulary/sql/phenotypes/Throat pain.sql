@@ -180,10 +180,10 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Throat pain|sore throat|(pain).*(throat)'
+        (c.concept_name ~* '(pain|ache|sore).*(throat|guttur|larynx|pharynx)|(throat|guttur|larynx|pharynx).*(pain|ache|sore)'
 
         --Masks to exclude
-         AND c.concept_name !~* 'streptococcal|no sore'
+         AND c.concept_name !~* 'streptococcal|no sore|trachea'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 

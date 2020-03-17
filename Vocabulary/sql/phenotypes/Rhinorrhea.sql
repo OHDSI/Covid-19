@@ -17,8 +17,10 @@ WHERE c.concept_id IN (
 4079304,	--	277233008	Condition	Anterior rhinorrhea	SNOMED
 4274037,	--	64611009	Condition	Catarrhal nasal discharge	SNOMED
 4276172,	--	64531003	Condition	Nasal discharge	SNOMED
+4039275,	--	164182009	Condition	O/E - nasal discharge	SNOMED
 4039276,	--	164184005	Condition	O/E - rhinorrhea	SNOMED
-257683	--	75803007	Condition	Posterior rhinorrhea	SNOMED
+257683,	--	75803007	Condition	Posterior rhinorrhea	SNOMED
+4149990	--	267101005	Observation	Nasal discharge present	SNOMED
 
 
 --Put concept_ids here
@@ -184,10 +186,10 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Rhinorrhea|Runny nose|nasal discharge'
+        (c.concept_name ~* 'Rhinorr|(Run).*(nose|nasal)|(nose|nasal).*(Run)|(nasal|nose).*(discharge)|(discharge).*(nasal|nose)'
 
         --Masks to exclude
-         AND c.concept_name !~* 'cerebrospinal|purulent|hemorrhag|no nasal|absent'
+         AND c.concept_name !~* 'cerebrospinal|purulent|hemorrhag|no nasal|absent|furuncle|lymphoma'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -255,6 +257,7 @@ SELECT 'Rhinorrhea', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+4144475	--	306657002	Observation	Discharge from ear, nose and throat service	SNOMED
 
     )
 ;
