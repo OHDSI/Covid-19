@@ -21,7 +21,6 @@ WHERE c.concept_id IN (
 4161687,	--	398032003	Condition	Loose stool	SNOMED
 4301078,	--	386260000	Observation	Diarrhea care	SNOMED
 4237463 	--	408874007	Procedure	Diarrhea care management	SNOMED
-
     )
 ;
 
@@ -184,10 +183,10 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Diarrhea|Loose stool'
+        (c.concept_name ~* 'Diarrh|Loose stool'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Poisoning'
+        AND c.concept_name !~* 'Poisoning|Adverse|Underdosing'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -285,8 +284,8 @@ WHERE c.concept_id IN (
 201780,	--	36188001	Condition	Shigellosis	SNOMED
 4221087,	--	39963006	Condition	Toddler diarrhea	SNOMED
 4038666,	--	11840006	Condition	Traveler's diarrhea	SNOMED
-45766285	--	703406006	Condition	Trichohepatoenteric syndrome	SNOMED
-
+45766285,	--	703406006	Condition	Trichohepatoenteric syndrome	SNOMED
+4012192	--	162104009	Observation	Diarrhea not present	SNOMED
     )
 ;
 

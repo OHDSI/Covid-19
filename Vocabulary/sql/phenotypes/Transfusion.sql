@@ -15,8 +15,7 @@ SELECT 'Transfusion', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4024656	--	116859006	Procedure	Transfusion of blood product	SNOMED
-
+4182536	--	5447007	Procedure	Transfusion	SNOMED
     )
 ;
 
@@ -250,9 +249,15 @@ SELECT 'Transfusion', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+4097740,	--	250373003	Condition	Blood transfusion finding	SNOMED
 440603,	--	82545002	Condition	Blood transfusion reaction	SNOMED
+4129833,	--	237298009	Condition	Maternofetal transfusion	SNOMED
 37312163,	--	789667003	Condition	Phlebitis following transfusion	SNOMED
 4021755,	--	10593005	Condition	Posttransfusion state	SNOMED
+4140041,	--	305950005	Observation	Referral by blood transfusion doctor	SNOMED
+4127753,	--	306267004	Observation	Referral to blood transfusion doctor	SNOMED
+4141573,	--	306145007	Observation	Referral to blood transfusion service	SNOMED
+4037761,	--	117615005	Observation	Report of transfusion reaction	SNOMED
 2108133,	--	36460	Procedure	Transfusion, intrauterine, fetal	CPT4
 2211782,	--	76941	Procedure	Ultrasonic guidance for intrauterine fetal transfusion or cordocentesis, imaging supervision and interpretation	CPT4
 44513683,	--	R04.3	Procedure	Percutaneous blood transfusion of fetus	OPCS4
@@ -264,7 +269,6 @@ WHERE c.concept_id IN (
 4163524,	--	45460008	Procedure	Intrauterine transfusion	SNOMED
 4050859,	--	233560009	Procedure	Percutaneous intraperitoneal fetal blood transfusion	SNOMED
 4049842	--	233561008	Procedure	Percutaneous intravascular fetal blood transfusion	SNOMED
-
     )
 ;
 
