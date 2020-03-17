@@ -14,7 +14,16 @@ INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Obesity', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-433736	--	414916001	Condition	Obesity	SNOMED
+36715355,	--	720987001	Condition	Aniridia, ptosis, intellectual disability, familial obesity syndrome	SNOMED
+433736,	--	414916001	Condition	Obesity	SNOMED
+35623139,	--	765471005	Condition	X-linked intellectual disability, hypogonadism, ichthyosis, obesity, short stature syndrome	SNOMED
+3038553,	--	39156-5	Measurement	Body mass index (BMI) [Ratio]	LOINC
+44783982,	--	698094009	Measurement	Measurement of body mass index	SNOMED
+4245997,	--	60621009	Observation	Body mass index	SNOMED
+4060985,	--	162864005	Observation	Body mass index 30+ - obesity	SNOMED
+4256640,	--	408512008	Observation	Body mass index 40+ - severely obese	SNOMED
+4037679 	--	162690006	Observation	O/E - obese	SNOMED
+
 --Put concept_ids here
     )
 ;
@@ -178,12 +187,12 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Obesity|Adiposity|Fatness|Overweight'
+        (c.concept_name ~* 'Obesity|Adiposity|Fatness|Overweight|BMI|Body Mass Index'
 
         --Masks to exclude
-         AND c.concept_name !~* 'intervention'
+         AND c.concept_name !~* 'intervention|score|monitoring|treatment of|child|medicine|fetal'
 
-        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
+        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ ,'Measurement') --adjust Domains of interest
 
         AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer', 'Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
@@ -249,6 +258,17 @@ SELECT 'Obesity', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+45766204,	--	703316004	Condition	Lymphedema associated with obesity	SNOMED
+4176962,	--	363247006	Condition	Obesity associated disorder	SNOMED
+44789321,	--	198181000000102	Condition	Obesity resolved	SNOMED
+4081038,	--	276792008	Condition	Pulmonary hypertension with extreme obesity	SNOMED
+4060705,	--	162863004	Observation	Body mass index 25-29 - overweight	SNOMED
+4062199,	--	170795002	Observation	Follow-up obesity assessment	SNOMED
+4062198,	--	170794003	Observation	Initial obesity assessment	SNOMED
+4152039,	--	268522006	Observation	Obesity monitoring	SNOMED
+4175214,	--	275947003	Observation	O/E - overweight	SNOMED
+437525,	--	238131007	Observation	Overweight	SNOMED
+44807968 	--	838441000000103	Observation	Target body mass index	SNOMED
 
     )
 ;
