@@ -179,14 +179,14 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Cough'
+        (c.concept_name ~* 'Cough|tussis|bark'
 
         --Masks to exclude
-         AND c.concept_name !~* 'whooping|PhenX|Hiccough'
+         AND c.concept_name !~* 'whooping|PhenX|Hiccough|test|melanoma|pertussis|-bark|barkan|hernia|no '
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer','Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -259,7 +259,8 @@ WHERE c.concept_id IN (
 44789249,	--	200151000000106	Condition	Reflux cough	SNOMED
 4263877,	--	46802002	Condition	Smokers' cough	SNOMED
 4086815,	--	248594007	Condition	Tracheal esophageal fistula cough	SNOMED
-3199166	--	12730001000004103	Observation	Cough due to ACE inhibitor	Nebraska Lexicon
+3199166,	--	12730001000004103	Observation	Cough due to ACE inhibitor	Nebraska Lexicon
+4010220
 
 --Put concept_ids here
 
