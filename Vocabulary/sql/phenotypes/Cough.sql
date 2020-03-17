@@ -252,6 +252,7 @@ WHERE c.concept_id IN (
 4116989,	--	300959008	Condition	Allergic cough	SNOMED
 4086814,	--	248589007	Condition	Clearing throat - hawking	SNOMED
 4188217,	--	46789001	Condition	Cough after eating	SNOMED
+4010220,	--	208136003	Condition	Cough fracture of ribs	SNOMED
 4048218,	--	123819004	Condition	Cough reflex absent	SNOMED
 4126096,	--	289965001	Condition	Croupy cough	SNOMED
 4275649,	--	366124008	Condition	Finding related to ability to cough	SNOMED
@@ -259,8 +260,7 @@ WHERE c.concept_id IN (
 44789249,	--	200151000000106	Condition	Reflux cough	SNOMED
 4263877,	--	46802002	Condition	Smokers' cough	SNOMED
 4086815,	--	248594007	Condition	Tracheal esophageal fistula cough	SNOMED
-3199166,	--	12730001000004103	Observation	Cough due to ACE inhibitor	Nebraska Lexicon
-4010220
+3199166	--	12730001000004103	Observation	Cough due to ACE inhibitor	Nebraska Lexicon
 
 --Put concept_ids here
 
