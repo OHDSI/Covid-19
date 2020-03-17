@@ -14,9 +14,12 @@ INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Rhinorrhea', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
+4079304,	--	277233008	Condition	Anterior rhinorrhea	SNOMED
 4274037,	--	64611009	Condition	Catarrhal nasal discharge	SNOMED
+4276172,	--	64531003	Condition	Nasal discharge	SNOMED
 4039276,	--	164184005	Condition	O/E - rhinorrhea	SNOMED
 257683	--	75803007	Condition	Posterior rhinorrhea	SNOMED
+
 
 --Put concept_ids here
     )
@@ -184,11 +187,11 @@ WHERE (
         (c.concept_name ~* 'Rhinorrhea|Runny nose|nasal discharge'
 
         --Masks to exclude
-         AND c.concept_name !~* 'cerebrospinal|purulent|hemorrhag|no nasal'
+         AND c.concept_name !~* 'cerebrospinal|purulent|hemorrhag|no nasal|absent'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer', 'Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
