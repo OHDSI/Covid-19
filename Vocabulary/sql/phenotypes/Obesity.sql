@@ -266,8 +266,6 @@ WHERE c.concept_id IN (
 4062199,	--	170795002	Observation	Follow-up obesity assessment	SNOMED
 4062198,	--	170794003	Observation	Initial obesity assessment	SNOMED
 4152039,	--	268522006	Observation	Obesity monitoring	SNOMED
-4175214,	--	275947003	Observation	O/E - overweight	SNOMED
-437525,	--	238131007	Observation	Overweight	SNOMED
 44807968 	--	838441000000103	Observation	Target body mass index	SNOMED
 
     )
