@@ -1,28 +1,35 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Dementia'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Dementia'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Obesity', 'inclusion', c.*
+SELECT 'Dementia', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-36715355,	--	720987001	Condition	Aniridia, ptosis, intellectual disability, familial obesity syndrome	SNOMED
-433736,	--	414916001	Condition	Obesity	SNOMED
-35623139,	--	765471005	Condition	X-linked intellectual disability, hypogonadism, ichthyosis, obesity, short stature syndrome	SNOMED
-3038553,	--	39156-5	Measurement	Body mass index (BMI) [Ratio]	LOINC
-44783982,	--	698094009	Measurement	Measurement of body mass index	SNOMED
-4245997,	--	60621009	Observation	Body mass index	SNOMED
-4060985,	--	162864005	Observation	Body mass index 30+ - obesity	SNOMED
-4256640,	--	408512008	Observation	Body mass index 40+ - severely obese	SNOMED
-4037679 	--	162690006	Observation	O/E - obese	SNOMED
+37312036,	--	788861009	Condition	Aggression due to dementia	SNOMED
+37312035,	--	788862002	Condition	Agitation due to dementia	SNOMED
+4041685,	--	230258005	Condition	Amyotrophic lateral sclerosis with dementia	SNOMED
+37312031,	--	788866004	Condition	Anxiety due to dementia	SNOMED
+37312030,	--	788867008	Condition	Apathetic behaviour due to dementia	SNOMED
+35608576,	--	10171000132106	Condition	Behavioral and psychological symptoms of dementia	SNOMED
+4092747,	--	279982005	Condition	Cerebral degeneration presenting primarily with dementia	SNOMED
+4182210,	--	52448006	Condition	Dementia	SNOMED
+37311665,	--	789170003	Condition	Disinhibited behaviour due to dementia	SNOMED
+4043378,	--	230270009	Condition	Frontotemporal dementia	SNOMED
+45765480,	--	702429008	Condition	Frontotemporal dementia with parkinsonism-17	SNOMED
+45765477,	--	702426001	Condition	GRN-related frontotemporal dementia	SNOMED
+44782763,	--	135811000119107	Condition	Lewy body dementia with behavioral disturbance	SNOMED
+37311890,	--	789011007	Condition	Psychological symptom due to dementia	SNOMED
+37312577 	--	789062005	Condition	Wandering due to dementia	SNOMED
+
 
 --Put concept_ids here
     )
@@ -31,7 +38,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Dementia'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -39,7 +46,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Dementia'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -65,7 +72,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Obesity'
+    WHERE phenotype = 'Dementia'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -116,7 +123,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Obesity'
+    WHERE phenotype = 'Dementia'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -171,13 +178,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Dementia'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Obesity',
+SELECT 'Dementia',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -187,12 +194,12 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Obesity|Adiposity|Fatness|Overweight|BMI|Body Mass Index'
+        (c.concept_name ~* 'Dementia'
 
         --Masks to exclude
-         AND c.concept_name !~* 'intervention|score|monitoring|treatment of|child|medicine|fetal'
+         AND c.concept_name !~* 'care|monitoring|review|scale|screen|detection|nhs|service|referral|leaflet'
 
-        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ ,'Measurement') --adjust Domains of interest
+        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
         AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer', 'Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
@@ -215,7 +222,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Obesity'
+                WHERE phenotype = 'Dementia'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -236,7 +243,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Obesity'
+                WHERE phenotype = 'Dementia'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -248,27 +255,17 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Dementia'
     AND criteria = 'exclusion'
 ;
-
+--NOT NEEDED
+/*
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Obesity', 'exclusion', c.*
+SELECT 'Dementia', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-45766204,	--	703316004	Condition	Lymphedema associated with obesity	SNOMED
-4176962,	--	363247006	Condition	Obesity associated disorder	SNOMED
-44789321,	--	198181000000102	Condition	Obesity resolved	SNOMED
-4081038,	--	276792008	Condition	Pulmonary hypertension with extreme obesity	SNOMED
-4060705,	--	162863004	Observation	Body mass index 25-29 - overweight	SNOMED
-4062199,	--	170795002	Observation	Follow-up obesity assessment	SNOMED
-4062198,	--	170794003	Observation	Initial obesity assessment	SNOMED
-4152039,	--	268522006	Observation	Obesity monitoring	SNOMED
-4175214,	--	275947003	Observation	O/E - overweight	SNOMED
-437525,	--	238131007	Observation	Overweight	SNOMED
-44807968 	--	838441000000103	Observation	Target body mass index	SNOMED
 
     )
 ;
@@ -276,7 +273,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Dementia'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -284,7 +281,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Dementia'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -310,7 +307,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Obesity'
+    WHERE phenotype = 'Dementia'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -360,7 +357,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Obesity'
+    WHERE phenotype = 'Dementia'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -412,3 +409,5 @@ ORDER BY source_code,
          domain_id,
          vocabulary_id
 ;
+
+ */

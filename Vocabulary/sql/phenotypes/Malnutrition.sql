@@ -1,37 +1,41 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Malnutrition'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Malnutrition'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Obesity', 'inclusion', c.*
+SELECT 'Malnutrition', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-36715355,	--	720987001	Condition	Aniridia, ptosis, intellectual disability, familial obesity syndrome	SNOMED
-433736,	--	414916001	Condition	Obesity	SNOMED
-35623139,	--	765471005	Condition	X-linked intellectual disability, hypogonadism, ichthyosis, obesity, short stature syndrome	SNOMED
-3038553,	--	39156-5	Measurement	Body mass index (BMI) [Ratio]	LOINC
-44783982,	--	698094009	Measurement	Measurement of body mass index	SNOMED
-4245997,	--	60621009	Observation	Body mass index	SNOMED
-4060985,	--	162864005	Observation	Body mass index 30+ - obesity	SNOMED
-4256640,	--	408512008	Observation	Body mass index 40+ - severely obese	SNOMED
-4037679 	--	162690006	Observation	O/E - obese	SNOMED
+763514,	--	441961000124100	Condition	Acute disease or injury-related malnutrition	SNOMED
+4098464,	--	190646000	Condition	Adult osteomalacia due to malnutrition	SNOMED
+763515,	--	441971000124107	Condition	Chronic disease-related malnutrition	SNOMED
+4079894,	--	238105005	Condition	Dystrophy due to malnutrition	SNOMED
+4156515,	--	272588001	Condition	Malnutrition	SNOMED
+4227077,	--	420691000	Condition	Nutritional deficiency associated with AIDS	SNOMED
+435227,	--	70241007	Condition	Nutritional deficiency disorder	SNOMED
+45757116,	--	10751471000119101	Condition	Nutritional deficiency in mother complicating childbirth	SNOMED
+4324762,	--	428707000	Condition	Nutritional deficiency in pregnancy	SNOMED
+4116569,	--	285588004	Condition	Nutrition deficiency due to insufficient food	SNOMED
+4058831,	--	197484002	Condition	Post-gastrointestinal tract surgery malnutrition	SNOMED
+763513,	--	441951000124102	Condition	Starvation-related malnutrition	SNOMED
+4276360,	--	65404009	Condition	Undernutrition	SNOMED
+4165539 	--	47563007	Observation	Nutritional deficiency state	SNOMED
 
---Put concept_ids here
     )
 ;
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Malnutrition'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -39,7 +43,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Malnutrition'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -65,7 +69,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Obesity'
+    WHERE phenotype = 'Malnutrition'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -116,7 +120,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Obesity'
+    WHERE phenotype = 'Malnutrition'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -171,13 +175,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Malnutrition'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Obesity',
+SELECT 'Malnutrition',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -187,12 +191,12 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Obesity|Adiposity|Fatness|Overweight|BMI|Body Mass Index'
+        (c.concept_name ~* 'Malnutrition|Undernutrition|malnourishment|undernutrition|(Nutrition).*(deficiency)'
 
         --Masks to exclude
-         AND c.concept_name !~* 'intervention|score|monitoring|treatment of|child|medicine|fetal'
+         AND c.concept_name !~* 'diabetes|light|measure'
 
-        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ ,'Measurement') --adjust Domains of interest
+        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
         AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer', 'Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
@@ -215,7 +219,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Obesity'
+                WHERE phenotype = 'Malnutrition'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -236,7 +240,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Obesity'
+                WHERE phenotype = 'Malnutrition'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -248,27 +252,27 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Malnutrition'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Obesity', 'exclusion', c.*
+SELECT 'Malnutrition', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-45766204,	--	703316004	Condition	Lymphedema associated with obesity	SNOMED
-4176962,	--	363247006	Condition	Obesity associated disorder	SNOMED
-44789321,	--	198181000000102	Condition	Obesity resolved	SNOMED
-4081038,	--	276792008	Condition	Pulmonary hypertension with extreme obesity	SNOMED
-4060705,	--	162863004	Observation	Body mass index 25-29 - overweight	SNOMED
-4062199,	--	170795002	Observation	Follow-up obesity assessment	SNOMED
-4062198,	--	170794003	Observation	Initial obesity assessment	SNOMED
-4152039,	--	268522006	Observation	Obesity monitoring	SNOMED
-4175214,	--	275947003	Observation	O/E - overweight	SNOMED
-437525,	--	238131007	Observation	Overweight	SNOMED
-44807968 	--	838441000000103	Observation	Target body mass index	SNOMED
+37110340,	--	724561002	Condition	Encephalopathy due to nutritional deficiency	SNOMED
+4298725,	--	402729004	Condition	Hair changes due to malnutrition	SNOMED
+4300908,	--	403312006	Condition	Hypertrichosis in malnutrition	SNOMED
+45773690,	--	97361000119109	Condition	Hypoalbuminemia due to protein calorie malnutrition	SNOMED
+37110343,	--	724564005	Condition	Intellectual developmental disorder due to nutritional deficiency	SNOMED
+35622258,	--	763626009	Condition	Intellectual disability due to nutritional deficiency	SNOMED
+37110341,	--	724562009	Condition	Myelopathy due to nutritional deficiency	SNOMED
+37110342,	--	724563004	Condition	Neuropathy due to nutritional deficiency	SNOMED
+4101286,	--	190674005	Condition	Sequelae of malnutrition and other nutritional deficiencies	SNOMED
+4298724,	--	402728007	Condition	Skin changes due to malnutrition	SNOMED
+37110344 	--	724565006	Condition	White matter disorder due to nutritional deficiency	SNOMED
 
     )
 ;
@@ -276,7 +280,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Malnutrition'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -284,7 +288,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Obesity'
+WHERE phenotype = 'Malnutrition'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -310,7 +314,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Obesity'
+    WHERE phenotype = 'Malnutrition'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -360,7 +364,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Obesity'
+    WHERE phenotype = 'Malnutrition'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
