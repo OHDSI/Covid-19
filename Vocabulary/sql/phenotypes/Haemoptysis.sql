@@ -1,18 +1,18 @@
 --reset phenotype concept list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Haemophtysis'
 ;
 
 --reset Standard concepts Included list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Haemophtysis'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Haemophtysis', 'inclusion', c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 4166934,	--	274399004	Condition	Blood in sputum O/E	SNOMED
 4265470,	--	61281005	Condition	Bloodstained sputum	SNOMED
@@ -26,7 +26,7 @@ WHERE c.concept_id IN (
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Haemophtysis'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -34,7 +34,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Haemophtysis'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
@@ -51,16 +51,16 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Haemophtysis'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
@@ -102,16 +102,16 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Haemophtysis'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
@@ -166,7 +166,7 @@ ORDER BY source_code,
 ;
 
 --reset uncovered concept list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Haemophtysis'
     AND criteria = 'not_mapped'
 ;
@@ -174,11 +174,11 @@ WHERE phenotype = 'Haemophtysis'
 --NOT NEEDED
 /*
 --searching for uncovered concepts in Standard and Source_vocabularies
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Haemophtysis',
        'not_mapped',
        c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 
 WHERE (
         --To select the specific codes in specific vocabularies
@@ -202,17 +202,17 @@ WHERE (
     )
     AND NOT EXISTS ( --exclude what is already mapped to Included/Excluded parents (except 'EDI', 'KCD7')
             SELECT 1
-            FROM devv5.concept_ancestor ca1
-            JOIN devv5.concept c1
+            FROM @vocabulary_database_schema.concept_ancestor ca1
+            JOIN @vocabulary_database_schema.concept c1
                 ON ca1.descendant_concept_id = c1.concept_id
-            JOIN devv5.concept_relationship cr1
+            JOIN @vocabulary_database_schema.concept_relationship cr1
                 ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-            JOIN devv5.concept c2
+            JOIN @vocabulary_database_schema.concept c2
                 ON cr1.concept_id_1 = c2.concept_id
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
-                FROM dev_covid19.concept_phenotypes
+                FROM @target_database_schema.concept_phenotypes
                 WHERE phenotype = 'Haemophtysis'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
@@ -223,17 +223,17 @@ WHERE (
         )
     AND NOT EXISTS ( --exclude what is already mapped to Included parents ('EDI', 'KCD7')
             SELECT 1
-            FROM devv5.concept_ancestor ca1
-            JOIN devv5.concept c1
+            FROM @vocabulary_database_schema.concept_ancestor ca1
+            JOIN @vocabulary_database_schema.concept c1
                 ON ca1.descendant_concept_id = c1.concept_id
-            JOIN devv5.concept_relationship cr1
+            JOIN @vocabulary_database_schema.concept_relationship cr1
                 ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-            JOIN devv5.concept c2
+            JOIN @vocabulary_database_schema.concept c2
                 ON cr1.concept_id_1 = c2.concept_id
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
-                FROM dev_covid19.concept_phenotypes
+                FROM @target_database_schema.concept_phenotypes
                 WHERE phenotype = 'Haemophtysis'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
@@ -245,15 +245,15 @@ WHERE (
 ;
 
 --reset Standard concepts Excluded list
-DELETE FROM dev_covid19.concept_phenotypes
+DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Haemophtysis'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
-INSERT INTO dev_covid19.concept_phenotypes
+INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Haemophtysis', 'exclusion', c.*
-FROM devv5.concept c
+FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
 
@@ -262,7 +262,7 @@ WHERE c.concept_id IN (
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Haemophtysis'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -270,7 +270,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM dev_covid19.concept_phenotypes
+FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Haemophtysis'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
@@ -287,16 +287,16 @@ SELECT DISTINCT c1.domain_id,
                 c1.vocabulary_id,
                 c2.vocabulary_id as source_vocabulary_id,
                 string_agg (DISTINCT c2.concept_code, '; ' ORDER BY c2.concept_code) as source_code
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Haemophtysis'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
@@ -337,16 +337,16 @@ SELECT DISTINCT c2.concept_name as source_code_description,
                 c1.domain_id,
                 c1.vocabulary_id
 
-FROM devv5.concept_ancestor ca1
-JOIN devv5.concept c1
+FROM @vocabulary_database_schema.concept_ancestor ca1
+JOIN @vocabulary_database_schema.concept c1
     ON ca1.descendant_concept_id = c1.concept_id
-JOIN devv5.concept_relationship cr1
+JOIN @vocabulary_database_schema.concept_relationship cr1
     ON ca1.descendant_concept_id = cr1.concept_id_2 AND cr1.relationship_id = 'Maps to' AND cr1.invalid_reason IS NULL
-JOIN devv5.concept c2
+JOIN @vocabulary_database_schema.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM dev_covid19.concept_phenotypes
+    FROM @target_database_schema.concept_phenotypes
     WHERE phenotype = 'Haemophtysis'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
