@@ -1,16 +1,16 @@
 --reset phenotype concept list
-DELETE FROM @target_database_schema.concept_phenotypes
+DELETE FROM dev_covid19.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
 ;
 
 --reset Standard concepts Included list
-DELETE FROM @target_database_schema.concept_phenotypes
+DELETE FROM dev_covid19.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
-INSERT INTO @target_database_schema.concept_phenotypes
+INSERT INTO dev_covid19.concept_phenotypes
 SELECT 'Subjective fever', 'inclusion', c.*
 FROM devv5.concept c
 WHERE c.concept_id IN (
@@ -22,7 +22,7 @@ WHERE c.concept_id IN (
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM @target_database_schema.concept_phenotypes
+FROM dev_covid19.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -30,7 +30,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM @target_database_schema.concept_phenotypes
+FROM dev_covid19.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
@@ -56,7 +56,7 @@ JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM @target_database_schema.concept_phenotypes
+    FROM dev_covid19.concept_phenotypes
     WHERE phenotype = 'Subjective fever'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
@@ -107,7 +107,7 @@ JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM @target_database_schema.concept_phenotypes
+    FROM dev_covid19.concept_phenotypes
     WHERE phenotype = 'Subjective fever'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
@@ -162,13 +162,13 @@ ORDER BY source_code,
 ;
 
 --reset uncovered concept list
-DELETE FROM @target_database_schema.concept_phenotypes
+DELETE FROM dev_covid19.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
-INSERT INTO @target_database_schema.concept_phenotypes
+INSERT INTO dev_covid19.concept_phenotypes
 SELECT 'Subjective fever',
        'not_mapped',
        c.*
@@ -186,7 +186,7 @@ WHERE (
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer', 'Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -206,7 +206,7 @@ WHERE (
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
-                FROM @target_database_schema.concept_phenotypes
+                FROM dev_covid19.concept_phenotypes
                 WHERE phenotype = 'Subjective fever'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
@@ -227,7 +227,7 @@ WHERE (
 
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
-                FROM @target_database_schema.concept_phenotypes
+                FROM dev_covid19.concept_phenotypes
                 WHERE phenotype = 'Subjective fever'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
@@ -239,13 +239,13 @@ WHERE (
 ;
 
 --reset Standard concepts Excluded list
-DELETE FROM @target_database_schema.concept_phenotypes
+DELETE FROM dev_covid19.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
-INSERT INTO @target_database_schema.concept_phenotypes
+INSERT INTO dev_covid19.concept_phenotypes
 SELECT 'Subjective fever', 'exclusion', c.*
 FROM devv5.concept c
 WHERE c.concept_id IN (
@@ -257,7 +257,7 @@ WHERE c.concept_id IN (
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
-FROM @target_database_schema.concept_phenotypes
+FROM dev_covid19.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -265,7 +265,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
-FROM @target_database_schema.concept_phenotypes
+FROM dev_covid19.concept_phenotypes
 WHERE phenotype = 'Subjective fever'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
@@ -291,7 +291,7 @@ JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM @target_database_schema.concept_phenotypes
+    FROM dev_covid19.concept_phenotypes
     WHERE phenotype = 'Subjective fever'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
@@ -341,7 +341,7 @@ JOIN devv5.concept c2
     ON cr1.concept_id_1 = c2.concept_id
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
-    FROM @target_database_schema.concept_phenotypes
+    FROM dev_covid19.concept_phenotypes
     WHERE phenotype = 'Subjective fever'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL

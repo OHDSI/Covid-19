@@ -178,7 +178,7 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Shortness of breath|dyspnea'
+        (c.concept_name ~* 'Shortness of breath|dyspnea|breath Shortness'
 
         --Masks to exclude
          AND c.concept_name !~* 'score'
