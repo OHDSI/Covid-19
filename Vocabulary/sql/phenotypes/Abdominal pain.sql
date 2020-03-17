@@ -15,6 +15,7 @@ SELECT 'Abdominal pain', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 4200114,	--	314212008	Condition	Abdominal pain - cause unknown	SNOMED
+4254250,	--	74704000	Condition	Abdominal pain through to back	SNOMED
 197981,	--	43478001	Condition	Abdominal tenderness	SNOMED
 4023573,	--	116290004	Condition	Acute abdominal pain	SNOMED
 4012222,	--	162046002	Condition	Central abdominal pain	SNOMED
@@ -24,10 +25,14 @@ WHERE c.concept_id IN (
 197988,	--	102614006	Condition	Generalized abdominal pain	SNOMED
 761102,	--	14700001000004102	Condition	Intractable abdominal pain	SNOMED
 4109084,	--	285387005	Condition	Left sided abdominal pain	SNOMED
+4010024,	--	102613000	Condition	Localized abdominal pain	SNOMED
+4182562,	--	54586004	Condition	Lower abdominal pain	SNOMED
 4012494,	--	162038003	Condition	Non-colicky abdominal pain	SNOMED
 4128083,	--	304542004	Condition	Nonspecific abdominal pain	SNOMED
 4166915,	--	274287009	Condition	O/E - abdominal pain	SNOMED
-4258543	--	439469002	Condition	Recurrent abdominal pain	SNOMED
+4258543,	--	439469002	Condition	Recurrent abdominal pain	SNOMED
+4109085,	--	285388000	Condition	Right sided abdominal pain	SNOMED
+4306292 	--	83132003	Condition	Upper abdominal pain	SNOMED
 
 
 --Put concept_ids here
