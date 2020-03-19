@@ -16,7 +16,6 @@ FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
 46257585,	--	1022227	Procedure	Extracorporeal membrane oxygenation (ECMO)/extracorporeal life support (ECLS) provided by physician	CPT4
-2788034,	--	5A15223	Procedure	Extracorporeal Membrane Oxygenation, Continuous	ICD10PCS
 1531632,	--	5A1522F	Procedure	Extracorporeal Oxygenation, Membrane, Central	ICD10PCS
 1531631,	--	5A1522G	Procedure	Extracorporeal Oxygenation, Membrane, Peripheral Veno-arterial	ICD10PCS
 1531630,	--	5A1522H	Procedure	Extracorporeal Oxygenation, Membrane, Peripheral Veno-venous	ICD10PCS
