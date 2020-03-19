@@ -188,7 +188,7 @@ WHERE (
         (c.concept_name ~* 'Extracorporeal membrane oxygenation|ECMO|Veno(-)?arter|veno(-)?ven'
 
         --Masks to exclude
-        AND c.concept_name !~* 'Hemodialysis|Hemofiltraion|haemofiltration|haemodiafiltration'
+        AND c.concept_name !~* 'Hemodialysis|Hemofiltraion|h(a)?emofiltration|h(a)?emodiafiltration'
 
         AND c.domain_id IN (/*'Condition',*/ 'Observation','Procedure' /*,'Measurement'*/) --adjust Domains of interest
 
