@@ -1,6 +1,3 @@
---TODO: not done
--- consider these: 4318404, 4306177
-
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Pulmonary infiltration'
@@ -18,6 +15,15 @@ SELECT 'Pulmonary infiltration', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+4318404,	--	95436008	Condition	Lung consolidation	SNOMED
+4249557,	--	409609008	Condition	Radiologic infiltrate of lung	SNOMED
+37040444,	--	LP405388-2	Measurement	Abdomen and Chest+Abdomen+Pelvis | Computed tomography | Radiology	LOINC
+37064294,	--	LP405376-7	Measurement	Chest and Abdomen and Pelvis | Computed tomography | Radiology	LOINC
+37053072,	--	LP405349-4	Measurement	Chest and Abdomen | Computed tomography | Radiology	LOINC
+37056182,	--	LP405112-6	Measurement	Chest | Computed tomography | Radiology	LOINC
+37073203,	--	LP405117-5	Measurement	Chest | X-ray | Radiology	LOINC
+37033997,	--	LP405182-9	Measurement	Lung parenchyma | Computed tomography | Radiology	LOINC
+2106136 	--	3006F	Observation	Chest X-ray results documented and reviewed (CAP)	CPT4
 
     )
 ;
@@ -181,14 +187,15 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'influenza'
+        (c.concept_name ~* ('(Pulmonary).*(infiltration)|(infiltration).*(Pulmonary)|(Lung).*(infiltration)|(infiltration).*(Lung)|CT Chest|CT Lung|(pulm).*(ct)|(lung).*(ct)|(radiogr).*(chest)|' ||
+         'X(-)?ray chest|chest X(-)?ray')
 
         --Masks to exclude
-        AND c.concept_name !~* 'Haemophilus'
+        AND c.concept_name !~* 'guidance|hypertension|connect|tubercul|cancer|atresia|function|tumor|disease|congenital|actinomycosis|infection|infarction|acquired|drug|transplant|transfusion|ovine|oncology|genital|valve|artery|Subpulmonary|atrium|ventricl|defect|obstruction'
 
-        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
+        AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ ,'Measurement') --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer', 'Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -246,6 +253,8 @@ WHERE phenotype = 'Pulmonary infiltration'
     AND criteria = 'exclusion'
 ;
 
+--NOT NEEDED
+/*
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Pulmonary infiltration', 'exclusion', c.*
@@ -395,3 +404,5 @@ ORDER BY source_code,
          domain_id,
          vocabulary_id
 ;
+
+ */
