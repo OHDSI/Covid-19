@@ -1,41 +1,23 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Diabetes'
+WHERE phenotype = 'Diabetes without complications'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Diabetes'
+WHERE phenotype = 'Diabetes without complications'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Diabetes', 'inclusion', c.*
+SELECT 'Diabetes without complications', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-765650,	--	82561000119101	Condition	Cranial nerve palsy due to diabetes mellitus type 1	SNOMED
-201820,	--	73211009	Condition	Diabetes mellitus	SNOMED
-442793,	--	74627003	Condition	Diabetic complication	SNOMED
-44810261,	--	867891000000101	Condition	Erectile dysfunction due to diabetes mellitus	SNOMED
-765533,	--	60981000119103	Condition	Glaucoma due to diabetes mellitus type 1	SNOMED
-765375,	--	140411000119101	Condition	Ischemic ankle ulcer due to diabetes mellitus type 2	SNOMED
-760989,	--	128201000119100	Condition	Neurogenic erectile dysfunction due to diabetes mellitus type 2	SNOMED
-761063,	--	140421000119108	Condition	Neuropathic ankle ulcer due to diabetes mellitus type 2	SNOMED
-40484648,	--	444073006	Condition	Type 1 diabetes mellitus uncontrolled	SNOMED
-40484649,	--	444074000	Condition	Type 1 diabetes mellitus well controlled	SNOMED
-4152858,	--	314893005	Condition	Type 1 diabetes mellitus with arthropathy	SNOMED
-201531,	--	190330002	Condition	Type 1 diabetes mellitus with hyperosmolar coma	SNOMED
-45757508,	--	164971000119101	Condition	Type 2 diabetes mellitus controlled by diet	SNOMED
-40485020,	--	444110003	Condition	Type 2 diabetes mellitus well controlled	SNOMED
-4321756,	--	9859006	Condition	Type 2 diabetes mellitus with acanthosis nigricans	SNOMED
-4196141,	--	314903002	Condition	Type 2 diabetes mellitus with arthropathy	SNOMED
-201530,	--	190331003	Condition	Type 2 diabetes mellitus with hyperosmolar coma	SNOMED
-4099216,	--	190388001	Condition	Type 2 diabetes mellitus with multiple complications	SNOMED
-4198296,	--	314904008	Condition	Type 2 diabetes mellitus with neuropathic arthropathy	SNOMED
-4200875,	--	314902007	Condition	Type 2 diabetes mellitus with peripheral angiopathy	SNOMED
-40482801,	--	443694000	Condition	Type II diabetes mellitus uncontrolled	SNOMED
-4228483 	--	405749004	Observation	Newly diagnosed diabetes	SNOMED
+765478,	--	367391000119102	Condition	Diabetes mellitus caused by drug without complication	SNOMED
+4008576,	--	111552007	Condition	Diabetes mellitus without complication	SNOMED
+44787902,	--	112991000000101	Condition	Lipoatrophic diabetes mellitus without complication	SNOMED
+4096042	    --	190412005	Condition	Malnutrition-related diabetes mellitus without complications	SNOMED
 
     )
 ;
@@ -43,7 +25,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Diabetes'
+WHERE phenotype = 'Diabetes without complications'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -51,7 +33,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Diabetes'
+WHERE phenotype = 'Diabetes without complications'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -77,7 +59,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Diabetes'
+    WHERE phenotype = 'Diabetes without complications'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -128,7 +110,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Diabetes'
+    WHERE phenotype = 'Diabetes without complications'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -183,13 +165,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Diabetes'
+WHERE phenotype = 'Diabetes without complications'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Diabetes',
+SELECT 'Diabetes without complications',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -199,10 +181,10 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Diabetes|mellitus'
+        (c.concept_name ~* 'Diabetes without complications|(mellitus).*(complication)'
 
         --Masks to exclude
-         AND c.concept_name !~* 'insipidus|referr|pred|pre-|understand|national|screen|phenx|suspected d|pathway|leaflet|es resolved|contact|review|monitor|plan|scale|history|exc|questionnaire|programm|infant|seen|joint|refuse|score|risk|attend|option|non-diabetes'
+         AND c.concept_name !~* 'insipidus|referr|pred|pre-|understand|national|screen|phenx|suspected d|pathway|leaflet|es resolved|contact|review|monitor|plan|scale|history|exc|questionnaire|programm|infant|seen|joint|refuse|score|risk|attend|option|non-diabetes|with '
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -227,7 +209,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Diabetes'
+                WHERE phenotype = 'Diabetes without complications'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -248,7 +230,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Diabetes'
+                WHERE phenotype = 'Diabetes without complications'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -260,13 +242,15 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Diabetes'
+WHERE phenotype = 'Diabetes without complications'
     AND criteria = 'exclusion'
 ;
 
+--NOT NEEDED
+/*
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Diabetes', 'exclusion', c.*
+SELECT 'Diabetes without complications', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
@@ -276,7 +260,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Diabetes'
+WHERE phenotype = 'Diabetes without complications'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -284,7 +268,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Diabetes'
+WHERE phenotype = 'Diabetes without complications'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -310,7 +294,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Diabetes'
+    WHERE phenotype = 'Diabetes without complications'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -360,7 +344,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Diabetes'
+    WHERE phenotype = 'Diabetes without complications'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -412,3 +396,5 @@ ORDER BY source_code,
          domain_id,
          vocabulary_id
 ;
+
+ */
