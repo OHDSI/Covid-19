@@ -376,6 +376,27 @@ GROUP BY 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
 
 SELECT *
 FROM @target_database_schema.mapping_to_do
+WHERE batch = 1
+    --AND lower(source_concept_name) != lower (target_concept_name)
+;
+
+
+SELECT *
+FROM @target_database_schema.mapping_review
 WHERE batch = 3
     --AND lower(source_concept_name) != lower (target_concept_name)
+;
+
+
+--count of concept to map/review
+SELECT DISTINCT phenotype, count(source_concept_id)
+FROM (
+     SELECT *
+     FROM mapping_to_do
+     UNION
+     SELECT *
+     FROM mapping_review
+     ) tab
+group by phenotype
+--order by count(phenotype) desc
 ;
