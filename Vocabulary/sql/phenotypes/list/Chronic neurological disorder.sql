@@ -1,17 +1,17 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'chronic neurological disorder', 'inclusion', c.*
+SELECT 'Chronic neurological disorder', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 372887	--	81308009	Condition	Disorder of brain	SNOMED
@@ -21,7 +21,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -29,7 +29,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -55,7 +55,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'chronic neurological disorder'
+    WHERE phenotype = 'Chronic neurological disorder'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -106,7 +106,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'chronic neurological disorder'
+    WHERE phenotype = 'Chronic neurological disorder'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -161,13 +161,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'chronic neurological disorder',
+SELECT 'Chronic neurological disorder',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -180,11 +180,11 @@ WHERE (
         (c.concept_name ~* 'brain|neurologic'
 
         --Masks to exclude
-        AND c.concept_name !~* 'referral| procedure|scan|reflex|lesion|abscess|necrosis|dead|fear|lung|cancer|varicella|event|'||
+        AND c.concept_name !~* ('referral| procedure|scan|reflex|lesion|abscess|necrosis|dead|fear|lung|cancer|varicella|event|' ||
         'nile|unpleasant|surgery|operation|phenx|evoked|confirmed|observable|barrier|^brain$|electrical|foreign|shift|non-|cal symptom ch|' ||
         'plan|arthropathy|deficiency|quality|deficit|screen|virus|morbidity|fh|finding|observation|survey|rubella|skin|diarrhea|hemorrhage|' ||
         'score|admission|level|suspect|tumor|diabetes|study|status|no |stem|family|death|normal|function|neoplasm|stimulator|transient|weight|ioma|' ||
-        'toma|moma|discharge|treatment|response|care|monitoring|assessment|imaging|device|seen|injury|potential'
+        'toma|moma|discharge|treatment|response|care|monitoring|assessment|imaging|device|seen|injury|potential')
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -209,7 +209,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'chronic neurological disorder'
+                WHERE phenotype = 'Chronic neurological disorder'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -230,7 +230,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'chronic neurological disorder'
+                WHERE phenotype = 'Chronic neurological disorder'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -242,13 +242,13 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'chronic neurological disorder', 'exclusion', c.*
+SELECT 'Chronic neurological disorder', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 3175008,	--	573471000004106	Condition	Brain infarction	Nebraska Lexicon
@@ -306,7 +306,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -314,7 +314,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -340,7 +340,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'chronic neurological disorder'
+    WHERE phenotype = 'Chronic neurological disorder'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -390,7 +390,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'chronic neurological disorder'
+    WHERE phenotype = 'Chronic neurological disorder'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )

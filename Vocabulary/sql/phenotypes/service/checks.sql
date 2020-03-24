@@ -400,3 +400,16 @@ FROM (
 group by phenotype
 --order by count(phenotype) desc
 ;
+
+
+SELECT DISTINCT phenotype, criteria, concept_id
+FROM @target_database_schema.concept_phenotypes
+WHERE criteria IN ('inclusion', 'exclusion')
+ORDER BY phenotype
+;
+
+SELECT DISTINCT phenotype
+FROM @target_database_schema.concept_phenotypes
+WHERE criteria IN ('inclusion', 'exclusion')
+ORDER BY phenotype
+;
