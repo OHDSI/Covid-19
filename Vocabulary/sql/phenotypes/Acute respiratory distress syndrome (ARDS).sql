@@ -3,6 +3,9 @@ DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Acute respiratory distress syndrome (ARDS)'
 ;
 
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Acute respiratory distress syndrome (ARDS)'
+AND criteria = 'inclusion';
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
@@ -201,6 +204,10 @@ WHERE concept_name ~* 'respiratory distress|ARDS'
             AND (c.concept_id = c1.concept_id OR c.concept_id = c2.concept_id)
 )
 ;
+
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Acute respiratory distress syndrome (ARDS)'
+AND criteria = 'exclusion';
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes

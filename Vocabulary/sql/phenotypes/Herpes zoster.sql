@@ -250,6 +250,8 @@ WHERE phenotype = 'Herpes zoster'
     AND criteria = 'exclusion'
 ;
 
+--NOT NEEDED
+/*
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Herpes zoster', 'exclusion', c.*

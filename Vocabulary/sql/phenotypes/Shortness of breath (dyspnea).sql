@@ -243,6 +243,8 @@ WHERE phenotype = 'Shortness of breath (dyspnea)'
     AND criteria = 'exclusion'
 ;
 
+--NOT NEEDED
+/*
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Shortness of breath (dyspnea)', 'exclusion', c.*
@@ -392,3 +394,5 @@ ORDER BY source_code,
          domain_id,
          vocabulary_id
 ;
+
+ */

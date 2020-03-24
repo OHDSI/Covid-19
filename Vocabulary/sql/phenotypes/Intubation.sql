@@ -3,6 +3,10 @@ DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Intubation'
 ;
 
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Intubation'
+AND criteria = 'inclusion'
+;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
@@ -233,7 +237,10 @@ WHERE (
         )
 ;
 
-
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Intubation'
+AND criteria = 'exclusion'
+;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes

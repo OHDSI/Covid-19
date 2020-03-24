@@ -3,6 +3,11 @@ DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Non-invasive ventilation'
 ;
 
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Non-invasive ventilation'
+AND criteria = 'inclusion'
+;
+
 
 --The list of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes

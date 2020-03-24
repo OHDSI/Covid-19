@@ -245,6 +245,8 @@ WHERE phenotype = 'Hematologic disease'
     AND criteria = 'exclusion'
 ;
 
+--NOT NEEDED
+/*
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Hematologic disease', 'exclusion', c.*
@@ -393,3 +395,5 @@ ORDER BY source_code,
          domain_id,
          vocabulary_id
 ;
+
+ */

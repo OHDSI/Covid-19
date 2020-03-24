@@ -3,6 +3,10 @@ DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Pneumonia'
 ;
 
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Pneumonia'
+AND criteria = 'inclusion'
+;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
@@ -201,6 +205,11 @@ WHERE concept_name ~* 'pneumonia'
             )
             AND (c.concept_id = c1.concept_id OR c.concept_id = c2.concept_id)
 )
+;
+
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Pneumonia'
+AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded

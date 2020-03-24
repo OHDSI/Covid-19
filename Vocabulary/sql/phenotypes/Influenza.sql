@@ -3,6 +3,9 @@ DELETE FROM @target_database_schema.concept_phenotypes
 WHERE phenotype = 'Influenza'
 ;
 
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Influenza'
+    AND criteria = 'inclusion';
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
@@ -201,6 +204,10 @@ WHERE c.concept_name ~* 'influenza| flu$|flu |Orthomyxov|Ortomyxov'
             AND (c.concept_id = c1.concept_id OR c.concept_id = c2.concept_id)
 )
 ;
+
+DELETE FROM @target_database_schema.concept_phenotypes
+WHERE phenotype = 'Influenza'
+    AND criteria = 'exclusion';
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
