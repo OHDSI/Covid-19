@@ -1,7 +1,7 @@
 select
 jsonb_pretty(
   jsonb_build_object (
-    'name', phenotype,
+    'name', '[OHDSI Covid19] ' || phenotype,
     'items', j
   )
 )
@@ -32,4 +32,6 @@ from (
   from @target_database_schema.concept_phenotypes cp
   where cp.criteria IN ('inclusion', 'exclusion')
   group by cp.phenotype
-) as s0;
+) as s0
+ORDER BY 1
+;
