@@ -29,7 +29,7 @@ from (
       )
   ) as j
 
-  from @target_database_schema.concept_phenotypes cp
+  from dev_covid19.concept_phenotypes cp
   where cp.criteria IN ('inclusion', 'exclusion')
   group by cp.phenotype
 ) as s0
