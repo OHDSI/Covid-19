@@ -1,27 +1,28 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder (all but acute)'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder (all but acute)'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic neurological disorder', 'inclusion', c.*
+SELECT 'Chronic neurological disorder (all but acute)', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-372887	--	81308009	Condition	Disorder of brain	SNOMED
+376337 	--	118940003	Condition	Disorder of nervous system	SNOMED
+
 )
 ;
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder (all but acute)'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -29,7 +30,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder (all but acute)'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -55,7 +56,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic neurological disorder'
+    WHERE phenotype = 'Chronic neurological disorder (all but acute)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -106,7 +107,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic neurological disorder'
+    WHERE phenotype = 'Chronic neurological disorder (all but acute)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -161,13 +162,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder (all but acute)'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic neurological disorder',
+SELECT 'Chronic neurological disorder (all but acute)',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -209,7 +210,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Chronic neurological disorder'
+                WHERE phenotype = 'Chronic neurological disorder (all but acute)'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -230,7 +231,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Chronic neurological disorder'
+                WHERE phenotype = 'Chronic neurological disorder (all but acute)'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -242,43 +243,64 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder (all but acute)'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic neurological disorder', 'exclusion', c.*
+SELECT 'Chronic neurological disorder (all but acute)', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
+3173531,	--	256121000004101	Condition	Acute focal hypoxic neuronal necrosis	Nebraska Lexicon
 3175008,	--	573471000004106	Condition	Brain infarction	Nebraska Lexicon
 3170737,	--	276541000004100	Condition	Cerebral microabscess	Nebraska Lexicon
 3168888,	--	10860001000004101	Condition	Cerebral necrosis	Nebraska Lexicon
 40480849,	--	441806004	Condition	Abscess of brain	SNOMED
+4040990,	--	16561007	Condition	Acute anoxic encephalopathy	SNOMED
+4066797,	--	171822009	Condition	Acute atrophic spinal paralysis	SNOMED
+44806551,	--	822021000000103	Condition	Acute encephalitis	SNOMED
+4269209,	--	63081009	Condition	Acute infarction of spinal cord	SNOMED
+43530713,	--	26261000119109	Condition	Acute inflammatory demyelinating polyneuropathy	SNOMED
+44813564,	--	822031000000101	Condition	Acute meningitis	SNOMED
+4132091,	--	127341005	Condition	Acute nervous system disorder	SNOMED
+4312487,	--	85821003	Condition	Acute non-psychotic brain syndrome	SNOMED
+4331091,	--	430042004	Condition	Acute pandysautonomia	SNOMED
+4143862,	--	307176005	Condition	Acute sciatica	SNOMED
+44806552,	--	822041000000105	Condition	Acute viral meningitis	SNOMED
+4160185,	--	398327006	Condition	Anterior acute poliomyelitis	SNOMED
 376690,	--	2032001	Condition	Cerebral edema	SNOMED
 4145619,	--	34209003	Condition	Cerebral hemiplegia	SNOMED
 376713,	--	274100004	Condition	Cerebral hemorrhage	SNOMED
+4141403,	--	307756005	Condition	Cerebral palsy, not congenital or infantile, acute	SNOMED
 4048787,	--	230723007	Condition	Cerebral venous thrombosis of great cerebral vein	SNOMED
 443735,	--	420662003	Condition	Coma associated with diabetes mellitus	SNOMED
 4105620,	--	193039006	Condition	Complicated migraine	SNOMED
 377550,	--	46963008	Condition	Compression of brain	SNOMED
+374142,	--	88425004	Condition	Congenital anomaly of nervous system	SNOMED
+373995,	--	2776000	Condition	Delirium	SNOMED
+4063155,	--	199297006	Condition	Disease of nervous system complicating pregnancy, childbirth and puerperium	SNOMED
 378143,	--	45170000	Condition	Encephalitis	SNOMED
 4243203,	--	58762006	Condition	Encephalomalacia	SNOMED
+4162380,	--	398256009	Condition	Epidemic acute poliomyelitis	SNOMED
 4096378,	--	189198006	Condition	Epileptic drop attack	SNOMED
+4274316,	--	64815002	Condition	Fugu poisoning	SNOMED
 4172553,	--	277369003	Condition	Hamartoma of brain	SNOMED
 4306573,	--	389088001	Condition	Hypoxia of brain	SNOMED
+42536625,	--	735562007	Condition	Infection causing cyst of central nervous system	SNOMED
 4029499,	--	128614008	Condition	Infectious disease of brain	SNOMED
+4134134,	--	128239009	Condition	Injury of nervous system	SNOMED
 4319465,	--	95638000	Condition	Localized cranial lesion	SNOMED
 40481031,	--	443333004	Condition	Medulloblastoma	SNOMED
 4113841,	--	198438009	Condition	Menopausal headache	SNOMED
-379806,	--	193030005	Condition	Migraine variants	SNOMED
-381549,	--	4473006	Condition	Migraine with aura	SNOMED
-4044234,	--	230468003	Condition	Migraine with ischemic complication	SNOMED
-378735,	--	56097005	Condition	Migraine without aura	SNOMED
 4129842,	--	237349002	Condition	Mild postnatal depression	SNOMED
 4028783,	--	237351003	Condition	Mild postnatal psychosis	SNOMED
 373724,	--	126952004	Condition	Neoplasm of brain	SNOMED
+4204047,	--	308921004	Condition	Neurological symptom	SNOMED
+4024301,	--	19466003	Condition	Neurotoxicity	SNOMED
+35622805,	--	764998005	Condition	Non-herpetic acute limbic encephalitis	SNOMED
 4062124,	--	200071001	Condition	Obstetric spinal and epidural anesthesia-induced headache	SNOMED
+36716523,	--	722556003	Condition	Parkinsonism co-occurrent and due to acute infection	SNOMED
 4080888,	--	276706004	Condition	Perinatal cerebral ischemia	SNOMED
 4137761,	--	32112006	Condition	Phlebitis of inferior sagittal sinus	SNOMED
 4229432,	--	88755007	Condition	Phlebitis of lateral venous sinus	SNOMED
@@ -290,14 +312,14 @@ WHERE c.concept_id IN (
 4065627,	--	200076006	Condition	Spinal and epidural anesthesia-induced headache during labor and delivery	SNOMED
 4061351,	--	200072008	Condition	Spinal and epidural anesthesia-induced headache during pregnancy	SNOMED
 4065625,	--	200073003	Condition	Spinal and epidural anesthesia-induced headache during the puerperium	SNOMED
+4079854,	--	276590002	Condition	Tentorial laceration - acute syndrome	SNOMED
 4048890,	--	15742000	Condition	Thrombosis of inferior sagittal sinus	SNOMED
 4057329,	--	21258007	Condition	Thrombosis of lateral venous sinus	SNOMED
 764723,	--	5591000124102	Condition	Thrombosis of superior anastomotic vein	SNOMED
 4105338,	--	192761004	Condition	Thrombosis transverse sinus	SNOMED
 4086502,	--	248260009	Condition	Unrefreshed by sleep	SNOMED
 43531591,	--	89441000119109	Condition	Ventriculitis of the brain	SNOMED
-4048785,	--	230717002	Condition	Vertebrobasilar territory transient ischemic attack	SNOMED
-4204047
+4048785 	--	230717002	Condition	Vertebrobasilar territory transient ischemic attack	SNOMED
 
 --Put concept_ids here
     )
@@ -306,7 +328,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder (all but acute)'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -314,7 +336,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic neurological disorder'
+WHERE phenotype = 'Chronic neurological disorder (all but acute)'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -340,7 +362,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic neurological disorder'
+    WHERE phenotype = 'Chronic neurological disorder (all but acute)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -390,7 +412,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic neurological disorder'
+    WHERE phenotype = 'Chronic neurological disorder (all but acute)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
