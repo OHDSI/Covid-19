@@ -1,28 +1,47 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Productive cough'
+WHERE phenotype = 'Coronavirus non-specific testing '
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Productive cough'
+WHERE phenotype = 'Coronavirus non-specific testing '
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Productive cough', 'inclusion', c.*
+SELECT 'Coronavirus non-specific testing ', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4102774	--	28743005	Condition	Productive cough	SNOMED
-    )
+37049614,	--	LP377158-3	Measurement	Coronavirus Ab | Serum | Microbiology	LOINC
+40653952,	--	LG32771-4	Measurement	Human coronavirus	LOINC
+37080279,	--	LG50873-5	Measurement	Human coronavirus 229E+HKU1+NL63+OC43 RNA|PrThr|Sys:ANYResp	LOINC
+40655674,	--	LG34137-6	Measurement	Human coronavirus 229E RNA|PrThr|Sys:ANYResp	LOINC
+40655675,	--	LG34135-0	Measurement	Human coronavirus HKU1 RNA|PrThr|Sys:ANYResp	LOINC
+37027859,	--	LP377168-2	Measurement	Human coronavirus identified | XXX | Microbiology	LOINC
+40655676,	--	LG34136-8	Measurement	Human coronavirus NL63 RNA|PrThr|Sys:ANYResp	LOINC
+40655677,	--	LG34138-4	Measurement	Human coronavirus OC43 RNA|PrThr|Sys:ANYResp	LOINC
+40655678,	--	LG41760-6	Measurement	Human coronavirus RNA|PrThr|Sys:ANYResp	LOINC
+40655698,	--	LG50060-9	Measurement	Middle East respiratory syndrome coronavirus RNA|PrThr|Sys:ANYResp	LOINC
+706162,	--	94499-1	Measurement	Respiratory viral pathogens DNA and RNA panel - Respiratory specimen Qualitative by NAA with probe detection	LOINC
+40655723,	--	LG34001-4	Measurement	SARS coronavirus Urbani RNA|PrThr|Sys:ANYResp	LOINC
+37038102,	--	LP377214-4	Measurement	SARS coronavirus | XXX | Microbiology	LOINC
+756055,	--	OMOP4873969	Measurement	Measurement of severe acute respiratory syndrome coronavirus 2	OMOP Extension
+44789510,	--	204351000000100	Measurement	Coronavirus nucl acid detect	SNOMED
+44807536,	--	817111000000102	Measurement	Coronavirus ribonucleic acid measurement by nucleic acid amplification test	SNOMED
+4007829,	--	121973000	Measurement	Measurement of coronavirus antibody	SNOMED
+4161294,	--	399150003	Measurement	PCR test for SARS	SNOMED
+37394268,	--	1029481000000103	Observation	Coronavirus nucleic acid detection assay	SNOMED
+37394276	--	1029571000000104	Observation	SARS (severe acute respiratory syndrome) virus nucleic acid detection assay	SNOMED
+)
 ;
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Productive cough'
+WHERE phenotype = 'Coronavirus non-specific testing '
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -30,7 +49,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Productive cough'
+WHERE phenotype = 'Coronavirus non-specific testing '
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -56,7 +75,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Productive cough'
+    WHERE phenotype = 'Coronavirus non-specific testing '
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -107,7 +126,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Productive cough'
+    WHERE phenotype = 'Coronavirus non-specific testing '
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -162,13 +181,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Productive cough'
+WHERE phenotype = 'Coronavirus non-specific testing '
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Productive cough',
+SELECT 'Coronavirus non-specific testing ',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -178,10 +197,10 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Productive cough|(cough).*(sputum)'
+        (c.concept_name ~* 'coronavirus|corona-virus|MERS|SARS'
 
         --Masks to exclude
-        --AND c.concept_name !~* 'Haemophilus'
+        AND c.concept_name !~* 'mersion|MERSTH'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -206,7 +225,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Productive cough'
+                WHERE phenotype = 'Coronavirus non-specific testing '
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -227,7 +246,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Productive cough'
+                WHERE phenotype = 'Coronavirus non-specific testing '
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -239,24 +258,24 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Productive cough'
+WHERE phenotype = 'Coronavirus non-specific testing '
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Productive cough', 'exclusion', c.*
+SELECT 'Coronavirus non-specific testing ', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4117283	--	301246003	Condition	Does cough up sputum	SNOMED
+
     )
 ;
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Productive cough'
+WHERE phenotype = 'Coronavirus non-specific testing '
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -264,7 +283,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Productive cough'
+WHERE phenotype = 'Coronavirus non-specific testing '
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -290,7 +309,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Productive cough'
+    WHERE phenotype = 'Coronavirus non-specific testing '
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -340,7 +359,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Productive cough'
+    WHERE phenotype = 'Coronavirus non-specific testing '
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
