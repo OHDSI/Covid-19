@@ -1,17 +1,17 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic cardiac disease'
+WHERE phenotype = 'Chronic cardiac disease (only chronic)'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic cardiac disease'
+WHERE phenotype = 'Chronic cardiac disease (only chronic)'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic cardiac disease', 'inclusion', c.*
+SELECT 'Chronic cardiac disease (only chronic)', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
@@ -35,7 +35,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic cardiac disease'
+WHERE phenotype = 'Chronic cardiac disease (only chronic)'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -43,7 +43,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic cardiac disease'
+WHERE phenotype = 'Chronic cardiac disease (only chronic)'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -69,7 +69,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic cardiac disease'
+    WHERE phenotype = 'Chronic cardiac disease (only chronic)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -120,7 +120,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic cardiac disease'
+    WHERE phenotype = 'Chronic cardiac disease (only chronic)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -175,13 +175,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic cardiac disease'
+WHERE phenotype = 'Chronic cardiac disease (only chronic)'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic cardiac disease',
+SELECT 'Chronic cardiac disease (only chronic)',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -219,7 +219,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Chronic cardiac disease'
+                WHERE phenotype = 'Chronic cardiac disease (only chronic)'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -240,7 +240,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Chronic cardiac disease'
+                WHERE phenotype = 'Chronic cardiac disease (only chronic)'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -252,24 +252,25 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic cardiac disease'
+WHERE phenotype = 'Chronic cardiac disease (only chronic)'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic cardiac disease', 'exclusion', c.*
+SELECT 'Chronic cardiac disease (only chronic)', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4023479
+4023479 	--	10633002	Condition	Acute congestive heart failure	SNOMED
+
     )
 ;
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic cardiac disease'
+WHERE phenotype = 'Chronic cardiac disease (only chronic)'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -277,7 +278,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic cardiac disease'
+WHERE phenotype = 'Chronic cardiac disease (only chronic)'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -303,7 +304,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic cardiac disease'
+    WHERE phenotype = 'Chronic cardiac disease (only chronic)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -353,7 +354,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic cardiac disease'
+    WHERE phenotype = 'Chronic cardiac disease (only chronic)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )

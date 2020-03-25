@@ -1,59 +1,21 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic lung disease'
+WHERE phenotype = 'Chronic cardiac disease (all but acute)'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic lung disease'
+WHERE phenotype = 'Chronic cardiac disease (all but acute)'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic lung disease', 'inclusion', c.*
+SELECT 'Chronic cardiac disease (all but acute)', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4199450,	--	51068008	Condition	Adult bronchiectasis	SNOMED
-4048081,	--	123713005	Condition	Chronic atelectasis	SNOMED
-42539089,	--	737180005	Condition	Chronic bronchiolitis	SNOMED
-255841,	--	63480004	Condition	Chronic bronchitis	SNOMED
-4275496,	--	36599006	Condition	Chronic fibrosis of lung	SNOMED
-4084689,	--	18354001	Condition	Chronic induration of lung	SNOMED
-762964,	--	434301000124102	Condition	Chronic interstitial lung disease	SNOMED
-45767051,	--	704345008	Condition	Chronic interstitial pneumonia	SNOMED
-4186898,	--	413839001	Condition	Chronic lung disease	SNOMED
-4289844,	--	37180002	Condition	Chronic nonspecific lung disease	SNOMED
-255573,	--	13645005	Condition	Chronic obstructive lung disease	SNOMED
-46269693,	--	102361000119104	Condition	Chronic pneumonia	SNOMED
-4274468,	--	63841001	Condition	Chronic pulmonary congestion	SNOMED
-4188331,	--	46847001	Condition	Chronic pulmonary edema	SNOMED
-4112681,	--	196028003	Condition	Chronic pulmonary fibrosis due to chemical fumes	SNOMED
-252348,	--	196049002	Condition	Chronic pulmonary radiation disease	SNOMED
-4333202,	--	432958009	Condition	Chronic rejection of lung transplant	SNOMED
-316452,	--	69454006	Condition	Chronic respiratory condition due to fumes AND/OR vapors	SNOMED
-4112835,	--	196025000	Condition	Chronic respiratory conditions due to chemical fumes	SNOMED
-255362,	--	50943000	Condition	Congenital anomaly of bronchus	SNOMED
-257094,	--	47147007	Condition	Congenital anomaly of lung	SNOMED
-4116317,	--	302913000	Condition	Diffuse pulmonary calcinosis	SNOMED
-4120270,	--	233717003	Condition	Diffuse pulmonary neurofibromatosis	SNOMED
-46273640,	--	328641000119109	Condition	Genetic disorder of surfactant dysfunction	SNOMED
-4103099,	--	192658007	Condition	GIP - Giant cell interstitial pneumonitis	SNOMED
-37110292,	--	724500003	Condition	Idiopathic chronic eosinophilic pneumonia	SNOMED
-438782,	--	40527005	Condition	Idiopathic pulmonary hemosiderosis	SNOMED
-440748,	--	77690003	Condition	Interstitial emphysema of lung	SNOMED
-4140605,	--	427123006	Condition	Interstitial lung disease due to collagen vascular disease	SNOMED
-46272927,	--	711379004	Condition	Interstitial lung disease due to connective tissue disease	SNOMED
-44804734,	--	781711000000106	Condition	Interstitial lung disease due to connective tissue disease	SNOMED
-42539687,	--	737182002	Condition	Interstitial lung disease due to granulomatous disease	SNOMED
-42537658,	--	737183007	Condition	Interstitial lung disease due to metabolic disease	SNOMED
-42537657,	--	737181009	Condition	Interstitial lung disease due to systemic disease	SNOMED
-46270493,	--	328661000119108	Condition	Interstitial lung disease of childhood	SNOMED
-4199518,	--	432066002	Condition	Lung disorder due to autoimmune disorder	SNOMED
-37208102,	--	460561000124109	Condition	PF-ILD-progressive fibrosing interstitial lung disease	SNOMED
-4102140,	--	28122003	Condition	Pulmonary eosinophilic granuloma	SNOMED
-4174275 	--	277844007	Condition	Pulmonary lymphangioleiomyomatosis	SNOMED
+321588 	--	56265001	Condition	Heart disease	SNOMED
 
     )
 ;
@@ -61,7 +23,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic lung disease'
+WHERE phenotype = 'Chronic cardiac disease (all but acute)'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -69,7 +31,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic lung disease'
+WHERE phenotype = 'Chronic cardiac disease (all but acute)'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -95,7 +57,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic lung disease'
+    WHERE phenotype = 'Chronic cardiac disease (all but acute)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -103,7 +65,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC', 'APC'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -146,7 +108,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic lung disease'
+    WHERE phenotype = 'Chronic cardiac disease (all but acute)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -154,7 +116,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC', 'APC'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 
@@ -201,13 +163,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic lung disease'
+WHERE phenotype = 'Chronic cardiac disease (all but acute)'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic lung disease',
+SELECT 'Chronic cardiac disease (all but acute)',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -217,16 +179,15 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Chronic lung|Chronic pulmonary'
+        (c.concept_name ~* 'Cardiac disease|heart disease|heart failure|Congenital heart'
 
         --Masks to exclude
-        AND c.concept_name !~* 'pulmonary embolism|cosis|mosis|heart|asthma'
-
+        AND c.concept_name !~* 'Family history|Maternal|Cyanotic attacks|pitchfork'
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer', 'Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
-        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
+        AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC', 'APC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
         AND NOT (c.concept_class_id ~* 'Hierarchy|chapter' AND c.vocabulary_id NOT IN ('EDI', 'KCD7')) --exclude hierarchical concept_classes
         AND NOT (c.vocabulary_id = 'ICD10CM' AND c.valid_end_date < to_date('20151001', 'YYYYMMDD')) --exclude pre-release ICD10CM codes
@@ -245,7 +206,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Chronic lung disease'
+                WHERE phenotype = 'Chronic cardiac disease (all but acute)'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -266,7 +227,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Chronic lung disease'
+                WHERE phenotype = 'Chronic cardiac disease (all but acute)'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -278,21 +239,42 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic lung disease'
+WHERE phenotype = 'Chronic cardiac disease (all but acute)'
     AND criteria = 'exclusion'
 ;
 
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic lung disease', 'exclusion', c.*
+SELECT 'Chronic cardiac disease (all but acute)', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
-4004124,	--	204533007	Condition	Agenesis of larynx, trachea and bronchus	SNOMED
-46274062,	--	10692761000119107	Condition	Asthma-chronic obstructive pulmonary disease overlap syndrome	SNOMED
-37312028,	--	788869006	Condition	Atresia of esophagus co-occurrent with esophagobronchial fistula	SNOMED
-4188309,	--	41279003	Condition	Congenital esophagobronchial fistula	SNOMED
-37204210	--	782722002	Condition	Global developmental delay, lung cysts, overgrowth, Wilms tumor syndrome	SNOMED
+4108670,	--	194823009	Condition	Acute coronary insufficiency	SNOMED
+434663,	--	91357005	Condition	Acute endocarditis	SNOMED
+4222405,	--	420395004	Condition	Acute endocarditis associated with AIDS	SNOMED
+37017266,	--	713511002	Condition	Acute endocarditis co-occurrent with human immunodeficiency virus infection	SNOMED
+4132088,	--	127337006	Condition	Acute heart disease	SNOMED
+4108245,	--	195114002	Condition	Acute left ventricular failure	SNOMED
+4161458,	--	371814000	Condition	Acute mitral regurgitation from chordal dysfunction	SNOMED
+4155964,	--	371813006	Condition	Acute mitral regurgitation from chordal rupture	SNOMED
+4161459,	--	371815004	Condition	Acute mitral regurgitation from papillary muscle dysfunction	SNOMED
+4161975,	--	371816003	Condition	Acute mitral regurgitation from papillary muscle rupture	SNOMED
+4108226,	--	194946005	Condition	Acute myocarditis - influenzal	SNOMED
+762300,	--	31701000119107	Condition	Acute nonbacterial endocarditis	SNOMED
+4113781,	--	286954005	Condition	Acute/subacute carditis	SNOMED
+4216773,	--	397829000	Condition	Asystole	SNOMED
+321042,	--	410429000	Condition	Cardiac arrest	SNOMED
+4124687,	--	233847009	Condition	Cardiac rupture due to and following acute myocardial infarction	SNOMED
+4127089,	--	23687008	Condition	Coronary artery spasm	SNOMED
+4134723,	--	398274000	Condition	Coronary artery thrombosis	SNOMED
+43530918,	--	609460008	Condition	Induced termination of pregnancy complicated by cardiac arrest and/or failure	SNOMED
+4311280,	--	86175003	Condition	Injury of heart	SNOMED
+764873,	--	7391000175102	Condition	Reduced ejection fraction co-occurrent and due to acute heart failure	SNOMED
+4108679,	--	194865003	Condition	Rupture of cardiac wall without hemopericardium as current complication following acute myocardial infarction	SNOMED
+4108219,	--	194866002	Condition	Rupture of chordae tendinae due to and following acute myocardial infarction	SNOMED
+4107225,	--	29889000	Condition	Rupture of heart	SNOMED
+437894,	--	71908006	Condition	Ventricular fibrillation	SNOMED
+4103295 	--	25569003	Condition	Ventricular tachycardia	SNOMED
 
     )
 ;
@@ -300,7 +282,7 @@ WHERE c.concept_id IN (
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic lung disease'
+WHERE phenotype = 'Chronic cardiac disease (all but acute)'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -308,7 +290,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic lung disease'
+WHERE phenotype = 'Chronic cardiac disease (all but acute)'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -334,7 +316,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic lung disease'
+    WHERE phenotype = 'Chronic cardiac disease (all but acute)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -342,7 +324,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC', 'APC'))
 
 GROUP BY    1,2,3,4,5
 )
@@ -384,7 +366,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic lung disease'
+    WHERE phenotype = 'Chronic cardiac disease (all but acute)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -392,7 +374,7 @@ AND ca1.descendant_concept_id != c2.concept_id
 
 --to add/exclude some vocabularies
 --AND (c2.vocabulary_id like '%ICD%' OR c2.vocabulary_id like '%KCD%')
-AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC'))
+AND NOT (c2.vocabulary_id IN ('SNOMED', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC', 'APC'))
 --AND lower(c1.concept_name) != lower (c2.concept_name)
 )
 

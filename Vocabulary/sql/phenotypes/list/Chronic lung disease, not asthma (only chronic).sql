@@ -1,27 +1,67 @@
 --reset phenotype concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic kidney disease'
+WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
 ;
 
 --reset Standard concepts Included list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic kidney disease'
+WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
     AND criteria = 'inclusion'
 ;
 
 --List of Standard concepts Included
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic kidney disease', 'inclusion', c.*
+SELECT 'Chronic lung disease, not asthma (only chronic)', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-46271022	--	709044004	Condition	Chronic kidney disease	SNOMED
+--Put concept_ids here
+4199450,	--	51068008	Condition	Adult bronchiectasis	SNOMED
+4048081,	--	123713005	Condition	Chronic atelectasis	SNOMED
+42539089,	--	737180005	Condition	Chronic bronchiolitis	SNOMED
+255841,	--	63480004	Condition	Chronic bronchitis	SNOMED
+4275496,	--	36599006	Condition	Chronic fibrosis of lung	SNOMED
+4084689,	--	18354001	Condition	Chronic induration of lung	SNOMED
+762964,	--	434301000124102	Condition	Chronic interstitial lung disease	SNOMED
+45767051,	--	704345008	Condition	Chronic interstitial pneumonia	SNOMED
+4186898,	--	413839001	Condition	Chronic lung disease	SNOMED
+4289844,	--	37180002	Condition	Chronic nonspecific lung disease	SNOMED
+255573,	--	13645005	Condition	Chronic obstructive lung disease	SNOMED
+46269693,	--	102361000119104	Condition	Chronic pneumonia	SNOMED
+4274468,	--	63841001	Condition	Chronic pulmonary congestion	SNOMED
+4188331,	--	46847001	Condition	Chronic pulmonary edema	SNOMED
+4112681,	--	196028003	Condition	Chronic pulmonary fibrosis due to chemical fumes	SNOMED
+252348,	--	196049002	Condition	Chronic pulmonary radiation disease	SNOMED
+4333202,	--	432958009	Condition	Chronic rejection of lung transplant	SNOMED
+316452,	--	69454006	Condition	Chronic respiratory condition due to fumes AND/OR vapors	SNOMED
+4112835,	--	196025000	Condition	Chronic respiratory conditions due to chemical fumes	SNOMED
+255362,	--	50943000	Condition	Congenital anomaly of bronchus	SNOMED
+257094,	--	47147007	Condition	Congenital anomaly of lung	SNOMED
+4116317,	--	302913000	Condition	Diffuse pulmonary calcinosis	SNOMED
+4120270,	--	233717003	Condition	Diffuse pulmonary neurofibromatosis	SNOMED
+46273640,	--	328641000119109	Condition	Genetic disorder of surfactant dysfunction	SNOMED
+4103099,	--	192658007	Condition	GIP - Giant cell interstitial pneumonitis	SNOMED
+37110292,	--	724500003	Condition	Idiopathic chronic eosinophilic pneumonia	SNOMED
+438782,	--	40527005	Condition	Idiopathic pulmonary hemosiderosis	SNOMED
+440748,	--	77690003	Condition	Interstitial emphysema of lung	SNOMED
+4140605,	--	427123006	Condition	Interstitial lung disease due to collagen vascular disease	SNOMED
+46272927,	--	711379004	Condition	Interstitial lung disease due to connective tissue disease	SNOMED
+44804734,	--	781711000000106	Condition	Interstitial lung disease due to connective tissue disease	SNOMED
+42539687,	--	737182002	Condition	Interstitial lung disease due to granulomatous disease	SNOMED
+42537658,	--	737183007	Condition	Interstitial lung disease due to metabolic disease	SNOMED
+42537657,	--	737181009	Condition	Interstitial lung disease due to systemic disease	SNOMED
+46270493,	--	328661000119108	Condition	Interstitial lung disease of childhood	SNOMED
+4199518,	--	432066002	Condition	Lung disorder due to autoimmune disorder	SNOMED
+37208102,	--	460561000124109	Condition	PF-ILD-progressive fibrosing interstitial lung disease	SNOMED
+4102140,	--	28122003	Condition	Pulmonary eosinophilic granuloma	SNOMED
+4174275 	--	277844007	Condition	Pulmonary lymphangioleiomyomatosis	SNOMED
+
     )
 ;
 
 --List of Standard concepts Included for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic kidney disease'
+WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
     AND criteria = 'inclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -29,7 +69,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Included
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic kidney disease'
+WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
     AND criteria = 'inclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -55,7 +95,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic kidney disease'
+    WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -106,7 +146,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic kidney disease'
+    WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
         AND criteria = 'inclusion'
         AND concept_id IS NOT NULL
     )
@@ -161,13 +201,13 @@ ORDER BY source_code,
 
 --reset uncovered concept list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic kidney disease'
+WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
     AND criteria = 'not_mapped'
 ;
 
 --searching for uncovered concepts in Standard and Source_vocabularies
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic kidney disease',
+SELECT 'Chronic lung disease, not asthma (only chronic)',
        'not_mapped',
        c.*
 FROM @vocabulary_database_schema.concept c
@@ -177,14 +217,14 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'chronic.*(kidney|renal).*(disease|impairment|lesion|failure)|chronic.*(disease|impairment|lesion|failure).*(kidney)'
+        (c.concept_name ~* 'Chronic lung|Chronic pulmonary'
 
         --Masks to exclude
-         AND c.concept_name !~* 'estimated|monitoring|predicted|risk|gout|resolved|expected|graft|review'
+        AND c.concept_name !~* 'pulmonary embolism|cosis|mosis|heart|asthma'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
-        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer', 'Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
+        AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
 
         AND c.vocabulary_id NOT IN ('MedDRA', 'SNOMED Veterinary', 'MeSH', 'CIEL', 'OXMIS', 'DRG', 'SUS', 'Nebraska Lexicon', 'SMQ', 'PPI', 'MDC') --exclude useless vocabularies
         AND NOT (c.vocabulary_id = 'SNOMED' AND c.invalid_reason IS NOT NULL) --exclude SNOMED invalid concepts
@@ -205,7 +245,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Chronic kidney disease'
+                WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
                     AND criteria IN ('inclusion', 'exclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -226,7 +266,7 @@ WHERE (
             WHERE ca1.ancestor_concept_id IN (
                 SELECT concept_id
                 FROM @target_database_schema.concept_phenotypes
-                WHERE phenotype = 'Chronic kidney disease'
+                WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
                     AND criteria IN ('inclusion')
                     AND concept_id IS NOT NULL
                     AND criteria IS NOT NULL
@@ -238,25 +278,29 @@ WHERE (
 
 --reset Standard concepts Excluded list
 DELETE FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic kidney disease'
+WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
     AND criteria = 'exclusion'
 ;
 
---NOT NEEDED
-/*
 --List of Standard concepts Excluded
 INSERT INTO @target_database_schema.concept_phenotypes
-SELECT 'Chronic kidney disease', 'exclusion', c.*
+SELECT 'Chronic lung disease, not asthma (only chronic)', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+4004124,	--	204533007	Condition	Agenesis of larynx, trachea and bronchus	SNOMED
+46274062,	--	10692761000119107	Condition	Asthma-chronic obstructive pulmonary disease overlap syndrome	SNOMED
+37312028,	--	788869006	Condition	Atresia of esophagus co-occurrent with esophagobronchial fistula	SNOMED
+4188309,	--	41279003	Condition	Congenital esophagobronchial fistula	SNOMED
+37204210	--	782722002	Condition	Global developmental delay, lung cysts, overgrowth, Wilms tumor syndrome	SNOMED
+
     )
 ;
 
 --List of Standard concepts Excluded for comment generation
 SELECT DISTINCT (concept_id || ','), '--', concept_code, domain_id, concept_name, vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic kidney disease'
+WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
     AND criteria = 'exclusion'
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 ;
@@ -264,7 +308,7 @@ ORDER BY domain_id, vocabulary_id, concept_name, concept_code
 --Markdown-friendly list of Standard concepts Excluded
 SELECT domain_id || '|' || concept_id || '|' || concept_name || '|' || concept_code || '|' || vocabulary_id
 FROM @target_database_schema.concept_phenotypes
-WHERE phenotype = 'Chronic kidney disease'
+WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
     AND criteria = 'exclusion'
 GROUP BY domain_id, concept_id, concept_name, concept_code, vocabulary_id
 ORDER BY domain_id, vocabulary_id, concept_name, concept_code
@@ -290,7 +334,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic kidney disease'
+    WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -340,7 +384,7 @@ JOIN @vocabulary_database_schema.concept c2
 WHERE ca1.ancestor_concept_id IN (
     SELECT concept_id
     FROM @target_database_schema.concept_phenotypes
-    WHERE phenotype = 'Chronic kidney disease'
+    WHERE phenotype = 'Chronic lung disease, not asthma (only chronic)'
         AND criteria = 'exclusion'
         AND concept_id IS NOT NULL
     )
@@ -392,5 +436,3 @@ ORDER BY source_code,
          domain_id,
          vocabulary_id
 ;
-
- */
