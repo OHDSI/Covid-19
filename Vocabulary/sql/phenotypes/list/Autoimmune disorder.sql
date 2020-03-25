@@ -15,29 +15,56 @@ SELECT 'Autoimmune disorder', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+4021914,	--	106198007	Condition	Autoimmune AND/OR graft reaction	SNOMED
 434621,	--	85828009	Condition	Autoimmune disease	SNOMED
+4141231,	--	307515009	Condition	Autoimmune factor VIII deficiency	SNOMED
+4215792,	--	71858003	Condition	Autoimmune hypoglycemia	SNOMED
 45765493,	--	702444009	Condition	Autoimmune lymphoproliferative syndrome	SNOMED
+36716321,	--	722290008	Condition	Autoimmune lymphoproliferative syndrome with recurrent viral infection	SNOMED
+4033255,	--	14848000	Condition	Autoimmune reaction	SNOMED
+4230266,	--	438476003	Condition	Autoimmune thrombotic thrombocytopenic purpura	SNOMED
+4221673,	--	402402005	Condition	Autoimmune urticaria and/or angioedema	SNOMED
 45766036,	--	703119002	Condition	Carditis due to rheumatic fever	SNOMED
+4221671,	--	402399009	Condition	Chronic autoimmune urticaria	SNOMED
+4217244,	--	417492002	Condition	Conjunctivitis associated with autoimmune skin disorder	SNOMED
 4334806,	--	433228003	Condition	Deformity of foot due to rheumatoid arthritis	SNOMED
 46273442,	--	96531000119109	Condition	Deformity of hand due to rheumatoid arthritis	SNOMED
 4330635,	--	431707004	Condition	Deformity of wrist due to rheumatoid arthritis	SNOMED
+4060405,	--	21430002	Condition	Dilated cardiomyopathy secondary to rheumatoid arthritis	SNOMED
+4064046,	--	200951007	Condition	Erythema marginatum in acute rheumatic fever	SNOMED
 138711,	--	84362007	Condition	Fibrous autoimmune thyroiditis	SNOMED
+4347064,	--	239939001	Condition	Giant cell arteritis without polymyalgia rheumatica	SNOMED
 4253901,	--	410795001	Condition	Juvenile rheumatoid arthritis	SNOMED
+4145827,	--	426875007	Condition	Latent autoimmune diabetes mellitus in adult	SNOMED
 4199518,	--	432066002	Condition	Lung disorder due to autoimmune disorder	SNOMED
+4107913,	--	193250002	Condition	Myopathy due to rheumatoid arthritis	SNOMED
+4347065,	--	239943002	Condition	Necrotizing rheumatoid vasculitis	SNOMED
+4008700,	--	111585004	Condition	Neutropenia associated with autoimmune disease	SNOMED
+255348,	--	65323003	Condition	Polymyalgia rheumatica	SNOMED
+4346977,	--	239899000	Condition	Polymyositis associated with autoimmune disease	SNOMED
+4102493,	--	193180002	Condition	Polyneuropathy in rheumatoid arthritis	SNOMED
 4051204,	--	123947004	Condition	Post-streptococcal disorder	SNOMED
+36717453,	--	721198006	Condition	Premature ovarian failure due to autoimmune oophoritis	SNOMED
+4221675,	--	402430005	Condition	Pseudoscleroderma due to rheumatoid disease	SNOMED
+4311252,	--	86074002	Condition	Purpura rheumatica	SNOMED
 4048214,	--	123803006	Condition	Rheumatic arteritis	SNOMED
 37312596,	--	789037005	Condition	Rheumatic cardiomyopathy	SNOMED
 319825,	--	23685000	Condition	Rheumatic heart disease	SNOMED
 4030552,	--	14175009	Condition	Rheumatic joint disease	SNOMED
 4067546,	--	202768008	Condition	Rheumatic torticollis	SNOMED
+138845,	--	396332003	Condition	Rheumatism	SNOMED
 4306357,	--	38877003	Condition	Rheumatoid aortitis	SNOMED
 4300202,	--	77522006	Condition	Rheumatoid episcleritis	SNOMED
+4184896,	--	54867000	Condition	Rheumatoid fibrosing alveolitis	SNOMED
 4151280,	--	314765000	Condition	Rheumatoid melting disorder of cornea	SNOMED
 4108949,	--	195136004	Condition	Rheumatoid myocarditis	SNOMED
 4299308,	--	402432002	Condition	Rheumatoid neutrophilic dermatitis	SNOMED
 4030424,	--	129563009	Condition	Rheumatoid osteoperiostitis	SNOMED
+4243509,	--	59165007	Condition	Rheumatoid scleritis	SNOMED
 4271003,	--	400054000	Condition	Rheumatoid vasculitis	SNOMED
-45768790	--	707297005	Condition	Xerostomia due to autoimmune disease	SNOMED
+45768790,	--	707297005	Condition	Xerostomia due to autoimmune disease	SNOMED
+4014013,	--	103628006	Observation	Chronic rheumatic inflammation	SNOMED
+4145294	    --	34248003	Observation	Rheumatic inflammation	SNOMED
 
     )
 ;
