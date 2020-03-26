@@ -246,7 +246,6 @@ WHERE (
         (c.concept_name ~* '(influenza|flu )'
         --Masks to exclude
          AND c.concept_name !~* 'haemophilus|hemophilus|parainfluenza|season|not |resistance|genotype|possible|educated|advice|history|exposure|notified|home|culture|telephone|contact|have|vaccin|immuni'
-    and standard_concept is not null
         AND c.domain_id IN (/*'Condition',*/ 'Observation',/*,'Procedure'*/ 'Measurement') --adjust Domains of interest
 
         AND c.concept_class_id NOT IN ('Substance', 'Organism', 'LOINC Component', 'LOINC System', 'Qualifier Value', 'Answer', 'Survey'/*, 'Morph Abnormality'*/) --exclude useless concept_classes
