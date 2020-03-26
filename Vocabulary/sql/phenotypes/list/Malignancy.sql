@@ -36,6 +36,50 @@ WHERE c.concept_id IN (
 36402572,	--	8157/3-C80.9	Condition	Enteroglucagonoma, malignant of unknown primary site	ICDO3
 36403131,	--	8632/3-C56.9	Condition	Gynandroblastoma, malignant of ovary	ICDO3
 36403114,	--	8622/3-C56.9	Condition	Juvenile granulosa cell tumor, malignant of ovary	ICDO3
+36566199,	--	8742/3-C60.2	Condition	Lentigo maligna melanoma of body of penis	ICDO3
+36525921,	--	8742/3-C51.2	Condition	Lentigo maligna melanoma of clitorus	ICDO3
+44501808,	--	8742/3-C44.2	Condition	Lentigo maligna melanoma of external ear	ICDO3
+44502294,	--	8742/3-C44.1	Condition	Lentigo maligna melanoma of eyelid	ICDO3
+36536523,	--	8742/3-C60.1	Condition	Lentigo maligna melanoma of glans penis	ICDO3
+36545101,	--	8742/3-C51.0	Condition	Lentigo maligna melanoma of labium majus	ICDO3
+36520559,	--	8742/3-C51.1	Condition	Lentigo maligna melanoma of labium minus	ICDO3
+36551194,	--	8742/3-C60.8	Condition	Lentigo maligna melanoma of overlapping lesion of penis	ICDO3
+36529405,	--	8742/3-C44.8	Condition	Lentigo maligna melanoma of overlapping lesion of skin	ICDO3
+36526907,	--	8742/3-C51.8	Condition	Lentigo maligna melanoma of overlapping lesion of vulva	ICDO3
+36558616,	--	8742/3-C60.9	Condition	Lentigo maligna melanoma of penis, NOS	ICDO3
+36536347,	--	8742/3-C60.0	Condition	Lentigo maligna melanoma of prepuce	ICDO3
+36558566,	--	8742/3-C63.2	Condition	Lentigo maligna melanoma of scrotum, NOS	ICDO3
+36535699,	--	8742/3-C44.0	Condition	Lentigo maligna melanoma of skin of lip, NOS	ICDO3
+36536415,	--	8742/3-C44.7	Condition	Lentigo maligna melanoma of skin of lower limb and hip	ICDO3
+44500741,	--	8742/3-C44.3	Condition	Lentigo maligna melanoma of skin of other and unspecified parts of face	ICDO3
+44500209,	--	8742/3-C44.4	Condition	Lentigo maligna melanoma of skin of scalp and neck	ICDO3
+44503100,	--	8742/3-C44.5	Condition	Lentigo maligna melanoma of skin of trunk	ICDO3
+36543197,	--	8742/3-C44.6	Condition	Lentigo maligna melanoma of skin of upper limb and shoulder	ICDO3
+36522125,	--	8742/3-C52.9	Condition	Lentigo maligna melanoma of vagina, NOS	ICDO3
+36558849,	--	8742/3-C51.9	Condition	Lentigo maligna melanoma of vulva, NOS	ICDO3
+36548893,	--	8742/2-C60.2	Condition	Lentigo maligna of body of penis	ICDO3
+36532639,	--	8742/2-C51.2	Condition	Lentigo maligna of clitorus	ICDO3
+44500943,	--	8742/2-C44.2	Condition	Lentigo maligna of external ear	ICDO3
+44502831,	--	8742/2-C44.1	Condition	Lentigo maligna of eyelid	ICDO3
+36526198,	--	8742/2-C60.1	Condition	Lentigo maligna of glans penis	ICDO3
+36548042,	--	8742/2-C51.0	Condition	Lentigo maligna of labium majus	ICDO3
+36532911,	--	8742/2-C51.1	Condition	Lentigo maligna of labium minus	ICDO3
+42512717,	--	8742/2-C69.6	Condition	Lentigo maligna of orbit, NOS	ICDO3
+36546080,	--	8742/2-C60.8	Condition	Lentigo maligna of overlapping lesion of penis	ICDO3
+36552143,	--	8742/2-C44.8	Condition	Lentigo maligna of overlapping lesion of skin	ICDO3
+36521560,	--	8742/2-C51.8	Condition	Lentigo maligna of overlapping lesion of vulva	ICDO3
+36552783,	--	8742/2-C60.9	Condition	Lentigo maligna of penis, NOS	ICDO3
+36561627,	--	8742/2-C60.0	Condition	Lentigo maligna of prepuce	ICDO3
+36534261,	--	8742/2-C63.2	Condition	Lentigo maligna of scrotum, NOS	ICDO3
+44500311,	--	8742/2-C44.9	Condition	Lentigo maligna of skin, NOS	ICDO3
+44501963,	--	8742/2-C44.0	Condition	Lentigo maligna of skin of lip, NOS	ICDO3
+36566175,	--	8742/2-C44.7	Condition	Lentigo maligna of skin of lower limb and hip	ICDO3
+44502122,	--	8742/2-C44.3	Condition	Lentigo maligna of skin of other and unspecified parts of face	ICDO3
+44502183,	--	8742/2-C44.4	Condition	Lentigo maligna of skin of scalp and neck	ICDO3
+44501589,	--	8742/2-C44.5	Condition	Lentigo maligna of skin of trunk	ICDO3
+36564229,	--	8742/2-C44.6	Condition	Lentigo maligna of skin of upper limb and shoulder	ICDO3
+36542029,	--	8742/2-C52.9	Condition	Lentigo maligna of vagina, NOS	ICDO3
+36538645,	--	8742/2-C51.9	Condition	Lentigo maligna of vulva, NOS	ICDO3
 36402521,	--	8836/3-C44.5	Condition	Malignant angiomatoid fibrous histiocytoma of skin of trunk	ICDO3
 36403113,	--	9104/3-C58.9	Condition	Malignant placental site trophoblastic tumor of placenta	ICDO3
 36403158,	--	9394/3-C72.1	Condition	Myxopapillary ependymoma, malignant of cauda equina	ICDO3
@@ -63,6 +107,8 @@ WHERE c.concept_id IN (
 42514158,	--	9161/3-NULL	Condition	Neoplasm defined only by histology: Hemangioblastoma, malignant	ICDO3
 42514261,	--	9769/3-NULL	Condition	Neoplasm defined only by histology: Immunoglobulin deposition disease, malignant	ICDO3
 42514113,	--	8622/3-NULL	Condition	Neoplasm defined only by histology: Juvenile granulosa cell tumor, malignant	ICDO3
+42513472,	--	8742/2-NULL	Condition	Neoplasm defined only by histology: Lentigo maligna	ICDO3
+42513473,	--	8742/3-NULL	Condition	Neoplasm defined only by histology: Lentigo maligna melanoma	ICDO3
 42514266,	--	9970/3-NULL	Condition	Neoplasm defined only by histology: Lymphoproliferative disease, malignant, NOS	ICDO3
 42514120,	--	8836/3-NULL	Condition	Neoplasm defined only by histology: Malignant angiomatoid fibrous histiocytoma	ICDO3
 42514364,	--	9351/3-NULL	Condition	Neoplasm defined only by histology: Malignant craniopharyngioma, adamantinomatous	ICDO3
@@ -106,7 +152,45 @@ WHERE c.concept_id IN (
 36402996,	--	8561/3-C07.9	Condition	Warthin tumor, malignant of parotid gland	ICDO3
 36403035,	--	8561/3-C08.1	Condition	Warthin tumor, malignant of sublingual gland	ICDO3
 36403040,	--	8561/3-C08.0	Condition	Warthin tumor, malignant of submandibular gland	ICDO3
+45773534,	--	703135009	Condition	Anemia in malignant neoplastic disease	SNOMED
+37312021,	--	788876001	Condition	Cachexia due to malignant neoplastic disease	SNOMED
+42536908,	--	735935009	Condition	Chronic pain due to malignant neoplastic disease	SNOMED
+37116465,	--	733190003	Condition	Dementia due to primary malignant neoplasm of brain	SNOMED
+37312345,	--	788491008	Condition	Hyperinsulinaemia due to malignant insulinoma	SNOMED
+4116197,	--	302836005	Condition	Lentigo maligna	SNOMED
+4116198,	--	302837001	Condition	Lentigo maligna melanoma	SNOMED
+4313170,	--	423278008	Condition	Lentigo maligna of skin of eyelid	SNOMED
+37110255,	--	724447005	Condition	Lymphedema due to malignant infiltration	SNOMED
+46284858,	--	956331000000107	Condition	Malignant melanoma stage IA	SNOMED
+46284859,	--	956351000000100	Condition	Malignant melanoma stage IB	SNOMED
+46284860,	--	956371000000109	Condition	Malignant melanoma stage IIA	SNOMED
+46284861,	--	956391000000108	Condition	Malignant melanoma stage IIB	SNOMED
+46284862,	--	956411000000108	Condition	Malignant melanoma stage IIC	SNOMED
+46287026,	--	956431000000100	Condition	Malignant melanoma stage IIIA	SNOMED
+46284863,	--	956451000000107	Condition	Malignant melanoma stage IIIB	SNOMED
+46284864,	--	956471000000103	Condition	Malignant melanoma stage IIIC	SNOMED
+46284865,	--	956511000000107	Condition	Malignant melanoma stage IV M1a	SNOMED
+46287027,	--	956531000000104	Condition	Malignant melanoma stage IV M1b	SNOMED
+46284866,	--	956551000000106	Condition	Malignant melanoma stage IV M1c	SNOMED
+45770824,	--	94281000119101	Condition	Malignant multiple endocrine neoplasia type 2a	SNOMED
+35610548,	--	1094311000000106	Condition	Malignant neoplasm of soft tissues of thigh	SNOMED
 443392,	--	363346000	Condition	Malignant neoplastic disease	SNOMED
+46270083,	--	135511000119105	Condition	Myelopathy due to malignant neoplastic disease	SNOMED
+46273723,	--	709141005	Condition	Neck pain due to malignant neoplastic disease	SNOMED
+35610411,	--	1092831000000100	Condition	Overlapping malignant neoplasm of mouth	SNOMED
+2107358,	--	3376F	Observation	AJCC Breast Cancer Stage II documented (ONC)	CPT4
+2107381,	--	3378F	Observation	AJCC Breast Cancer Stage III documented (ONC)	CPT4
+2107340,	--	3374F	Observation	AJCC Breast Cancer Stage I: T1c (tumor size > 1 cm to 2 cm) documented (ONC)	CPT4
+2107334,	--	3372F	Observation	AJCC Breast Cancer Stage I: T1mic, T1a or T1b (tumor size < 1 cm) documented (ONC)	CPT4
+2107385,	--	3380F	Observation	AJCC Breast Cancer Stage IV documented (ONC)	CPT4
+2107404,	--	3384F	Observation	AJCC colon cancer, Stage I documented (ONC)	CPT4
+2107422,	--	3386F	Observation	AJCC colon cancer, Stage II documented (ONC)	CPT4
+2107452,	--	3388F	Observation	AJCC colon cancer, Stage III documented (ONC)	CPT4
+2107454,	--	3390F	Observation	AJCC colon cancer, Stage IV documented (ONC)	CPT4
+2107026,	--	3322F	Observation	Melanoma greater than AJCC Stage 0 or IA (ML)	CPT4
+1314378,	--	G9705	Observation	Ajcc breast cancer stage i: t1b (tumor > 0.5 cm but <= 1 cm in greatest dimension) documented	HCPCS
+1314377,	--	G9704	Observation	Ajcc breast cancer stage i: t1 mic or t1a documented	HCPCS
+1314504,	--	G9831	Observation	Ajcc stage at breast cancer diagnosis = ii or iii	HCPCS
 36402263,	--	8822/3	Observation	Abdominal fibrosis, malignant	ICDO3
 36403184,	--	9013/3	Observation	Adenofibroma, malignant (C56.9)	ICDO3
 36402317,	--	9300/3	Observation	Adenomatoid odontogenic tumor, malignant	ICDO3
@@ -166,6 +250,10 @@ WHERE c.concept_id IN (
 36403176,	--	9384/3	Observation	Supependymal giant cell astrocytoma, malignant	ICDO3
 36402281,	--	8040/3	Observation	Tumorlet, malignant	ICDO3
 36402970,	--	8561/3	Observation	Warthin tumor, malignant	ICDO3
+4099697,	--	252999006	Observation	Malignant endocrine tumor morphology	SNOMED
+4282379,	--	367651003	Observation	Malignant Neoplasm	SNOMED
+4098963,	--	253058007	Observation	Malignant osseous and chondromatous tumor morphology	SNOMED
+4099820,	--	253079007	Observation	Malignant pineal germinoma	SNOMED
 4312326 	--	86049000	Observation	Neoplasm, malignant	SNOMED
 
 --Put concept_ids here
@@ -331,7 +419,7 @@ WHERE (
         --(c.concept_code ~* '^00000|^00000|^00000' AND c.vocabulary_id IN (/*'EDI'*//*, 'KCD7'*/)  ) OR
 
         --Mask to detect uncovered concepts
-        (c.concept_name ~* 'Malignan|cancer'
+        (c.concept_name ~* 'Maligna|cancer'
 
         --Masks to exclude
          AND c.concept_name !~* 'benign|seen|hyperthermia|history|procurement|fast track|uncertain|borderline|suspected|hypertensive|fear|screening|Precancerous|low malignant potential'
