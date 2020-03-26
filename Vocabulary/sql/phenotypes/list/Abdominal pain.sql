@@ -14,27 +14,12 @@ INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Abdominal pain', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-4200114,	--	314212008	Condition	Abdominal pain - cause unknown	SNOMED
-4254250,	--	74704000	Condition	Abdominal pain through to back	SNOMED
-197981,	--	43478001	Condition	Abdominal tenderness	SNOMED
-4023573,	--	116290004	Condition	Acute abdominal pain	SNOMED
-4012222,	--	162046002	Condition	Central abdominal pain	SNOMED
-4008102,	--	111985007	Condition	Chronic abdominal pain	SNOMED
-4090433,	--	247355005	Condition	Flank pain	SNOMED
-42710018,	--	449890002	Condition	Functional abdominal pain syndrome	SNOMED
-197988,	--	102614006	Condition	Generalized abdominal pain	SNOMED
-761102,	--	14700001000004102	Condition	Intractable abdominal pain	SNOMED
-4109084,	--	285387005	Condition	Left sided abdominal pain	SNOMED
-4010024,	--	102613000	Condition	Localized abdominal pain	SNOMED
-4182562,	--	54586004	Condition	Lower abdominal pain	SNOMED
-4012494,	--	162038003	Condition	Non-colicky abdominal pain	SNOMED
-4128083,	--	304542004	Condition	Nonspecific abdominal pain	SNOMED
-4166915,	--	274287009	Condition	O/E - abdominal pain	SNOMED
-4258543,	--	439469002	Condition	Recurrent abdominal pain	SNOMED
-4109085,	--	285388000	Condition	Right sided abdominal pain	SNOMED
-4306292 	--	83132003	Condition	Upper abdominal pain	SNOMED
-
-
+45757641,	--	28221000119103	Condition	Abdominal muscle pain	SNOMED
+200219,	--	21522001	Condition	Abdominal pain	SNOMED
+4137684,	--	425860006	Condition	Pain radiating to lower abdomen	SNOMED
+4144007,	--	427668002	Condition	Pain radiating to middle abdomen	SNOMED
+4140596,	--	427075000	Condition	Pain radiating to upper abdomen	SNOMED
+4145737	--	307199009	Condition	Psychosomatic abdominal pain	SNOMED
 --Put concept_ids here
     )
 ;
@@ -201,7 +186,7 @@ WHERE (
         (c.concept_name ~* '(Abdom|stomach).*(pain|ache)|(pain|ache).*(Abdom|stomach)'
 
         --Masks to exclude
-         AND c.concept_name !~* 'pregnancy|puerperal|no abd|abortion|\['
+         AND c.concept_name !~* 'pregnancy|puerperal|no abd|abortion|\[|should|rhabd|character|type'
 
         AND c.domain_id IN ('Condition', 'Observation'/*,'Procedure'*/ /*,'Measurement'*/) --adjust Domains of interest
 
@@ -268,10 +253,21 @@ INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Abdominal pain', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-4322528,	--	9991008	Condition	Abdominal colic	SNOMED
-4153363	--	371102005	Condition	Generalized colicky abdominal pain	SNOMED
---Put concept_ids here
+4149783,	--	309737007	Condition	Abdominal pain in pregnancy	SNOMED
+442764,	--	68653001	Condition	Anal pain	SNOMED
+4058670,	--	197232005	Condition	Anorectal pain	SNOMED
+36716718,	--	722876002	Condition	Functional heartburn	SNOMED
+4010361,	--	102570003	Condition	Inguinal pain	SNOMED
+4032289,	--	236554001	Condition	Pain during inflow of dialysate	SNOMED
+45757164,	--	10760581000119104	Condition	Pain in round ligament in pregnancy	SNOMED
+761087,	--	14440001000004101	Condition	Postoperative abdominal pain	SNOMED
+4280580,	--	36729000	Condition	Prostatic pain	SNOMED
+76458,	--	77880009	Condition	Rectal pain	SNOMED
+4010657,	--	102830001	Condition	Renal angle tenderness	SNOMED
+4167250,	--	274279008	Condition	Renal pain	SNOMED
+4244072	--	38343000	Condition	Vaginal pain	SNOMED
 
+--Put concept_ids here
     )
 ;
 
