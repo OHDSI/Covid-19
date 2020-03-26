@@ -14,9 +14,8 @@ INSERT INTO @target_database_schema.concept_phenotypes
 SELECT 'Cerebrovascular disease', 'inclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
-381591,	--	62914000	Condition	Cerebrovascular disease	SNOMED
-915779,	--	G9674	Observation	Patients with clinical ascvd diagnosis	HCPCS
-915767	--	G9662	Observation	Previously diagnosed or have an active diagnosis of clinical ascvd	HCPCS
+381591	--	62914000	Condition	Cerebrovascular disease	SNOMED
+
     )
 ;
 

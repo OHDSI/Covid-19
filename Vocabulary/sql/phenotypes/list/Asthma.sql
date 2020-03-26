@@ -258,9 +258,23 @@ SELECT 'Asthma', 'exclusion', c.*
 FROM @vocabulary_database_schema.concept c
 WHERE c.concept_id IN (
 --Put concept_ids here
+45757063,	--	103781000119103	Condition	Allergic bronchopulmonary mycosis	SNOMED
 4036799,	--	162660004	Condition	Asthma resolved	SNOMED
-4085315	--	185728001	Observation	Attends asthma monitoring	SNOMED
-
+4233784,	--	405944004	Condition	Asthmatic bronchitis	SNOMED
+4170900,	--	41997000	Condition	Asthmatic pulmonary alveolitis	SNOMED
+4155473,	--	370226009	Condition	Asthma treatment compliance satisfactory	SNOMED
+4152420,	--	370225008	Condition	Asthma treatment compliance unsatisfactory	SNOMED
+256448,	--	195949008	Condition	Chronic asthmatic bronchitis	SNOMED
+4120262,	--	233692000	Condition	Cryptogenic pulmonary eosinophilia	SNOMED
+44810118,	--	866901000000103	Condition	Eosinophilic bronchitis	SNOMED
+4123254,	--	233690008	Condition	Factitious asthma	SNOMED
+44810131,	--	867171000000106	Condition	No asthma trigger identified by subject	SNOMED
+4277596,	--	64936001	Condition	Simple pulmonary eosinophilia	SNOMED
+4081994,	--	278484009	Condition	Tropical pulmonary eosinophilia	SNOMED
+46269801,	--	10692681000119108	Observation	Aspirin exacerbated respiratory disease	SNOMED
+4235703,	--	406162001	Observation	Asthma management	SNOMED
+44783610,	--	699728000	Observation	Asthma self management	SNOMED
+4085315 	--	185728001	Observation	Attends asthma monitoring	SNOMED
     )
 ;
 

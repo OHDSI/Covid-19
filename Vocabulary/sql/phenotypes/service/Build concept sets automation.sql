@@ -1,7 +1,7 @@
 select
 jsonb_pretty(
   jsonb_build_object (
-    'name', '[OHDSI Covid19] ' || phenotype,
+    'name', '[OHDSI Covid19-ODS-prelim] ' || phenotype,
     'items', j
   )
 )
